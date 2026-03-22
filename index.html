@@ -14,7 +14,6 @@
     --ink: #111111;
     --ink-mid: #3a3a3a;
     --ink-light: #6b6b6b;
-    --accent: #1a1a1a;
     --border: rgba(0,0,0,0.1);
     --white: #ffffff;
     --sans: 'DM Sans', sans-serif;
@@ -43,6 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
   }
 
   .nav-logo {
@@ -53,6 +53,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-shrink: 0;
   }
 
   .logo-icon {
@@ -65,6 +66,8 @@
     display: flex;
     gap: 2rem;
     list-style: none;
+    flex: 1;
+    justify-content: center;
   }
 
   .nav-links a {
@@ -87,6 +90,45 @@
   }
 
   .nav-cta:hover { opacity: 0.85; }
+
+  /* LANG SWITCHER */
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.2rem 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--ink-light);
+    cursor: pointer;
+    padding: 0.2rem 0.45rem;
+    border-radius: 100px;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .lang-btn.active {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .lang-btn:hover:not(.active) { color: var(--ink); }
+
+  .lang-sep {
+    color: var(--border);
+    font-size: 0.7rem;
+    user-select: none;
+    pointer-events: none;
+  }
 
   /* HERO */
   .hero {
@@ -119,6 +161,13 @@
     display: inline-block;
   }
 
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 4rem;
+  }
+
   .hero h1 {
     font-family: var(--serif);
     font-size: clamp(2.8rem, 6vw, 5rem);
@@ -148,6 +197,14 @@
     gap: 1rem;
     flex-wrap: wrap;
     align-items: center;
+  }
+
+  .hero-logo-large {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 28px;
+    flex-shrink: 0;
   }
 
   .btn-primary {
@@ -184,7 +241,7 @@
     max-width: 960px;
   }
 
-  /* PROBLEMS */
+  /* SECTIONS */
   .section {
     padding: 5rem 2rem;
     max-width: 960px;
@@ -217,6 +274,58 @@
     margin-bottom: 3rem;
   }
 
+  /* WHO WE ARE */
+  .whoweare-section {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 2rem;
+  }
+
+  .whoweare-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .whoweare-inner .section-label { margin-bottom: 1.25rem; }
+
+  .whoweare-inner h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .whoweare-right p {
+    font-size: 1.05rem;
+    color: var(--ink-light);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .whoweare-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pill {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    background: var(--cream);
+  }
+
+  /* PROBLEMS */
   .problems-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -264,9 +373,7 @@
     margin: 0 auto;
   }
 
-  .services-section .section-label {
-    color: rgba(244,240,232,0.4);
-  }
+  .services-section .section-label { color: rgba(244,240,232,0.4); }
 
   .services-section h2 {
     font-family: var(--serif);
@@ -465,9 +572,7 @@
 
   .form-group input:focus,
   .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--ink);
-  }
+  .form-group textarea:focus { border-color: var(--ink); }
 
   .form-group textarea { resize: vertical; min-height: 100px; }
 
@@ -515,6 +620,12 @@
 
   footer a:hover { color: var(--cream); }
 
+  @media (max-width: 720px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .hero-logo-large { display: none; }
+    .whoweare-inner { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
   @media (max-width: 600px) {
     .form-row { grid-template-columns: 1fr; }
     .nav-links { display: none; }
@@ -533,44 +644,73 @@
     pluxow
   </div>
   <ul class="nav-links">
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#proceso">Cómo trabajamos</a></li>
-    <li><a href="#contacto" class="nav-cta">Hablemos</a></li>
+    <li><a href="#servicios" data-i18n="nav.services">Servicios</a></li>
+    <li><a href="#proceso" data-i18n="nav.how">Cómo trabajamos</a></li>
+    <li><a href="#contacto" class="nav-cta" data-i18n="nav.cta">Hablemos</a></li>
   </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLanguage('es')">ES</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLanguage('pt')">PT</button>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-tag">Business Strategy & Technology</div>
-  <h1>Menos tareas operativas.<br><em>Más tiempo para lo que importa.</em></h1>
-  <p class="hero-sub">Automatizamos los procesos administrativos de tu negocio para que puedas enfocarte en crecer, en tus clientes, y en lo que realmente te gusta hacer.</p>
-  <div class="hero-actions">
-    <a href="#contacto" class="btn-primary">Contanos tu caso</a>
-    <a href="#servicios" class="btn-ghost">Ver servicios →</a>
+  <div class="hero-tag" data-i18n="hero.tag">Business Strategy & Technology</div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 data-i18n-html="hero.h1">Inteligencia operativa para empresas que<br><em>quieren crecer.</em></h1>
+      <p class="hero-sub" data-i18n="hero.sub">Rediseñamos tus procesos para hacerlos más ágiles, eficientes y preparados para escalar.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn-primary" data-i18n="hero.btn1">Contanos tu caso</a>
+        <a href="#servicios" class="btn-ghost" data-i18n="hero.btn2">Ver servicios →</a>
+      </div>
+    </div>
+    <img class="hero-logo-large" src="image copy.png" alt="Pluxow">
   </div>
 </section>
 <hr class="hero-divider">
 
+<!-- WHO WE ARE -->
+<section class="whoweare-section" id="nosotros">
+  <div class="whoweare-inner">
+    <div class="whoweare-left">
+      <div class="section-label" data-i18n="who.label">Quiénes somos</div>
+      <h2 data-i18n-html="who.h2">No somos una herramienta.<br>Somos tus aliados estratégicos.</h2>
+    </div>
+    <div class="whoweare-right">
+      <p data-i18n="who.p">En Pluxow combinamos visión de negocio con ejecución tecnológica. No llegamos, implementamos y desaparecemos — nos integramos a tu operación y trabajamos junto a vos hasta que los resultados sean concretos y sostenibles.</p>
+      <div class="whoweare-pills">
+        <span class="pill" data-i18n="who.pill1">Estrategia de negocio</span>
+        <span class="pill" data-i18n="who.pill2">Automatización inteligente</span>
+        <span class="pill" data-i18n="who.pill3">Acompañamiento continuo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PROBLEMS -->
 <section class="section">
-  <div class="section-label">El problema</div>
-  <h2>Las tareas repetitivas te roban tiempo valioso</h2>
-  <p class="section-intro">Facturas, reportes, seguimientos, cargas manuales. Si tu equipo hace esto todos los días, hay una mejor manera.</p>
+  <div class="section-label" data-i18n="problems.label">El problema</div>
+  <h2 data-i18n-html="problems.h2">Cuando los procesos no fluyen,<br>tu negocio tampoco.</h2>
   <div class="problems-grid">
     <div class="problem-card">
       <span class="problem-number">01</span>
-      <h3>Procesos manuales que escalan mal</h3>
-      <p>A medida que crece el negocio, las tareas manuales crecen con él. El equipo termina ahogado en operaciones en lugar de resultados.</p>
+      <h3 data-i18n="problems.1.h3">Procesos manuales que escalan mal</h3>
+      <p data-i18n="problems.1.p">A medida que crece el negocio, las tareas manuales crecen con él. El equipo termina ahogado en operaciones en lugar de resultados.</p>
     </div>
     <div class="problem-card">
       <span class="problem-number">02</span>
-      <h3>Información dispersa y sin visibilidad</h3>
-      <p>Los datos están en planillas, emails y sistemas que no hablan entre sí. Tomar decisiones se vuelve lento y riesgoso.</p>
+      <h3 data-i18n="problems.2.h3">Información dispersa y sin visibilidad</h3>
+      <p data-i18n="problems.2.p">Los datos están en planillas, emails y sistemas que no hablan entre sí. Tomar decisiones se vuelve lento y riesgoso.</p>
     </div>
     <div class="problem-card">
       <span class="problem-number">03</span>
-      <h3>Tecnología disponible que nadie implementa</h3>
-      <p>Herramientas de IA y automatización existen, pero integrarlas requiere tiempo técnico que la mayoría de las PyMEs no tienen.</p>
+      <h3 data-i18n="problems.3.h3">Tecnología disponible que nadie implementa</h3>
+      <p data-i18n="problems.3.p">Herramientas de IA y automatización existen, pero integrarlas requiere tiempo técnico que la mayoría de las empresas no tienen.</p>
     </div>
   </div>
 </section>
@@ -578,51 +718,51 @@
 <!-- SERVICES -->
 <section class="services-section" id="servicios">
   <div class="services-inner">
-    <div class="section-label">Servicios</div>
-    <h2>Lo que construimos para vos</h2>
-    <p class="section-intro">Soluciones concretas, implementadas con las herramientas correctas para tu negocio.</p>
+    <div class="section-label" data-i18n="services.label">Servicios</div>
+    <h2 data-i18n="services.h2">Lo que construimos para vos</h2>
+    <p class="section-intro" data-i18n="services.intro">Soluciones concretas, implementadas con las herramientas correctas para tu negocio.</p>
     <div class="services-grid">
       <div class="service-item">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         </div>
-        <h3>Dashboards y reportes automáticos</h3>
-        <p>Tus métricas clave en un solo lugar, actualizadas en tiempo real. Sin exportar planillas manualmente.</p>
+        <h3 data-i18n="service.1.h3">Dashboards y reportes automáticos</h3>
+        <p data-i18n="service.1.p">Tus métricas clave en un solo lugar, actualizadas en tiempo real. Sin exportar planillas manualmente.</p>
       </div>
       <div class="service-item">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <h3>Chatbots con IA</h3>
-        <p>Atención automática de consultas frecuentes, calificación de leads y soporte 24/7 integrado a tus canales.</p>
+        <h3 data-i18n="service.2.h3">Chatbots con IA</h3>
+        <p data-i18n="service.2.p">Atención automática de consultas frecuentes, calificación de leads y soporte 24/7 integrado a tus canales.</p>
       </div>
       <div class="service-item">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </div>
-        <h3>Facturación electrónica ARCA/AFIP</h3>
-        <p>Integración y automatización de facturación fiscal para clientes en Argentina, sin errores manuales.</p>
+        <h3 data-i18n="service.3.h3">Automatización financiera y administrativa</h3>
+        <p data-i18n="service.3.p">Integramos y automatizamos tus procesos de facturación y gestión administrativa para eliminar errores manuales.</p>
       </div>
       <div class="service-item">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
-        <h3>Automatización de flujos de trabajo</h3>
-        <p>Conectamos tus herramientas existentes para eliminar pasos manuales repetitivos entre sistemas.</p>
+        <h3 data-i18n="service.4.h3">Automatización de flujos de trabajo</h3>
+        <p data-i18n="service.4.p">Conectamos tus herramientas existentes para eliminar pasos manuales repetitivos entre sistemas.</p>
       </div>
       <div class="service-item">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
-        <h3>Agentes de lectura de documentos</h3>
-        <p>IA que lee, clasifica y extrae información de contratos, facturas o formularios sin intervención humana.</p>
+        <h3 data-i18n="service.5.h3">Agentes de lectura de documentos</h3>
+        <p data-i18n="service.5.p">IA que lee, clasifica y extrae información de contratos, facturas o formularios sin intervención humana.</p>
       </div>
       <div class="service-item">
         <div class="service-icon">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
         </div>
-        <h3>Consultoría en estrategia digital</h3>
-        <p>Diagnóstico de procesos, identificación de oportunidades y hoja de ruta tecnológica para tu negocio.</p>
+        <h3 data-i18n="service.6.h3">Consultoría en estrategia digital</h3>
+        <p data-i18n="service.6.p">Diagnóstico de procesos, identificación de oportunidades y hoja de ruta tecnológica para tu negocio.</p>
       </div>
     </div>
   </div>
@@ -630,54 +770,54 @@
 
 <!-- PROCESS -->
 <section class="section" id="proceso">
-  <div class="section-label">Cómo trabajamos</div>
-  <h2>Simple, rápido y sin tecnicismos</h2>
-  <p class="section-intro">Un proceso claro para que en semanas tengas resultados concretos, no meses de reuniones.</p>
+  <div class="section-label" data-i18n="process.label">Cómo trabajamos</div>
+  <h2 data-i18n="process.h2">Simple, rápido y sin tecnicismos</h2>
+  <p class="section-intro" data-i18n="process.intro">Un proceso claro para que en semanas tengas resultados concretos, no meses de reuniones.</p>
   <div class="process-grid">
     <div class="process-step">
       <span class="step-num">01</span>
-      <h3>Consulta inicial</h3>
-      <p>Entendemos tu negocio, tus procesos actuales y dónde está el mayor dolor.</p>
+      <h3 data-i18n="step.1.h3">Consulta inicial</h3>
+      <p data-i18n="step.1.p">Entendemos tu negocio, tus procesos actuales y dónde está el mayor dolor.</p>
     </div>
     <div class="process-step">
       <span class="step-num">02</span>
-      <h3>Diagnóstico</h3>
-      <p>Mapeamos oportunidades concretas y te presentamos una propuesta a medida.</p>
+      <h3 data-i18n="step.2.h3">Diagnóstico</h3>
+      <p data-i18n="step.2.p">Mapeamos oportunidades concretas y te presentamos una propuesta a medida.</p>
     </div>
     <div class="process-step">
       <span class="step-num">03</span>
-      <h3>Implementación</h3>
-      <p>Construimos y configuramos la solución. Sin bloquear tu operación.</p>
+      <h3 data-i18n="step.3.h3">Implementación</h3>
+      <p data-i18n="step.3.p">Construimos y configuramos la solución. Sin bloquear tu operación.</p>
     </div>
     <div class="process-step">
       <span class="step-num">04</span>
-      <h3>Entrega y soporte</h3>
-      <p>Te entregamos todo funcional, con documentación y acompañamiento post-lanzamiento.</p>
+      <h3 data-i18n="step.4.h3">Entrega y soporte</h3>
+      <p data-i18n="step.4.p">Te entregamos una solución robusta y funcional end-to-end, con documentación clara y acompañamiento post-lanzamiento para que tu equipo opere con autonomía.</p>
     </div>
   </div>
 </section>
 
 <!-- RESULTS -->
 <section class="section">
-  <div class="section-label">Resultados</div>
-  <h2>Lo que nuestros clientes logran</h2>
-  <p class="section-intro">Automatizar no es un gasto. Es tiempo recuperado y errores eliminados.</p>
+  <div class="section-label" data-i18n="results.label">Resultados</div>
+  <h2 data-i18n="results.h2">Lo que nuestros clientes logran</h2>
+  <p class="section-intro" data-i18n="results.intro">Acompañamos a nuestros clientes a dar el primer paso hacia la transformación digital.</p>
   <div class="results-grid">
     <div class="result-card">
-      <span class="result-num">-70%</span>
-      <span class="result-label">en tiempo dedicado a tareas administrativas</span>
+      <span class="result-num" data-i18n="result.1.num">-70%</span>
+      <span class="result-label" data-i18n="result.1.label">en tiempo dedicado a tareas administrativas</span>
     </div>
     <div class="result-card">
-      <span class="result-num">+3x</span>
-      <span class="result-label">velocidad en generación de reportes</span>
+      <span class="result-num" data-i18n="result.2.num">+3x</span>
+      <span class="result-label" data-i18n="result.2.label">velocidad en generación de reportes</span>
     </div>
     <div class="result-card">
-      <span class="result-num">0</span>
-      <span class="result-label">errores en facturación automatizada</span>
+      <span class="result-num" data-i18n="result.3.num">3</span>
+      <span class="result-label" data-i18n="result.3.label">proyectos ganados</span>
     </div>
     <div class="result-card">
       <span class="result-num">&lt;4 sem</span>
-      <span class="result-label">de implementación en proyectos MVP</span>
+      <span class="result-label" data-i18n="result.4.label">de implementación en proyectos MVP</span>
     </div>
   </div>
 </section>
@@ -685,41 +825,43 @@
 <!-- CONTACT -->
 <section class="contact-section" id="contacto">
   <div class="contact-inner">
-    <div class="section-label">Contacto</div>
-    <h2>¿Hablamos?</h2>
-    <p class="section-intro">Contanos brevemente qué hace tu negocio y qué te gustaría automatizar. Te respondemos en menos de 24 horas.</p>
+    <div class="section-label" data-i18n="contact.label">Contacto</div>
+    <h2 data-i18n="contact.h2">¿Hablamos?</h2>
+    <p class="section-intro" data-i18n="contact.intro">Contanos brevemente qué hace tu negocio y qué te gustaría automatizar. Te respondemos en menos de 24 horas.</p>
     <div class="contact-form">
       <div class="form-row">
         <div class="form-group">
-          <label>Nombre</label>
-          <input type="text" placeholder="Tu nombre">
+          <label data-i18n="form.name">Nombre</label>
+          <input type="text" name="nombre" data-i18n-ph="form.name.ph" placeholder="Tu nombre" required>
         </div>
         <div class="form-group">
-          <label>Empresa</label>
-          <input type="text" placeholder="Nombre de tu empresa">
+          <label data-i18n="form.company">Empresa</label>
+          <input type="text" name="empresa" data-i18n-ph="form.company.ph" placeholder="Nombre de tu empresa">
         </div>
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="tu@email.com">
+        <label data-i18n="form.email">Email</label>
+        <input type="email" name="email" data-i18n-ph="form.email.ph" placeholder="tu@email.com" required>
       </div>
       <div class="form-group">
-        <label>¿Qué proceso querés automatizar?</label>
-        <select>
-          <option value="" disabled selected>Seleccioná una categoría</option>
-          <option>Facturación y administración</option>
-          <option>Reportes y dashboards</option>
-          <option>Atención al cliente / chatbot</option>
-          <option>Flujos de trabajo internos</option>
-          <option>Lectura y procesamiento de documentos</option>
-          <option>No sé, necesito un diagnóstico</option>
+        <label data-i18n="form.service">¿Qué proceso querés automatizar?</label>
+        <select name="servicio">
+          <option value="" disabled selected data-i18n="form.service.ph">Seleccioná una categoría</option>
+          <option data-i18n="form.opt1">Dashboards y reportes</option>
+          <option data-i18n="form.opt2">Chatbots con IA / Atención al cliente</option>
+          <option data-i18n="form.opt3">Facturación y administración</option>
+          <option data-i18n="form.opt4">Automatización de flujos de trabajo</option>
+          <option data-i18n="form.opt5">Lectura y procesamiento de documentos</option>
+          <option data-i18n="form.opt6">CRM</option>
+          <option data-i18n="form.opt7">Consultoría en estrategia digital</option>
+          <option data-i18n="form.opt8">No sé, necesito un diagnóstico</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Contanos un poco más (opcional)</label>
-        <textarea placeholder="Describí brevemente el proceso actual y el problema que querés resolver..."></textarea>
+        <label data-i18n="form.notes">Contanos un poco más (opcional)</label>
+        <textarea name="mensaje" data-i18n-ph="form.notes.ph" placeholder="Describí brevemente el proceso actual y el problema que querés resolver..."></textarea>
       </div>
-      <button class="form-submit" onclick="handleSubmit()">Enviar consulta →</button>
+      <button class="form-submit" id="submit-btn" type="button" onclick="handleSubmit()" data-i18n="form.submit">Enviar consulta →</button>
     </div>
   </div>
 </section>
@@ -727,17 +869,337 @@
 <!-- FOOTER -->
 <footer>
   <span class="footer-logo">pluxow</span>
-  <span>Business Strategy & Technology · Argentina</span>
+  <span data-i18n="footer.tagline">Business Strategy & Technology</span>
   <span>pluxow.com</span>
 </footer>
 
 <script>
-function handleSubmit() {
-  const btn = document.querySelector('.form-submit');
-  btn.textContent = 'Enviado. Te contactamos pronto!';
-  btn.style.background = '#2a5c3f';
-  btn.style.opacity = '1';
+const i18n = {
+  es: {
+    'nav.services': 'Servicios',
+    'nav.how': 'Cómo trabajamos',
+    'nav.cta': 'Hablemos',
+    'hero.tag': 'Business Strategy & Technology',
+    'hero.h1': 'Inteligencia operativa para empresas que<br><em>quieren crecer.</em>',
+    'hero.sub': 'Rediseñamos tus procesos para hacerlos más ágiles, eficientes y preparados para escalar.',
+    'hero.btn1': 'Contanos tu caso',
+    'hero.btn2': 'Ver servicios →',
+    'who.label': 'Quiénes somos',
+    'who.h2': 'No somos una herramienta.<br>Somos tus aliados estratégicos.',
+    'who.p': 'En Pluxow combinamos visión de negocio con ejecución tecnológica. No llegamos, implementamos y desaparecemos — nos integramos a tu operación y trabajamos junto a vos hasta que los resultados sean concretos y sostenibles.',
+    'who.pill1': 'Estrategia de negocio',
+    'who.pill2': 'Automatización inteligente',
+    'who.pill3': 'Acompañamiento continuo',
+    'problems.label': 'El problema',
+    'problems.h2': 'Cuando los procesos no fluyen,<br>tu negocio tampoco.',
+    'problems.1.h3': 'Procesos manuales que escalan mal',
+    'problems.1.p': 'A medida que crece el negocio, las tareas manuales crecen con él. El equipo termina ahogado en operaciones en lugar de resultados.',
+    'problems.2.h3': 'Información dispersa y sin visibilidad',
+    'problems.2.p': 'Los datos están en planillas, emails y sistemas que no hablan entre sí. Tomar decisiones se vuelve lento y riesgoso.',
+    'problems.3.h3': 'Tecnología disponible que nadie implementa',
+    'problems.3.p': 'Herramientas de IA y automatización existen, pero integrarlas requiere tiempo técnico que la mayoría de las empresas no tienen.',
+    'services.label': 'Servicios',
+    'services.h2': 'Lo que construimos para vos',
+    'services.intro': 'Soluciones concretas, implementadas con las herramientas correctas para tu negocio.',
+    'service.1.h3': 'Dashboards y reportes automáticos',
+    'service.1.p': 'Tus métricas clave en un solo lugar, actualizadas en tiempo real. Sin exportar planillas manualmente.',
+    'service.2.h3': 'Chatbots con IA',
+    'service.2.p': 'Atención automática de consultas frecuentes, calificación de leads y soporte 24/7 integrado a tus canales.',
+    'service.3.h3': 'Automatización financiera y administrativa',
+    'service.3.p': 'Integramos y automatizamos tus procesos de facturación y gestión administrativa para eliminar errores manuales.',
+    'service.4.h3': 'Automatización de flujos de trabajo',
+    'service.4.p': 'Conectamos tus herramientas existentes para eliminar pasos manuales repetitivos entre sistemas.',
+    'service.5.h3': 'Agentes de lectura de documentos',
+    'service.5.p': 'IA que lee, clasifica y extrae información de contratos, facturas o formularios sin intervención humana.',
+    'service.6.h3': 'Consultoría en estrategia digital',
+    'service.6.p': 'Diagnóstico de procesos, identificación de oportunidades y hoja de ruta tecnológica para tu negocio.',
+    'process.label': 'Cómo trabajamos',
+    'process.h2': 'Simple, rápido y sin tecnicismos',
+    'process.intro': 'Un proceso claro para que en semanas tengas resultados concretos, no meses de reuniones.',
+    'step.1.h3': 'Consulta inicial',
+    'step.1.p': 'Entendemos tu negocio, tus procesos actuales y dónde está el mayor dolor.',
+    'step.2.h3': 'Diagnóstico',
+    'step.2.p': 'Mapeamos oportunidades concretas y te presentamos una propuesta a medida.',
+    'step.3.h3': 'Implementación',
+    'step.3.p': 'Construimos y configuramos la solución. Sin bloquear tu operación.',
+    'step.4.h3': 'Entrega y soporte',
+    'step.4.p': 'Te entregamos una solución robusta y funcional end-to-end, con documentación clara y acompañamiento post-lanzamiento para que tu equipo opere con autonomía.',
+    'results.label': 'Resultados',
+    'results.h2': 'Lo que nuestros clientes logran',
+    'results.intro': 'Acompañamos a nuestros clientes a dar el primer paso hacia la transformación digital.',
+    'result.1.num': '-70%',
+    'result.1.label': 'en tiempo dedicado a tareas administrativas',
+    'result.2.num': '+3x',
+    'result.2.label': 'velocidad en generación de reportes',
+    'result.3.num': '3',
+    'result.3.label': 'proyectos ganados',
+    'result.4.label': 'de implementación en proyectos MVP',
+    'contact.label': 'Contacto',
+    'contact.h2': '¿Hablamos?',
+    'contact.intro': 'Contanos brevemente qué hace tu negocio y qué te gustaría automatizar. Te respondemos en menos de 24 horas.',
+    'form.name': 'Nombre',
+    'form.name.ph': 'Tu nombre',
+    'form.company': 'Empresa',
+    'form.company.ph': 'Nombre de tu empresa',
+    'form.email': 'Email',
+    'form.email.ph': 'tu@email.com',
+    'form.service': '¿Qué proceso querés automatizar?',
+    'form.service.ph': 'Seleccioná una categoría',
+    'form.opt1': 'Dashboards y reportes',
+    'form.opt2': 'Chatbots con IA / Atención al cliente',
+    'form.opt3': 'Facturación y administración',
+    'form.opt4': 'Automatización de flujos de trabajo',
+    'form.opt5': 'Lectura y procesamiento de documentos',
+    'form.opt6': 'CRM',
+    'form.opt7': 'Consultoría en estrategia digital',
+    'form.opt8': 'No sé, necesito un diagnóstico',
+    'form.notes': 'Contanos un poco más (opcional)',
+    'form.notes.ph': 'Describí brevemente el proceso actual y el problema que querés resolver...',
+    'form.submit': 'Enviar consulta →',
+    'form.success': 'Enviado. ¡Te contactamos pronto!',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  en: {
+    'nav.services': 'Services',
+    'nav.how': 'How we work',
+    'nav.cta': "Let's talk",
+    'hero.tag': 'Business Strategy & Technology',
+    'hero.h1': 'Operational intelligence for companies that<br><em>want to grow.</em>',
+    'hero.sub': 'We redesign your processes to make them more agile, efficient and ready to scale.',
+    'hero.btn1': 'Tell us your case',
+    'hero.btn2': 'See services →',
+    'who.label': 'Who we are',
+    'who.h2': "We're not a tool.<br>We're your strategic partners.",
+    'who.p': "At Pluxow we combine business vision with technological execution. We don't just implement and disappear — we integrate into your operation and work alongside you until results are concrete and sustainable.",
+    'who.pill1': 'Business strategy',
+    'who.pill2': 'Intelligent automation',
+    'who.pill3': 'Ongoing support',
+    'problems.label': 'The problem',
+    'problems.h2': "When processes don't flow,<br>neither does your business.",
+    'problems.1.h3': "Manual processes that don't scale",
+    'problems.1.p': 'As the business grows, manual tasks grow with it. The team ends up drowning in operations instead of results.',
+    'problems.2.h3': 'Scattered data with no visibility',
+    'problems.2.p': "Data lives in spreadsheets, emails and systems that don't talk to each other. Making decisions becomes slow and risky.",
+    'problems.3.h3': 'Available technology nobody implements',
+    'problems.3.p': "AI and automation tools exist, but integrating them requires technical time most companies don't have.",
+    'services.label': 'Services',
+    'services.h2': 'What we build for you',
+    'services.intro': 'Concrete solutions, implemented with the right tools for your business.',
+    'service.1.h3': 'Dashboards & automatic reports',
+    'service.1.p': 'Your key metrics in one place, updated in real time. No manual spreadsheet exports.',
+    'service.2.h3': 'AI Chatbots',
+    'service.2.p': 'Automatic handling of frequent queries, lead qualification and 24/7 support integrated into your channels.',
+    'service.3.h3': 'Financial & administrative automation',
+    'service.3.p': 'We integrate and automate your billing and administrative management processes to eliminate manual errors.',
+    'service.4.h3': 'Workflow automation',
+    'service.4.p': 'We connect your existing tools to eliminate repetitive manual steps between systems.',
+    'service.5.h3': 'Document reading agents',
+    'service.5.p': 'AI that reads, classifies and extracts information from contracts, invoices or forms without human intervention.',
+    'service.6.h3': 'Digital strategy consulting',
+    'service.6.p': 'Process diagnosis, opportunity identification and technology roadmap for your business.',
+    'process.label': 'How we work',
+    'process.h2': 'Simple, fast and jargon-free',
+    'process.intro': 'A clear process so you have concrete results in weeks, not months of meetings.',
+    'step.1.h3': 'Initial consultation',
+    'step.1.p': 'We understand your business, your current processes and where the biggest pain points are.',
+    'step.2.h3': 'Diagnosis',
+    'step.2.p': 'We map concrete opportunities and present a tailored proposal.',
+    'step.3.h3': 'Implementation',
+    'step.3.p': 'We build and configure the solution. Without blocking your operation.',
+    'step.4.h3': 'Delivery & support',
+    'step.4.p': 'We deliver a robust, end-to-end functional solution with clear documentation and post-launch support so your team operates with full autonomy.',
+    'results.label': 'Results',
+    'results.h2': 'What our clients achieve',
+    'results.intro': 'We help our clients take the first step toward digital transformation.',
+    'result.1.num': '-70%',
+    'result.1.label': 'time spent on administrative tasks',
+    'result.2.num': '+3x',
+    'result.2.label': 'faster report generation',
+    'result.3.num': '3',
+    'result.3.label': 'projects won',
+    'result.4.label': 'implementation for MVP projects',
+    'contact.label': 'Contact',
+    'contact.h2': "Let's talk",
+    'contact.intro': "Briefly tell us what your business does and what you'd like to automate. We'll respond within 24 hours.",
+    'form.name': 'Name',
+    'form.name.ph': 'Your name',
+    'form.company': 'Company',
+    'form.company.ph': 'Your company name',
+    'form.email': 'Email',
+    'form.email.ph': 'you@email.com',
+    'form.service': 'What process do you want to automate?',
+    'form.service.ph': 'Select a category',
+    'form.opt1': 'Dashboards & reports',
+    'form.opt2': 'AI Chatbots / Customer support',
+    'form.opt3': 'Billing & administration',
+    'form.opt4': 'Workflow automation',
+    'form.opt5': 'Document reading & processing',
+    'form.opt6': 'CRM',
+    'form.opt7': 'Digital strategy consulting',
+    'form.opt8': "I'm not sure, I need a diagnosis",
+    'form.notes': 'Tell us a bit more (optional)',
+    'form.notes.ph': 'Briefly describe the current process and the problem you want to solve...',
+    'form.submit': 'Send inquiry →',
+    'form.success': "Sent! We'll be in touch soon.",
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  pt: {
+    'nav.services': 'Serviços',
+    'nav.how': 'Como trabalhamos',
+    'nav.cta': 'Vamos conversar',
+    'hero.tag': 'Business Strategy & Technology',
+    'hero.h1': 'Inteligência operacional para empresas que<br><em>querem crescer.</em>',
+    'hero.sub': 'Redesenhamos seus processos para torná-los mais ágeis, eficientes e preparados para escalar.',
+    'hero.btn1': 'Conte seu caso',
+    'hero.btn2': 'Ver serviços →',
+    'who.label': 'Quem somos',
+    'who.h2': 'Não somos uma ferramenta.<br>Somos seus aliados estratégicos.',
+    'who.p': 'Na Pluxow combinamos visão de negócio com execução tecnológica. Não chegamos, implementamos e desaparecemos — integramos à sua operação e trabalhamos ao seu lado até que os resultados sejam concretos e sustentáveis.',
+    'who.pill1': 'Estratégia de negócio',
+    'who.pill2': 'Automação inteligente',
+    'who.pill3': 'Suporte contínuo',
+    'problems.label': 'O problema',
+    'problems.h2': 'Quando os processos não fluem,<br>seu negócio também não.',
+    'problems.1.h3': 'Processos manuais que não escalam',
+    'problems.1.p': 'À medida que o negócio cresce, as tarefas manuais crescem com ele. A equipe acaba afogada em operações em vez de resultados.',
+    'problems.2.h3': 'Dados dispersos e sem visibilidade',
+    'problems.2.p': 'Os dados estão em planilhas, e-mails e sistemas que não se comunicam. Tomar decisões fica lento e arriscado.',
+    'problems.3.h3': 'Tecnologia disponível que ninguém implementa',
+    'problems.3.p': 'Ferramentas de IA e automação existem, mas integrá-las requer tempo técnico que a maioria das empresas não tem.',
+    'services.label': 'Serviços',
+    'services.h2': 'O que construímos para você',
+    'services.intro': 'Soluções concretas, implementadas com as ferramentas certas para o seu negócio.',
+    'service.1.h3': 'Dashboards e relatórios automáticos',
+    'service.1.p': 'Suas métricas-chave em um só lugar, atualizadas em tempo real. Sem exportar planilhas manualmente.',
+    'service.2.h3': 'Chatbots com IA',
+    'service.2.p': 'Atendimento automático de consultas frequentes, qualificação de leads e suporte 24/7 integrado aos seus canais.',
+    'service.3.h3': 'Automação financeira e administrativa',
+    'service.3.p': 'Integramos e automatizamos seus processos de faturamento e gestão administrativa para eliminar erros manuais.',
+    'service.4.h3': 'Automação de fluxos de trabalho',
+    'service.4.p': 'Conectamos suas ferramentas existentes para eliminar etapas manuais repetitivas entre sistemas.',
+    'service.5.h3': 'Agentes de leitura de documentos',
+    'service.5.p': 'IA que lê, classifica e extrai informações de contratos, faturas ou formulários sem intervenção humana.',
+    'service.6.h3': 'Consultoria em estratégia digital',
+    'service.6.p': 'Diagnóstico de processos, identificação de oportunidades e roteiro tecnológico para o seu negócio.',
+    'process.label': 'Como trabalhamos',
+    'process.h2': 'Simples, rápido e sem jargões',
+    'process.intro': 'Um processo claro para que em semanas você tenha resultados concretos, não meses de reuniões.',
+    'step.1.h3': 'Consulta inicial',
+    'step.1.p': 'Entendemos seu negócio, seus processos atuais e onde está a maior dor.',
+    'step.2.h3': 'Diagnóstico',
+    'step.2.p': 'Mapeamos oportunidades concretas e apresentamos uma proposta sob medida.',
+    'step.3.h3': 'Implementação',
+    'step.3.p': 'Construímos e configuramos a solução. Sem bloquear sua operação.',
+    'step.4.h3': 'Entrega e suporte',
+    'step.4.p': 'Entregamos uma solução robusta e funcional end-to-end, com documentação clara e acompanhamento pós-lançamento para que sua equipe opere com autonomia.',
+    'results.label': 'Resultados',
+    'results.h2': 'O que nossos clientes alcançam',
+    'results.intro': 'Acompanhamos nossos clientes no primeiro passo rumo à transformação digital.',
+    'result.1.num': '-70%',
+    'result.1.label': 'tempo dedicado a tarefas administrativas',
+    'result.2.num': '+3x',
+    'result.2.label': 'velocidade na geração de relatórios',
+    'result.3.num': '3',
+    'result.3.label': 'projetos conquistados',
+    'result.4.label': 'de implementação em projetos MVP',
+    'contact.label': 'Contato',
+    'contact.h2': 'Vamos conversar?',
+    'contact.intro': 'Conte brevemente o que seu negócio faz e o que gostaria de automatizar. Respondemos em menos de 24 horas.',
+    'form.name': 'Nome',
+    'form.name.ph': 'Seu nome',
+    'form.company': 'Empresa',
+    'form.company.ph': 'Nome da sua empresa',
+    'form.email': 'E-mail',
+    'form.email.ph': 'voce@email.com',
+    'form.service': 'Qual processo você quer automatizar?',
+    'form.service.ph': 'Selecione uma categoria',
+    'form.opt1': 'Dashboards e relatórios',
+    'form.opt2': 'Chatbots com IA / Atendimento ao cliente',
+    'form.opt3': 'Faturamento e administração',
+    'form.opt4': 'Automação de fluxos de trabalho',
+    'form.opt5': 'Leitura e processamento de documentos',
+    'form.opt6': 'CRM',
+    'form.opt7': 'Consultoria em estratégia digital',
+    'form.opt8': 'Não sei, preciso de um diagnóstico',
+    'form.notes': 'Conte um pouco mais (opcional)',
+    'form.notes.ph': 'Descreva brevemente o processo atual e o problema que você quer resolver...',
+    'form.submit': 'Enviar consulta →',
+    'form.success': 'Enviado! Entraremos em contato em breve.',
+    'footer.tagline': 'Business Strategy & Technology',
+  }
+};
+
+let currentLang = 'es';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.textContent = i18n[lang][key];
+  });
+
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
+  });
+
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (i18n[lang][key] !== undefined) el.placeholder = i18n[lang][key];
+  });
+
+  const btn = document.getElementById('submit-btn');
+  if (btn && !btn.disabled) {
+    btn.textContent = i18n[lang]['form.submit'];
+  }
+}
+
+async function handleSubmit() {
+  const btn = document.getElementById('submit-btn');
+  const form = btn.closest('.contact-form');
+
+  const data = {
+    nombre:   form.querySelector('[name="nombre"]').value,
+    empresa:  form.querySelector('[name="empresa"]').value,
+    email:    form.querySelector('[name="email"]').value,
+    servicio: form.querySelector('[name="servicio"]').value,
+    mensaje:  form.querySelector('[name="mensaje"]').value,
+  };
+
+  if (!data.nombre || !data.email) return;
+
   btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  try {
+    const res = await fetch('https://formspree.io/f/hello@pluxow.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      btn.textContent = i18n[currentLang]['form.success'];
+      btn.style.background = '#2a5c3f';
+      btn.style.opacity = '1';
+    } else {
+      btn.textContent = '⚠ Error al enviar. Intentá de nuevo.';
+      btn.style.background = '#8B0000';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+    }
+  } catch {
+    btn.textContent = '⚠ Error al enviar. Intentá de nuevo.';
+    btn.style.background = '#8B0000';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }
 }
 </script>
 
