@@ -1,0 +1,31 @@
+# Pluxow
+
+> Inteligencia operativa para empresas que quieren crecer. Diseñamos procesos más eficientes que liberan tiempo y mejoran el rendimiento de tu negocio.
+
+Pluxow es una consultora de automatización e inteligencia operativa con sede en Argentina, orientada a empresas de habla hispana y portuguesa que buscan optimizar sus procesos internos mediante tecnología e IA.
+
+## Servicios
+
+- **Dashboards y reportes automáticos**: Métricas clave en tiempo real, sin exportar planillas manualmente.
+- **Chatbots con IA**: Atención automática de consultas, calificación de leads y soporte 24/7.
+- **Automatización financiera y administrativa**: Integración y automatización de facturación y gestión administrativa.
+- **Automatización de flujos de trabajo**: Conexión de herramientas existentes para eliminar pasos manuales repetitivos.
+- **Agentes de lectura de documentos**: IA que lee, clasifica y extrae información de contratos, facturas y formularios.
+- **Consultoría en estrategia digital**: Diagnóstico de procesos, identificación de oportunidades y hoja de ruta tecnológica.
+- **CRM**: Implementación y automatización de gestión de clientes.
+
+## Para quién
+
+Empresas medianas y pequeñas que tienen procesos manuales repetitivos, información dispersa en planillas y sistemas no conectados, o que quieren implementar IA pero no tienen el tiempo técnico para hacerlo internamente.
+
+## Cómo trabajamos
+
+1. Consulta inicial — entendemos el negocio y sus procesos.
+2. Diagnóstico — mapeamos oportunidades y presentamos propuesta.
+3. Implementación — construimos la solución sin interrumpir la operación.
+4. Entrega y soporte — solución funcional end-to-end con documentación y acompañamiento.
+
+## Contacto
+
+- Web: https://pluxow.com
+- Email: hello@pluxow.com
