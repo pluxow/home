@@ -270,6 +270,136 @@ body {
   .btn-primary { width: 100%; border-radius: 12px; text-align: center; }
   .app-main { padding: 2.5rem 1.25rem 4rem; }
 }
+
+/* ── Chat ─────────────────────────────────────────────── */
+.btn-chat {
+  margin-top: 0.9rem;
+  width: 100%;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 0.55rem 1rem;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-chat:hover { background: var(--cream-dark); border-color: var(--ink-light); }
+
+.chat-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+.chat-overlay.open { display: block; }
+
+.chat-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+}
+.chat-panel {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 42%;
+  min-width: 360px;
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+.chat-overlay.open .chat-panel { transform: translateX(0); }
+
+.chat-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.chat-header-context { flex: 1; min-width: 0; }
+.chat-header-service { font-size: 0.85rem; font-weight: 500; }
+.chat-header-empresa { font-size: 0.78rem; color: var(--ink-light); margin-top: 0.1rem; }
+.chat-close {
+  background: none; border: none;
+  font-size: 1.1rem; cursor: pointer;
+  color: var(--ink-light); padding: 0.1rem 0.3rem;
+  flex-shrink: 0; transition: color 0.2s;
+}
+.chat-close:hover { color: var(--ink); }
+
+.chat-messages {
+  flex: 1; overflow-y: auto;
+  padding: 1.25rem;
+  display: flex; flex-direction: column;
+  gap: 0.75rem;
+}
+.chat-bubble {
+  max-width: 85%;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+.chat-bubble.user {
+  align-self: flex-end;
+  background: var(--ink); color: var(--cream);
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble.assistant {
+  align-self: flex-start;
+  background: var(--cream); color: var(--ink);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+.chat-bubble.loading { opacity: 0.5; font-style: italic; }
+
+.chat-input-area {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 0.5rem;
+  flex-shrink: 0; background: var(--white);
+}
+.chat-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--sans); font-size: 0.9rem;
+  background: var(--cream); color: var(--ink);
+  outline: none; resize: none;
+  transition: border-color 0.2s;
+  max-height: 120px; overflow-y: auto;
+}
+.chat-input:focus { border-color: var(--ink); }
+.chat-send {
+  background: var(--ink); color: var(--cream);
+  border: none; border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+  font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+.chat-send:hover { opacity: 0.85; }
+.chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+@media (max-width: 768px) {
+  .chat-backdrop { background: rgba(0,0,0,0.4); }
+  .chat-panel {
+    position: absolute;
+    inset: 0; width: 100%; min-width: unset;
+    border-left: none;
+    transform: translateY(100%);
+  }
+  .chat-overlay.open .chat-panel { transform: translateY(0); }
+}
 </style>
 </head>
 <body>
@@ -332,6 +462,27 @@ body {
       <button class="btn-secondary" onclick="resetForm()">← Intentar con otro</button>
     </div>
   </main>
+</div>
+
+<!-- ── Chat Panel ──────────────────────────────────────────────── -->
+<div id="chat-overlay" class="chat-overlay">
+  <div class="chat-backdrop" onclick="closeChat()"></div>
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header-context">
+        <div class="chat-header-service" id="chat-header-service"></div>
+        <div class="chat-header-empresa" id="chat-header-empresa"></div>
+      </div>
+      <button class="chat-close" onclick="closeChat()">✕</button>
+    </div>
+    <div id="chat-messages" class="chat-messages"></div>
+    <div class="chat-input-area">
+      <textarea id="chat-input" class="chat-input" placeholder="Escribí tu pregunta..." rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+        oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+      <button id="chat-send" class="chat-send" onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -438,7 +589,12 @@ async function analyze() {
   }
 }
 
+// Contexto actual para el chat
+let lastAnalysisData = null;
+
 function renderResults(data) {
+  lastAnalysisData = data;
+
   // Empresa card
   document.getElementById('empresa-card').innerHTML = `
     <div class="empresa-header">
@@ -448,9 +604,9 @@ function renderResults(data) {
     <p class="empresa-resumen">${esc(data.resumen)}</p>
   `;
 
-  // Services
+  // Services con botón de chat
   const grid = document.getElementById('services-grid');
-  grid.innerHTML = (data.servicios || []).map(s => {
+  grid.innerHTML = (data.servicios || []).map((s, i) => {
     const rel = (s.relevancia || '').toLowerCase();
     const cls  = rel === 'alta' ? 'rel-alta' : 'rel-media';
     const lbl  = rel === 'alta' ? 'Alta' : 'Media';
@@ -461,6 +617,7 @@ function renderResults(data) {
           <span class="relevancia-badge ${cls}">${lbl}</span>
         </div>
         <p class="service-argumento">${esc(s.argumento)}</p>
+        <button class="btn-chat" onclick="openChat(${i})">Profundizar con IA →</button>
       </div>`;
   }).join('');
 
@@ -474,6 +631,96 @@ function renderResults(data) {
 function resetForm() {
   document.getElementById('url-input').value = '';
   showState('form-state');
+}
+
+// ── Chat ──────────────────────────────────────────────────────
+const CHAT_WEBHOOK_URL = 'CHAT_WEBHOOK_URL_PLACEHOLDER';
+let chatHistory = [];
+let chatServiceCtx = null;
+
+function openChat(index) {
+  if (!lastAnalysisData) return;
+  chatServiceCtx = lastAnalysisData.servicios[index];
+  chatHistory = [];
+
+  document.getElementById('chat-header-service').textContent = chatServiceCtx.nombre;
+  document.getElementById('chat-header-empresa').textContent =
+    lastAnalysisData.empresa + (lastAnalysisData.sector ? ' · ' + lastAnalysisData.sector : '');
+  document.getElementById('chat-messages').innerHTML = '';
+  document.getElementById('chat-input').value = '';
+  document.getElementById('chat-input').style.height = 'auto';
+
+  document.getElementById('chat-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  addBubble('assistant',
+    'Hola, estoy listo para ayudarte a preparar esta reunión.\n' +
+    '¿Sobre qué querés que profundicemos? Podés preguntarme cómo explicar el servicio, ' +
+    'qué preguntas hacerle al cliente o cómo responder si no ve el valor.'
+  );
+
+  setTimeout(() => document.getElementById('chat-input').focus(), 300);
+}
+
+function closeChat() {
+  document.getElementById('chat-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function addBubble(role, text, isLoading) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble ' + role + (isLoading ? ' loading' : '');
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('chat-send').disabled = true;
+
+  addBubble('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  const loadingBubble = addBubble('assistant', 'Pensando...', true);
+
+  try {
+    const res = await fetch(CHAT_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        messages: chatHistory,
+        service: chatServiceCtx,
+        empresa: {
+          empresa: lastAnalysisData.empresa,
+          sector:  lastAnalysisData.sector,
+          resumen: lastAnalysisData.resumen,
+        },
+      }),
+    });
+
+    if (!res.ok) throw new Error('Error ' + res.status);
+    const data = await res.json();
+    const reply = data.reply || data.text || 'No pude generar una respuesta.';
+
+    loadingBubble.remove();
+    addBubble('assistant', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+
+  } catch {
+    loadingBubble.remove();
+    addBubble('assistant', 'Hubo un error al conectar. Intentá de nuevo.');
+  } finally {
+    document.getElementById('chat-send').disabled = false;
+    document.getElementById('chat-input').focus();
+  }
 }
 </script>
 </body>
