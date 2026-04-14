@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Analizador de prospectos</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F4F0E8;
+  --cream-dark: #E8E3D8;
+  --ink: #111111;
+  --ink-mid: #3a3a3a;
+  --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1);
+  --white: #ffffff;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+  --green: #2a5c3f;
+  --amber: #7a6a3f;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+/* ── Gate ─────────────────────────────────────────────── */
+#gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.gate-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+}
+.gate-logo { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 1.5rem; }
+.gate-card h2 { font-family: var(--serif); font-size: 1.5rem; margin-bottom: 0.5rem; }
+.gate-card p { color: var(--ink-light); font-size: 0.9rem; margin-bottom: 1.75rem; }
+.gate-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 1rem;
+  background: var(--cream);
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.gate-input:focus { border-color: var(--ink); }
+.gate-error { color: #8B0000; font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+
+/* ── App ──────────────────────────────────────────────── */
+#app { display: none; }
+.app-header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-logo { font-family: var(--serif); font-size: 1.25rem; }
+.badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--cream-dark);
+  color: var(--ink-light);
+  padding: 0.3rem 0.7rem;
+  border-radius: 100px;
+}
+.app-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 1rem;
+}
+.app-main h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+.app-main .intro { color: var(--ink-mid); margin-bottom: 2.5rem; max-width: 560px; }
+
+/* ── URL Form ─────────────────────────────────────────── */
+.url-form { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.url-input {
+  flex: 1;
+  min-width: 240px;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-family: var(--sans);
+  font-size: 1rem;
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.url-input:focus { border-color: var(--ink); }
+.url-input.error { border-color: #8B0000; }
+.btn-primary {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 100px;
+  padding: 0.9rem 1.75rem;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Loading ──────────────────────────────────────────── */
+#loading-state { display: none; text-align: center; padding: 3rem 0; }
+.loading-dots span {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--ink-light);
+  border-radius: 50%;
+  margin: 0 3px;
+  animation: bounce 1.2s infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.loading-text { margin-top: 1rem; font-size: 0.9rem; color: var(--ink-light); }
+
+/* ── Results ──────────────────────────────────────────── */
+#results-state { display: none; }
+.empresa-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+}
+.empresa-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.empresa-nombre { font-family: var(--serif); font-size: 1.4rem; }
+.empresa-sector { color: var(--ink-light); font-size: 0.85rem; }
+.empresa-resumen { color: var(--ink-mid); font-size: 0.95rem; }
+
+.results-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 1rem;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+}
+.service-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.service-nombre { font-size: 0.95rem; font-weight: 500; flex: 1; }
+.relevancia-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.rel-alta  { background: #e8f3ed; color: var(--green); }
+.rel-media { background: #f3f0e4; color: var(--amber); }
+.service-argumento { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.5; }
+
+.apertura-box {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+}
+.apertura-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 0.6rem;
+}
+.apertura-text { font-size: 1rem; line-height: 1.6; font-style: italic; }
+
+/* ── Error ────────────────────────────────────────────── */
+#error-state { display: none; padding: 2rem 0; }
+.error-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.25rem;
+}
+.error-card p { color: var(--ink-mid); }
+
+/* ── Shared ───────────────────────────────────────────── */
+.btn-secondary {
+  background: transparent;
+  color: var(--ink-mid);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+
+@media (max-width: 600px) {
+  .url-form { flex-direction: column; }
+  .btn-primary { width: 100%; border-radius: 12px; text-align: center; }
+  .app-main { padding: 2.5rem 1.25rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Password Gate ──────────────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">Pluxow</div>
+    <h2>Acceso del equipo</h2>
+    <p>Esta herramienta es de uso exclusivo del equipo Pluxow.</p>
+    <input type="password" id="pwd" class="gate-input" placeholder="Contraseña"
+           onkeydown="if(event.key==='Enter') checkPassword()">
+    <button class="btn-primary" onclick="checkPassword()">Ingresar →</button>
+    <p id="gate-error" class="gate-error">Contraseña incorrecta. Intentá de nuevo.</p>
+  </div>
+</div>
+
+<!-- ── App ───────────────────────────────────────────────────── -->
+<div id="app">
+  <header class="app-header">
+    <span class="header-logo">Pluxow</span>
+    <span class="badge">Uso interno</span>
+  </header>
+
+  <main class="app-main">
+    <div class="section-label">Herramienta interna</div>
+    <h2>Analizá a tu prospecto</h2>
+    <p class="intro">Ingresá la URL del sitio web del prospecto y la IA analiza qué servicios de Pluxow le encajan mejor y por qué.</p>
+
+    <!-- Form -->
+    <div id="form-state">
+      <div class="url-form">
+        <input type="url" id="url-input" class="url-input"
+               placeholder="https://empresa.com"
+               onkeydown="if(event.key==='Enter') analyze()">
+        <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analizar →</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading-state">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <p class="loading-text">Analizando el sitio con IA...</p>
+    </div>
+
+    <!-- Results -->
+    <div id="results-state">
+      <div id="empresa-card" class="empresa-card"></div>
+      <div class="results-label">Servicios recomendados</div>
+      <div id="services-grid" class="services-grid"></div>
+      <div id="apertura-box" class="apertura-box"></div>
+      <button class="btn-secondary" onclick="resetForm()">← Analizar otro prospecto</button>
+    </div>
+
+    <!-- Error -->
+    <div id="error-state">
+      <div class="error-card">
+        <p id="error-msg">No pudimos analizar este sitio.</p>
+      </div>
+      <button class="btn-secondary" onclick="resetForm()">← Intentar con otro</button>
+    </div>
+  </main>
+</div>
+
+<script>
+// ── Configuración ─────────────────────────────────────────────
+// Reemplazá WEBHOOK_URL_PROPUESTA con la URL real del webhook de n8n
+// después de importar el workflow.
+const WEBHOOK_URL = 'WEBHOOK_URL_PROPUESTA';
+
+// Hash SHA-256 de la contraseña "Jordan23"
+const PWD_HASH = '410640b1b522799f1501087b85f4a4767f30112cb90b02c0b8767a7e9605f5a5';
+
+// ── Auth ──────────────────────────────────────────────────────
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPassword() {
+  const pwd = document.getElementById('pwd').value;
+  const hash = await sha256(pwd);
+  if (hash === PWD_HASH) {
+    sessionStorage.setItem('pluxow_auth', '1');
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
+    document.getElementById('pwd').value = '';
+    document.getElementById('pwd').focus();
+  }
+}
+
+// Auto-login si la sesión ya está autenticada
+if (sessionStorage.getItem('pluxow_auth') === '1') {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+// ── UI helpers ────────────────────────────────────────────────
+const STATES = ['form-state', 'loading-state', 'results-state', 'error-state'];
+
+function showState(id) {
+  STATES.forEach(s => document.getElementById(s).style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+}
+
+function esc(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ── Análisis ──────────────────────────────────────────────────
+async function analyze() {
+  const input = document.getElementById('url-input');
+  let url = input.value.trim();
+  if (!url) { input.focus(); return; }
+
+  if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+  try { new URL(url); } catch {
+    input.classList.add('error');
+    setTimeout(() => input.classList.remove('error'), 2000);
+    return;
+  }
+
+  if (WEBHOOK_URL === 'WEBHOOK_URL_PROPUESTA') {
+    document.getElementById('error-msg').textContent =
+      'Configuración pendiente: reemplazá WEBHOOK_URL_PROPUESTA en el HTML con la URL del webhook de n8n.';
+    showState('error-state');
+    return;
+  }
+
+  document.getElementById('analyze-btn').disabled = true;
+  showState('loading-state');
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 45000);
+
+    const res = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ url }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`Error ${res.status}`);
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    renderResults(data);
+    showState('results-state');
+
+  } catch (err) {
+    document.getElementById('error-msg').textContent =
+      err.name === 'AbortError'
+        ? 'Tiempo de espera agotado (45s). El sitio puede ser muy lento o estar caído.'
+        : 'No pudimos analizar este sitio. Verificá la URL e intentá de nuevo.';
+    showState('error-state');
+  } finally {
+    document.getElementById('analyze-btn').disabled = false;
+  }
+}
+
+function renderResults(data) {
+  // Empresa card
+  document.getElementById('empresa-card').innerHTML = `
+    <div class="empresa-header">
+      <span class="empresa-nombre">${esc(data.empresa)}</span>
+      <span class="empresa-sector">${esc(data.sector)}</span>
+    </div>
+    <p class="empresa-resumen">${esc(data.resumen)}</p>
+  `;
+
+  // Services
+  const grid = document.getElementById('services-grid');
+  grid.innerHTML = (data.servicios || []).map(s => {
+    const rel = (s.relevancia || '').toLowerCase();
+    const cls  = rel === 'alta' ? 'rel-alta' : 'rel-media';
+    const lbl  = rel === 'alta' ? 'Alta' : 'Media';
+    return `
+      <div class="service-card">
+        <div class="service-card-header">
+          <span class="service-nombre">${esc(s.nombre)}</span>
+          <span class="relevancia-badge ${cls}">${lbl}</span>
+        </div>
+        <p class="service-argumento">${esc(s.argumento)}</p>
+      </div>`;
+  }).join('');
+
+  // Apertura
+  document.getElementById('apertura-box').innerHTML = `
+    <div class="apertura-label">Apertura sugerida para la reunión</div>
+    <p class="apertura-text">"${esc(data.apertura)}"</p>
+  `;
+}
+
+function resetForm() {
+  document.getElementById('url-input').value = '';
+  showState('form-state');
+}
+</script>
+</body>
+</html>
