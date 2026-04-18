@@ -1240,5 +1240,362 @@ async function handleSubmit() {
 }
 </script>
 
+<!-- ========== CHAT WIDGET ========== -->
+<style>
+  /* Botón flotante */
+  #chat-toggle {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 1000;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,0,0,0.32); }
+  #chat-toggle svg { transition: opacity 0.2s; }
+
+  /* Ventana del chat */
+  #chat-window {
+    position: fixed;
+    bottom: 96px;
+    right: 28px;
+    z-index: 1000;
+    width: 360px;
+    max-width: calc(100vw - 40px);
+    height: 520px;
+    max-height: calc(100vh - 120px);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.92) translateY(12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    transform-origin: bottom right;
+  }
+  #chat-window.open {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Header */
+  .chat-header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .chat-header-dot {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .chat-header-title { font-size: 0.9rem; font-weight: 500; }
+  .chat-header-sub { font-size: 0.75rem; opacity: 0.55; margin-top: 1px; }
+
+  /* Mensajes */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--cream);
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .msg {
+    max-width: 82%;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 9px 13px;
+    border-radius: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .msg.bot {
+    background: #fff;
+    color: var(--ink);
+    align-self: flex-start;
+    border-bottom-left-radius: 3px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .msg.user {
+    background: var(--ink);
+    color: var(--cream);
+    align-self: flex-end;
+    border-bottom-right-radius: 3px;
+  }
+  .msg.typing {
+    background: #fff;
+    align-self: flex-start;
+    color: var(--ink-light);
+    font-style: italic;
+    font-size: 0.8rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+
+  /* Quick replies */
+  .quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 16px 12px;
+    background: var(--cream);
+  }
+  .qr-btn {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .qr-btn:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+  /* Input area */
+  .chat-input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: #fff;
+    flex-shrink: 0;
+  }
+  #chat-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    background: transparent;
+    color: var(--ink);
+    resize: none;
+    line-height: 1.4;
+    max-height: 80px;
+  }
+  #chat-input::placeholder { color: var(--ink-light); }
+  #chat-send {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s;
+  }
+  #chat-send:hover { opacity: 0.8; }
+  #chat-send:disabled { opacity: 0.35; cursor: default; }
+</style>
+
+<!-- Botón flotante -->
+<button id="chat-toggle" aria-label="Abrir chat">
+  <svg id="icon-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <svg id="icon-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:none">
+    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+</button>
+
+<!-- Ventana del chat -->
+<div id="chat-window" role="dialog" aria-label="Chat con Pluxow">
+  <div class="chat-header">
+    <div class="chat-header-dot"></div>
+    <div>
+      <div class="chat-header-title">Asistente Pluxow</div>
+      <div class="chat-header-sub">Responde al instante</div>
+    </div>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="quick-replies" id="quick-replies"></div>
+  <div class="chat-input-area">
+    <textarea id="chat-input" rows="1" placeholder="Escribí tu mensaje..."></textarea>
+    <button id="chat-send" disabled>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const WEBHOOK = 'https://leacouretot.app.n8n.cloud/webhook/chat-pluxow-web';
+  const QUICK_OPTIONS = [
+    'Quiero automatizar algo',
+    'Quiero averiguar cómo automatizar algo',
+    'Quiero saber precios',
+    'Otro'
+  ];
+
+  let messages = [];
+  let isOpen = false;
+  let isTyping = false;
+  let started = false;
+
+  const toggle  = document.getElementById('chat-toggle');
+  const window_ = document.getElementById('chat-window');
+  const msgBox  = document.getElementById('chat-messages');
+  const qrBox   = document.getElementById('quick-replies');
+  const input   = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('chat-send');
+  const iconChat  = document.getElementById('icon-chat');
+  const iconClose = document.getElementById('icon-close');
+
+  // Toggle abrir/cerrar
+  toggle.addEventListener('click', () => {
+    isOpen = !isOpen;
+    window_.classList.toggle('open', isOpen);
+    iconChat.style.display  = isOpen ? 'none' : '';
+    iconClose.style.display = isOpen ? '' : 'none';
+    if (isOpen && !started) { started = true; sendToBot([]); }
+    if (isOpen) setTimeout(() => input.focus(), 250);
+  });
+
+  // Input auto-resize y enable/disable send
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 80) + 'px';
+    sendBtn.disabled = !input.value.trim();
+  });
+
+  // Enviar con Enter (Shift+Enter = nueva línea)
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  function sendMessage() {
+    const text = input.value.trim();
+    if (!text || isTyping) return;
+    input.value = '';
+    input.style.height = 'auto';
+    sendBtn.disabled = true;
+    addUserMessage(text);
+    sendToBot(messages);
+  }
+
+  function addUserMessage(text) {
+    messages.push({ role: 'user', content: text });
+    renderMsg('user', text);
+    clearQuickReplies();
+  }
+
+  function addBotMessage(text) {
+    messages.push({ role: 'assistant', content: text });
+    renderMsg('bot', text);
+  }
+
+  function renderMsg(role, text) {
+    const el = document.createElement('div');
+    el.className = 'msg ' + role;
+    el.textContent = text;
+    msgBox.appendChild(el);
+    scrollBottom();
+  }
+
+  function showTyping() {
+    const el = document.createElement('div');
+    el.className = 'msg typing';
+    el.id = 'typing-indicator';
+    el.textContent = 'Escribiendo...';
+    msgBox.appendChild(el);
+    scrollBottom();
+  }
+
+  function hideTyping() {
+    const el = document.getElementById('typing-indicator');
+    if (el) el.remove();
+  }
+
+  function scrollBottom() {
+    msgBox.scrollTop = msgBox.scrollHeight;
+  }
+
+  function clearQuickReplies() {
+    qrBox.innerHTML = '';
+  }
+
+  function showQuickReplies(options) {
+    qrBox.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'qr-btn';
+      btn.textContent = opt;
+      btn.addEventListener('click', () => {
+        clearQuickReplies();
+        addUserMessage(opt);
+        sendToBot(messages);
+      });
+      qrBox.appendChild(btn);
+    });
+  }
+
+  async function sendToBot(msgs) {
+    if (isTyping) return;
+    isTyping = true;
+    showTyping();
+
+    try {
+      const res = await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: msgs })
+      });
+
+      const data = await res.json();
+      hideTyping();
+
+      if (data.reply) {
+        addBotMessage(data.reply);
+
+        // Si es el mensaje de bienvenida, mostrar quick replies
+        const isWelcome = msgs.length === 0 ||
+          (msgs.length === 1 && msgs[0].role === 'user' && msgs[0].content.toLowerCase().match(/^hola|^hi|^buenas/));
+        if (isWelcome) showQuickReplies(QUICK_OPTIONS);
+      } else {
+        addBotMessage('Hubo un error. Intentá de nuevo.');
+      }
+    } catch {
+      hideTyping();
+      addBotMessage('No pude conectarme. Revisá tu conexión e intentá de nuevo.');
+    }
+
+    isTyping = false;
+  }
+})();
+</script>
+<!-- ========== FIN CHAT WIDGET ========== -->
+
 </body>
 </html>
