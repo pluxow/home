@@ -1450,14 +1450,8 @@ async function handleSubmit() {
 <script>
 (function() {
   const WEBHOOK = 'https://leacouretot.app.n8n.cloud/webhook/chat-pluxow-web';
-  // Saludo hardcodeado — no va al webhook, no contamina messages[]
-  const GREETING = '👋 ¡Hola! Soy el asistente de Pluxow.\n¿En qué te puedo ayudar?';
-  const QUICK_OPTIONS = [
-    { es: 'Quiero automatizar algo',               en: 'I want to automate something',              pt: 'Quero automatizar algo' },
-    { es: 'Quiero averiguar cómo automatizar algo', en: 'I want to find out how to automate',        pt: 'Quero saber como automatizar algo' },
-    { es: 'Quiero saber precios',                  en: 'I want to know about pricing',              pt: 'Quero saber sobre preços' },
-    { es: 'Otro',                                  en: 'Other',                                     pt: 'Outro' }
-  ];
+  const LANG_GREETING = '👋 Hello! In which language would you like to chat?';
+  const LANG_OPTIONS = ['🇪🇸 Español', '🇬🇧 English', '🇧🇷 Português'];
 
   let messages = [];
   let isOpen = false;
@@ -1481,9 +1475,8 @@ async function handleSubmit() {
     iconClose.style.display = isOpen ? '' : 'none';
     if (isOpen && !started) {
       started = true;
-      // Mostrar saludo client-side sin llamar al webhook
-      renderMsg('bot', GREETING);
-      showQuickReplies(QUICK_OPTIONS.map(o => o.es));
+      renderMsg('bot', LANG_GREETING);
+      showQuickReplies(LANG_OPTIONS);
     }
     if (isOpen) setTimeout(() => input.focus(), 250);
   });
