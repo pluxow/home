@@ -1450,11 +1450,13 @@ async function handleSubmit() {
 <script>
 (function() {
   const WEBHOOK = 'https://leacouretot.app.n8n.cloud/webhook/chat-pluxow-web';
+  // Saludo hardcodeado — no va al webhook, no contamina messages[]
+  const GREETING = '👋 ¡Hola! Soy el asistente de Pluxow.\n¿En qué te puedo ayudar?';
   const QUICK_OPTIONS = [
-    'Quiero automatizar algo',
-    'Quiero averiguar cómo automatizar algo',
-    'Quiero saber precios',
-    'Otro'
+    { es: 'Quiero automatizar algo',               en: 'I want to automate something',              pt: 'Quero automatizar algo' },
+    { es: 'Quiero averiguar cómo automatizar algo', en: 'I want to find out how to automate',        pt: 'Quero saber como automatizar algo' },
+    { es: 'Quiero saber precios',                  en: 'I want to know about pricing',              pt: 'Quero saber sobre preços' },
+    { es: 'Otro',                                  en: 'Other',                                     pt: 'Outro' }
   ];
 
   let messages = [];
@@ -1477,7 +1479,12 @@ async function handleSubmit() {
     window_.classList.toggle('open', isOpen);
     iconChat.style.display  = isOpen ? 'none' : '';
     iconClose.style.display = isOpen ? '' : 'none';
-    if (isOpen && !started) { started = true; sendToBot([]); }
+    if (isOpen && !started) {
+      started = true;
+      // Mostrar saludo client-side sin llamar al webhook
+      renderMsg('bot', GREETING);
+      showQuickReplies(QUICK_OPTIONS.map(o => o.es));
+    }
     if (isOpen) setTimeout(() => input.focus(), 250);
   });
 
@@ -1528,7 +1535,7 @@ async function handleSubmit() {
     const el = document.createElement('div');
     el.className = 'msg typing';
     el.id = 'typing-indicator';
-    el.textContent = 'Escribiendo...';
+    el.textContent = '...';
     msgBox.appendChild(el);
     scrollBottom();
   }
@@ -1578,11 +1585,6 @@ async function handleSubmit() {
 
       if (data.reply) {
         addBotMessage(data.reply);
-
-        // Si es el mensaje de bienvenida, mostrar quick replies
-        const isWelcome = msgs.length === 0 ||
-          (msgs.length === 1 && msgs[0].role === 'user' && msgs[0].content.toLowerCase().match(/^hola|^hi|^buenas/));
-        if (isWelcome) showQuickReplies(QUICK_OPTIONS);
       } else {
         addBotMessage('Hubo un error. Intentá de nuevo.');
       }
