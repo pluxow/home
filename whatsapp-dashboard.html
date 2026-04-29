@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V4 API EPM – Dashboard</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F4F0E8;
+    --cream-dark: #E8E3D8;
+    --ink: #111111;
+    --ink-mid: #3a3a3a;
+    --ink-light: #6b6b6b;
+    --border: rgba(0,0,0,0.1);
+    --white: #ffffff;
+    --sans: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+    --wa-green: #25D366;
+    --wa-green-dark: #1ebe5d;
+    --bubble-out: #dcf8c6;
+    --bubble-in: #ffffff;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* NAV */
+  nav {
+    flex-shrink: 0;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    z-index: 10;
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-icon { height: 36px; width: auto; border-radius: 8px; }
+
+  .nav-title {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    font-weight: 400;
+  }
+
+  .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #ccc;
+    transition: background 0.3s;
+  }
+  .status-dot.active { background: var(--wa-green); }
+
+  .status-label { font-size: 0.8rem; color: var(--ink-light); }
+
+  /* CONFIG PANEL */
+  .config-bar {
+    flex-shrink: 0;
+    background: var(--cream-dark);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .config-bar label {
+    font-size: 0.75rem;
+    color: var(--ink-light);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .config-bar input {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.3rem 0.6rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .config-bar input:focus { border-color: var(--ink-mid); }
+  .config-token { width: 320px; }
+  .config-phone { width: 160px; }
+  .config-webhook { width: 380px; }
+
+  .config-save {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 6px;
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .config-save:hover { opacity: 0.8; }
+
+  /* MAIN LAYOUT */
+  .main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+  }
+
+  .sidebar-header {
+    padding: 1rem 1.25rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .conv-count {
+    font-size: 0.75rem;
+    background: var(--cream-dark);
+    border-radius: 100px;
+    padding: 0.15rem 0.5rem;
+    color: var(--ink-light);
+  }
+
+  .conv-list {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .conv-item {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .conv-item:hover { background: var(--cream); }
+  .conv-item.active { background: var(--cream-dark); }
+
+  .conv-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+    color: var(--ink-mid);
+    font-weight: 500;
+  }
+
+  .conv-info { flex: 1; min-width: 0; }
+
+  .conv-name {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .conv-preview {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0.2rem;
+  }
+
+  .conv-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  .conv-time { font-size: 0.72rem; color: var(--ink-light); }
+
+  .conv-badge {
+    background: var(--wa-green);
+    color: white;
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    font-size: 0.68rem;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600;
+  }
+
+  .sidebar-empty {
+    padding: 2rem 1.25rem;
+    text-align: center;
+    color: var(--ink-light);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* CHAT AREA */
+  .chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ece5dd;
+  }
+
+  .chat-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-light);
+    gap: 0.75rem;
+  }
+
+  .chat-empty-icon { font-size: 3rem; opacity: 0.3; }
+  .chat-empty-text { font-size: 0.9rem; }
+
+  .chat-header {
+    flex-shrink: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .chat-header-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--cream-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    flex-shrink: 0;
+  }
+
+  .chat-header-info { flex: 1; }
+  .chat-header-name { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+  .chat-header-phone { font-size: 0.75rem; color: var(--ink-light); }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 65%;
+  }
+
+  .msg.incoming { align-self: flex-start; }
+  .msg.outgoing { align-self: flex-end; }
+
+  .msg-bubble {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    word-break: break-word;
+    position: relative;
+  }
+
+  .msg.incoming .msg-bubble {
+    background: var(--bubble-in);
+    border-top-left-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
+
+  .msg.outgoing .msg-bubble {
+    background: var(--bubble-out);
+    border-top-right-radius: 2px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
+
+  .msg-time {
+    font-size: 0.68rem;
+    color: var(--ink-light);
+    margin-top: 0.2rem;
+    padding: 0 0.25rem;
+  }
+
+  .msg.outgoing .msg-time { text-align: right; }
+
+  .msg-tick { color: #4fc3f7; margin-left: 3px; }
+
+  /* INPUT */
+  .chat-input-area {
+    flex-shrink: 0;
+    background: var(--cream-dark);
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .chat-input {
+    flex: 1;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 0.65rem 1.1rem;
+    outline: none;
+    resize: none;
+    max-height: 120px;
+    line-height: 1.4;
+    color: var(--ink);
+    transition: border-color 0.2s;
+  }
+
+  .chat-input:focus { border-color: var(--ink-mid); }
+  .chat-input::placeholder { color: var(--ink-light); }
+
+  .send-btn {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--wa-green);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+
+  .send-btn:hover { background: var(--wa-green-dark); }
+  .send-btn:active { transform: scale(0.94); }
+  .send-btn:disabled { background: #ccc; cursor: default; transform: none; }
+
+  .send-btn svg { width: 20px; height: 20px; fill: white; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 0.6rem 1.1rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+    z-index: 999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.error { background: #c0392b; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--cream-dark); border-radius: 10px; }
+
+  @media (max-width: 768px) {
+    .sidebar { width: 100%; display: none; }
+    .sidebar.show-mobile { display: flex; position: absolute; z-index: 5; height: calc(100% - 110px); }
+    .config-token, .config-webhook { width: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <img class="logo-icon" src="image copy.png" alt="EPM icon">
+    V4 API EPM
+  </a>
+  <span class="nav-title">WhatsApp Business Dashboard</span>
+  <div class="nav-right">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-label" id="statusLabel">Desconectado</span>
+  </div>
+</nav>
+
+<!-- CONFIG BAR -->
+<div class="config-bar">
+  <label>Access Token</label>
+  <input class="config-token" type="password" id="cfgToken" placeholder="EAAxxxxxxx..." autocomplete="off">
+
+  <label>Phone Number ID</label>
+  <input class="config-phone" type="text" id="cfgPhoneId" value="531092246761321">
+
+  <label>Webhook (n8n)</label>
+  <input class="config-webhook" type="text" id="cfgWebhook" value="https://leacouretot.app.n8n.cloud/webhook/app-review-messages">
+
+  <button class="config-save" id="btnSave">Conectar</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      Conversaciones
+      <span class="conv-count" id="convCount">0</span>
+    </div>
+    <div class="conv-list" id="convList">
+      <div class="sidebar-empty">
+        Configurá el webhook de n8n<br>y presioná <strong>Conectar</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-area" id="chatArea">
+    <div class="chat-empty" id="chatEmpty">
+      <div class="chat-empty-icon">💬</div>
+      <div class="chat-empty-text">Seleccioná una conversación</div>
+    </div>
+
+    <div id="chatView" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+      <div class="chat-header" id="chatHeader"></div>
+      <div class="messages" id="messages"></div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chatInput" placeholder="Escribí un mensaje..." rows="1"></textarea>
+        <button class="send-btn" id="sendBtn" disabled>
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── STATE ──────────────────────────────────────────────────────────────────
+  let cfg = { token: '', phoneId: '', webhook: '' };
+  let conversations = {};   // { phone: { name, messages: [], unread } }
+  let activePhone = null;
+  let pollInterval = null;
+  let lastMessageIds = new Set();
+
+  // ── DOM ────────────────────────────────────────────────────────────────────
+  const statusDot    = document.getElementById('statusDot');
+  const statusLabel  = document.getElementById('statusLabel');
+  const convList     = document.getElementById('convList');
+  const convCount    = document.getElementById('convCount');
+  const chatEmpty    = document.getElementById('chatEmpty');
+  const chatView     = document.getElementById('chatView');
+  const chatHeader   = document.getElementById('chatHeader');
+  const messages     = document.getElementById('messages');
+  const chatInput    = document.getElementById('chatInput');
+  const sendBtn      = document.getElementById('sendBtn');
+  const btnSave      = document.getElementById('btnSave');
+
+  // ── CONFIG ─────────────────────────────────────────────────────────────────
+  btnSave.addEventListener('click', () => {
+    cfg.token   = document.getElementById('cfgToken').value.trim();
+    cfg.phoneId = document.getElementById('cfgPhoneId').value.trim();
+    cfg.webhook = document.getElementById('cfgWebhook').value.trim();
+
+    if (!cfg.token || !cfg.phoneId || !cfg.webhook) {
+      toast('Completá todos los campos', true); return;
+    }
+
+    startPolling();
+    toast('Conectado — polling activo');
+  });
+
+  // ── POLLING ────────────────────────────────────────────────────────────────
+  function startPolling() {
+    if (pollInterval) clearInterval(pollInterval);
+    setStatus(true);
+    poll();
+    pollInterval = setInterval(poll, 3000);
+  }
+
+  async function poll() {
+    try {
+      const res = await fetch(cfg.webhook, { method: 'GET' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      processMessages(Array.isArray(data) ? data : (data.messages || []));
+      setStatus(true);
+    } catch (e) {
+      setStatus(false);
+    }
+  }
+
+  function processMessages(msgs) {
+    let updated = false;
+
+    msgs.forEach(m => {
+      const id = m.id || `${m.from}_${m.timestamp}`;
+      if (lastMessageIds.has(id)) return;
+      lastMessageIds.add(id);
+
+      const phone = m.from;
+      if (!conversations[phone]) {
+        conversations[phone] = { name: m.name || formatPhone(phone), messages: [], unread: 0 };
+      }
+
+      conversations[phone].messages.push({
+        id, text: m.message, ts: m.timestamp || new Date().toISOString(), direction: 'incoming'
+      });
+
+      if (phone !== activePhone) conversations[phone].unread++;
+      updated = true;
+    });
+
+    if (updated) {
+      renderSidebar();
+      if (activePhone && updated) renderChat();
+    }
+  }
+
+  // ── SIDEBAR ────────────────────────────────────────────────────────────────
+  function renderSidebar() {
+    const phones = Object.keys(conversations);
+    convCount.textContent = phones.length;
+
+    if (phones.length === 0) {
+      convList.innerHTML = '<div class="sidebar-empty">Sin mensajes aún.<br>Esperando actividad...</div>';
+      return;
+    }
+
+    convList.innerHTML = phones
+      .sort((a, b) => {
+        const la = conversations[a].messages.at(-1)?.ts || '';
+        const lb = conversations[b].messages.at(-1)?.ts || '';
+        return lb.localeCompare(la);
+      })
+      .map(phone => {
+        const conv = conversations[phone];
+        const last = conv.messages.at(-1);
+        const isActive = phone === activePhone;
+        return `
+          <div class="conv-item${isActive ? ' active' : ''}" onclick="selectConv('${phone}')">
+            <div class="conv-avatar">${conv.name[0].toUpperCase()}</div>
+            <div class="conv-info">
+              <div class="conv-name">${escHtml(conv.name)}</div>
+              <div class="conv-preview">${last ? escHtml(last.text.substring(0, 40)) : ''}</div>
+            </div>
+            <div class="conv-meta">
+              <span class="conv-time">${last ? formatTime(last.ts) : ''}</span>
+              ${conv.unread > 0 ? `<span class="conv-badge">${conv.unread}</span>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+  }
+
+  // ── CHAT VIEW ──────────────────────────────────────────────────────────────
+  function selectConv(phone) {
+    activePhone = phone;
+    conversations[phone].unread = 0;
+    renderSidebar();
+    renderChat();
+    sendBtn.disabled = false;
+    chatInput.focus();
+  }
+
+  function renderChat() {
+    if (!activePhone) return;
+    const conv = conversations[activePhone];
+
+    chatEmpty.style.display = 'none';
+    chatView.style.display  = 'flex';
+
+    chatHeader.innerHTML = `
+      <div class="chat-header-avatar">${conv.name[0].toUpperCase()}</div>
+      <div class="chat-header-info">
+        <div class="chat-header-name">${escHtml(conv.name)}</div>
+        <div class="chat-header-phone">+${activePhone}</div>
+      </div>`;
+
+    const wasAtBottom = messages.scrollHeight - messages.scrollTop - messages.clientHeight < 60;
+
+    messages.innerHTML = conv.messages.map(m => `
+      <div class="msg ${m.direction}">
+        <div class="msg-bubble">${escHtml(m.text)}${m.direction === 'outgoing' ? '<span class="msg-tick">✓✓</span>' : ''}</div>
+        <div class="msg-time">${formatTime(m.ts)}</div>
+      </div>`).join('');
+
+    if (wasAtBottom || conv.messages.length <= 1) {
+      messages.scrollTop = messages.scrollHeight;
+    }
+  }
+
+  // ── SEND ───────────────────────────────────────────────────────────────────
+  sendBtn.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  chatInput.addEventListener('input', () => {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+  });
+
+  async function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text || !activePhone || !cfg.token || !cfg.phoneId) return;
+
+    sendBtn.disabled = true;
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+
+    const msgId = `out_${Date.now()}`;
+    conversations[activePhone].messages.push({
+      id: msgId, text, ts: new Date().toISOString(), direction: 'outgoing'
+    });
+    renderChat();
+
+    try {
+      const res = await fetch(`https://graph.facebook.com/v25.0/${cfg.phoneId}/messages`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${cfg.token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: activePhone,
+          type: 'text',
+          text: { body: text }
+        })
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || `HTTP ${res.status}`);
+      }
+    } catch (e) {
+      toast(`Error al enviar: ${e.message}`, true);
+      conversations[activePhone].messages = conversations[activePhone].messages.filter(m => m.id !== msgId);
+      renderChat();
+    } finally {
+      sendBtn.disabled = false;
+      chatInput.focus();
+    }
+  }
+
+  // ── HELPERS ────────────────────────────────────────────────────────────────
+  function setStatus(online) {
+    statusDot.classList.toggle('active', online);
+    statusLabel.textContent = online ? 'En línea' : 'Sin conexión';
+  }
+
+  function formatPhone(p) { return `+${p}`; }
+
+  function formatTime(ts) {
+    try {
+      return new Date(ts).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+    } catch { return ''; }
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function toast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(t._tid);
+    t._tid = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
