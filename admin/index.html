@@ -506,7 +506,7 @@ async function loadEditor() {
     if (!res.ok) throw new Error('GitHub API error');
     const data = await res.json();
     fileSha = data.sha;
-    contentData = JSON.parse(atob(data.content.replace(/\n/g, '')));
+    contentData = JSON.parse(decodeURIComponent(escape(atob(data.content.replace(/\n/g, '')))));
     renderEditor();
     setStatus('ok', 'Sincronizado');
     setTimeout(() => clearStatus(), 2500);
