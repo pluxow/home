@@ -853,7 +853,7 @@
       <span class="result-label" data-i18n="result.3.label">proyectos ganados</span>
     </div>
     <div class="result-card">
-      <span class="result-num">&lt;4 sem</span>
+      <span class="result-num" data-i18n="result.4.num">&lt;4 sem</span>
       <span class="result-label" data-i18n="result.4.label">de implementación en proyectos MVP</span>
     </div>
   </div>
@@ -911,7 +911,20 @@
 </footer>
 
 <script>
-const i18n = {
+let i18n = {};
+let currentLang = 'es';
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('./content.json?v=' + Date.now())
+    .then(r => r.json())
+    .then(data => {
+      i18n = data;
+      setLanguage('es');
+    })
+    .catch(() => { i18n = _i18n_fallback; setLanguage('es'); });
+});
+
+const _i18n_fallback = {
   es: {
     'nav.services': 'Servicios',
     'nav.how': 'Cómo trabajamos',
@@ -1165,8 +1178,6 @@ const i18n = {
     'footer.tagline': 'Business Strategy & Technology',
   }
 };
-
-let currentLang = 'es';
 
 function setLanguage(lang) {
   currentLang = lang;
