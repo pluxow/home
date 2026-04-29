@@ -245,6 +245,75 @@
     animation: spin 0.7s linear infinite;
     display: inline-block;
   }
+
+  /* ── SPLIT / PREVIEW ── */
+  .editor-scroll {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .preview-pane {
+    display: none;
+  }
+
+  #view-editor.split {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 420px 1fr;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #view-editor.split .admin-header { grid-column: 1 / -1; }
+  #view-editor.split .editor-scroll { overflow-y: auto; }
+  #view-editor.split .preview-pane {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid rgba(244,240,232,0.15);
+    overflow: hidden;
+    background: #e8e8e8;
+  }
+
+  .preview-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--ink-light);
+    font-size: 0.85rem;
+    gap: 0.5rem;
+  }
+  .preview-loading .spinner {
+    border-color: rgba(0,0,0,0.15);
+    border-top-color: var(--ink-light);
+  }
+
+  #preview-iframe {
+    width: 100%;
+    flex: 1;
+    border: none;
+    background: #fff;
+  }
+
+  .btn-preview {
+    background: none;
+    border: 1px solid rgba(244,240,232,0.2);
+    border-radius: 100px;
+    padding: 0.45rem 0.9rem;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: rgba(244,240,232,0.6);
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .btn-preview:hover, .btn-preview.active {
+    color: var(--cream);
+    border-color: rgba(244,240,232,0.5);
+  }
+  .btn-preview.active { background: rgba(244,240,232,0.12); }
 </style>
 </head>
 <body>
@@ -287,6 +356,10 @@
       <button class="lang-tab" onclick="switchLang('en')">EN</button>
       <button class="lang-tab" onclick="switchLang('pt')">PT</button>
     </div>
+    <button class="btn-preview" id="btn-preview" onclick="togglePreview()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Vista previa
+    </button>
     <span id="publish-status" class="publish-status"></span>
     <button class="btn-publish" id="btn-publish" onclick="publishChanges()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -296,8 +369,16 @@
     <button class="btn-ghost-header" onclick="logout()">Salir</button>
   </header>
 
-  <div class="editor-body" id="editor-body">
-    <!-- Sections rendered by JS -->
+  <div class="editor-scroll">
+    <div class="editor-body" id="editor-body">
+      <!-- Sections rendered by JS -->
+    </div>
+  </div>
+  <div class="preview-pane" id="preview-pane">
+    <div class="preview-loading" id="preview-loading">
+      <span class="spinner"></span> Cargando vista previa...
+    </div>
+    <iframe id="preview-iframe" title="Vista previa" style="display:none"></iframe>
   </div>
 </div>
 
@@ -413,8 +494,11 @@ const SECTIONS = [
 
 // ── State ──
 let currentLang = 'es';
-let contentData = {};  // { es: {}, en: {}, pt: {} }
+let contentData = {};
 let fileSha = '';
+let previewActive = false;
+let previewDebounce = null;
+let indexHtmlSource = null;
 
 // ── Auth ──
 async function sha256(text) {
@@ -555,7 +639,75 @@ function switchLang(lang) {
     btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
   });
   renderEditor();
+  schedulePreviewUpdate();
 }
+
+// ── Preview ──
+function togglePreview() {
+  previewActive = !previewActive;
+  document.getElementById('view-editor').classList.toggle('split', previewActive);
+  const btn = document.getElementById('btn-preview');
+  btn.classList.toggle('active', previewActive);
+  btn.querySelector('svg').style.display = '';
+  btn.childNodes[btn.childNodes.length - 1].textContent = previewActive ? ' Ocultar' : ' Vista previa';
+  if (previewActive) updatePreview();
+}
+
+async function getIndexHtml() {
+  if (indexHtmlSource) return indexHtmlSource;
+  try {
+    const res = await fetch('https://pluxow.com/');
+    indexHtmlSource = await res.text();
+  } catch { indexHtmlSource = null; }
+  return indexHtmlSource;
+}
+
+async function updatePreview() {
+  if (!previewActive) return;
+  saveCurrentFormToData();
+  const iframe = document.getElementById('preview-iframe');
+  const loading = document.getElementById('preview-loading');
+  iframe.style.display = 'none';
+  loading.style.display = 'flex';
+
+  const source = await getIndexHtml();
+  if (!source) {
+    loading.innerHTML = '⚠ No se pudo cargar la vista previa';
+    return;
+  }
+
+  const injection = `<base href="https://pluxow.com/">
+<script>(function(){
+  var __d=${JSON.stringify(contentData)};
+  var __lk='${currentLang}';
+  var __of=window.fetch;
+  window.fetch=function(u){
+    if(typeof u==='string'&&u.includes('content.json'))
+      return Promise.resolve(new Response(JSON.stringify(__d),{headers:{'Content-Type':'application/json'}}));
+    return __of.apply(this,arguments);
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    if(typeof setLanguage==='function') setLanguage(__lk);
+  });
+})()\<\/script>`;
+
+  const modified = source.replace('<head>', '<head>' + injection);
+  iframe.srcdoc = modified;
+  iframe.onload = () => {
+    loading.style.display = 'none';
+    iframe.style.display = 'block';
+  };
+}
+
+function schedulePreviewUpdate() {
+  if (!previewActive) return;
+  clearTimeout(previewDebounce);
+  previewDebounce = setTimeout(updatePreview, 700);
+}
+
+document.addEventListener('input', e => {
+  if (e.target.matches('[data-key]')) schedulePreviewUpdate();
+});
 
 function saveCurrentFormToData() {
   if (!contentData[currentLang]) contentData[currentLang] = {};
