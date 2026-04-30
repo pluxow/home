@@ -507,6 +507,19 @@
   const sendBtn      = document.getElementById('sendBtn');
   const btnSave      = document.getElementById('btnSave');
 
+  // ── AUTO-CONNECT FROM URL HASH (#access_token=...&phone_id=...) ───────────
+  (function() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const params = Object.fromEntries(hash.split('&').map(p => p.split('=')).map(([k,v]) => [k, decodeURIComponent(v)]));
+    if (params.access_token) document.getElementById('cfgToken').value = params.access_token;
+    if (params.phone_id)     document.getElementById('cfgPhoneId').value = params.phone_id;
+    if (params.access_token && params.phone_id) {
+      window.history.replaceState(null, '', window.location.pathname);
+      setTimeout(() => document.getElementById('btnSave').click(), 300);
+    }
+  })();
+
   // ── CONFIG ─────────────────────────────────────────────────────────────────
   btnSave.addEventListener('click', () => {
     cfg.token   = document.getElementById('cfgToken').value.trim();
