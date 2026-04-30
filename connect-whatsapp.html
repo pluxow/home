@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conectar WhatsApp Business — Pluxow</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F4F0E8;
+    --cream-dark: #E8E3D8;
+    --ink: #111111;
+    --ink-mid: #3a3a3a;
+    --ink-light: #6b6b6b;
+    --border: rgba(0,0,0,0.1);
+    --white: #ffffff;
+    --sans: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+    --wa: #25D366;
+    --wa-dark: #1ebe5d;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.5rem;
+    letter-spacing: -0.02em; color: var(--ink);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .logo-icon { height: 40px; width: auto; border-radius: 8px; }
+  .nav-back {
+    font-size: 0.85rem; color: var(--ink-light); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--cream-dark); border-radius: 100px;
+    padding: 0.3rem 0.9rem; font-size: 0.8rem;
+    color: var(--ink-mid); margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: 2.8rem;
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+  .hero p {
+    font-size: 1.05rem; color: var(--ink-mid);
+    max-width: 520px; margin: 0 auto 2.5rem;
+  }
+
+  /* CONNECT BTN */
+  .btn-connect {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--wa); color: var(--white);
+    border: none; border-radius: 100px;
+    padding: 0.85rem 2rem; font-size: 1rem;
+    font-family: var(--sans); font-weight: 500;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+  }
+  .btn-connect:hover  { background: var(--wa-dark); }
+  .btn-connect:active { transform: scale(0.97); }
+  .btn-connect:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+
+  .btn-connect svg { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+
+  /* STATUS */
+  #status {
+    margin-top: 1.5rem; font-size: 0.9rem;
+    color: var(--ink-light); min-height: 1.4rem;
+  }
+
+  /* RESULT BOX */
+  #result { margin-top: 1.5rem; }
+
+  .result-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: left;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .result-card.success { border-color: var(--wa); }
+  .result-card.error   { border-color: #e53e3e; }
+
+  .result-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .result-title { font-weight: 500; font-size: 1rem; margin-bottom: 0.75rem; }
+  .result-row { font-size: 0.85rem; color: var(--ink-mid); margin-bottom: 0.3rem; }
+  .result-row strong { color: var(--ink); }
+
+  .result-redirect {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    background: var(--cream); border-radius: 8px;
+    font-size: 0.82rem; color: var(--ink-light);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--ink-light);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* STEPS */
+  .steps {
+    max-width: 680px; margin: 0 auto 5rem;
+    padding: 0 2rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+  .step {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.25rem;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--ink); color: var(--cream);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .step h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .step p  { font-size: 0.82rem; color: var(--ink-light); line-height: 1.5; }
+
+  /* NOTE */
+  .note {
+    max-width: 680px; margin: 0 auto 5rem; padding: 0 2rem;
+    font-size: 0.82rem; color: var(--ink-light); text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <img class="logo-icon" src="image copy.png" alt="Pluxow">
+    pluxow
+  </a>
+  <a class="nav-back" href="/">← Volver al inicio</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.525 5.85L0 24l6.335-1.508A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.65-.498-5.177-1.369l-.371-.22-3.762.895.952-3.672-.242-.381A9.962 9.962 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    WhatsApp Business API
+  </div>
+  <h1>Conectá tu número de WhatsApp Business</h1>
+  <p>Vinculá tu número a la plataforma de Pluxow en menos de 2 minutos. Usamos el proceso oficial de Meta.</p>
+
+  <button class="btn-connect" id="btnConnect" onclick="launchSignup()">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.525 5.85L0 24l6.335-1.508A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.65-.498-5.177-1.369l-.371-.22-3.762.895.952-3.672-.242-.381A9.962 9.962 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+    Conectar con WhatsApp
+  </button>
+
+  <div id="status"></div>
+  <div id="result"></div>
+</div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <h3>Iniciá el proceso</h3>
+    <p>Hacé clic en el botón y completá el formulario de Meta con tu cuenta de Facebook Business.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <h3>Verificá tu número</h3>
+    <p>Seleccioná el número de WhatsApp Business que querés conectar y confirmá el acceso.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <h3>Listo para operar</h3>
+    <p>Te redirigimos al dashboard donde podés gestionar conversaciones en tiempo real.</p>
+  </div>
+</div>
+
+<p class="note">
+  Al conectar tu número aceptás la <a href="https://www.whatsapp.com/legal/business-policy/" target="_blank" style="color:var(--ink-mid)">Política de WhatsApp Business</a>.
+  Tus credenciales se almacenan de forma segura y nunca son compartidas.
+</p>
+
+<script>
+  const FB_APP_ID   = '1226451396155829';
+  const CONFIG_ID   = '1807503080210592';
+  const N8N_WEBHOOK = 'https://leacouretot.app.n8n.cloud/webhook/pluxow-wa-exchange';
+  const DASHBOARD   = 'https://pluxow.com/whatsapp-dashboard.html';
+
+  let signupData = {};   // captura phone_number_id y waba_id del evento WA_EMBEDDED_SIGNUP
+
+  window.fbAsyncInit = function() {
+    FB.init({ appId: FB_APP_ID, autoLogAppEvents: true, xfbml: true, version: 'v25.0' });
+  };
+
+  window.addEventListener('message', (event) => {
+    if (!event.origin.endsWith('facebook.com')) return;
+    try {
+      const data = JSON.parse(event.data);
+      if (data.type === 'WA_EMBEDDED_SIGNUP') {
+        if (data.event === 'FINISH' || data.event === 'FINISH_WHATSAPP_BUSINESS_APP_ONBOARDING') {
+          signupData.phone_number_id = data.data?.phone_number_id || '';
+          signupData.waba_id         = data.data?.waba_id         || '';
+        } else if (data.event === 'CANCEL') {
+          setStatus('');
+          document.getElementById('btnConnect').disabled = false;
+        }
+      }
+    } catch {}
+  });
+
+  function launchSignup() {
+    document.getElementById('btnConnect').disabled = true;
+    setStatus('Abriendo el proceso de Meta...');
+    signupData = {};
+
+    FB.login(function(response) {
+      if (response.authResponse) {
+        const code = response.authResponse.code;
+        setStatus('Verificando credenciales...');
+        showLoading();
+        exchangeToken(code);
+      } else {
+        document.getElementById('btnConnect').disabled = false;
+        setStatus('');
+        showError('Proceso cancelado o sin autorización. Intentá de nuevo.');
+      }
+    }, {
+      config_id: CONFIG_ID,
+      response_type: 'code',
+      override_default_response_type: true,
+      scope: 'whatsapp_business_management,whatsapp_business_messaging',
+      extras: {
+        featureType: 'whatsapp_business_app_onboarding',
+        sessionInfoVersion: '3',
+        version: 'v4',
+        features: [{ name: 'app_only_install' }]
+      }
+    });
+  }
+
+  async function exchangeToken(code) {
+    try {
+      const res = await fetch(N8N_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code,
+          phone_number_id: signupData.phone_number_id || '',
+          waba_id:         signupData.waba_id         || ''
+        })
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (!data.success) throw new Error(data.error || 'Error desconocido');
+
+      showSuccess(data);
+      setStatus('');
+
+      const url = DASHBOARD
+        + '#access_token=' + encodeURIComponent(data.access_token)
+        + '&phone_id='     + encodeURIComponent(data.phone_number_id);
+
+      setTimeout(() => { window.location.href = url; }, 2000);
+
+    } catch (err) {
+      document.getElementById('btnConnect').disabled = false;
+      setStatus('');
+      showError('Error al conectar: ' + err.message);
+    }
+  }
+
+  function setStatus(msg) {
+    document.getElementById('status').textContent = msg;
+  }
+
+  function showLoading() {
+    document.getElementById('result').innerHTML = `
+      <div class="result-card">
+        <div class="result-redirect">
+          <div class="spinner"></div>
+          Conectando tu número de WhatsApp...
+        </div>
+      </div>`;
+  }
+
+  function showSuccess(data) {
+    document.getElementById('result').innerHTML = `
+      <div class="result-card success">
+        <div class="result-icon">✅</div>
+        <div class="result-title">WhatsApp Business conectado</div>
+        <div class="result-row">Número: <strong>${data.phone_number || data.phone_number_id}</strong></div>
+        ${data.verified_name ? `<div class="result-row">Nombre verificado: <strong>${data.verified_name}</strong></div>` : ''}
+        <div class="result-redirect">
+          <div class="spinner"></div>
+          Redirigiendo al dashboard...
+        </div>
+      </div>`;
+  }
+
+  function showError(msg) {
+    document.getElementById('result').innerHTML = `
+      <div class="result-card error">
+        <div class="result-icon">❌</div>
+        <div class="result-title">${msg}</div>
+      </div>`;
+  }
+</script>
+
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+</body>
+</html>
