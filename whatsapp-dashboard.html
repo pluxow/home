@@ -483,13 +483,17 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // ── STATE ──────────────────────────────────────────────────────────────────
-  const WEBHOOK_URL = 'https://leacouretot.app.n8n.cloud/webhook/app-review-messages';
-  let cfg = { token: '', phoneId: '', webhook: WEBHOOK_URL };
-  let conversations = {};   // { phone: { name, messages: [], unread } }
+  const SUPABASE_URL  = 'https://hcngtbbjvqvfpagiieqp.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhjbmd0YmJqdnF2ZnBhZ2lpZXFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4Mzk0NDMsImV4cCI6MjA5MzQxNTQ0M30.a7zAqfvvYmb25L9zd8hsd_qqzra57RoVYICbHBTGE6g';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  let cfg = { token: '', phoneId: '' };
+  let conversations = {};
   let activePhone = null;
-  let pollInterval = null;
+  let realtimeChannel = null;
   let lastMessageIds = new Set();
 
   // ── DOM ────────────────────────────────────────────────────────────────────
@@ -523,34 +527,33 @@
   btnSave.addEventListener('click', () => {
     cfg.token   = document.getElementById('cfgToken').value.trim();
     cfg.phoneId = document.getElementById('cfgPhoneId').value.trim();
-    cfg.webhook = WEBHOOK_URL;
 
     if (!cfg.token || !cfg.phoneId) {
       toast('Completá todos los campos', true); return;
     }
 
     document.getElementById('configBar').style.display = 'none';
-    startPolling();
+    startRealtime();
   });
 
-  // ── POLLING ────────────────────────────────────────────────────────────────
-  function startPolling() {
-    if (pollInterval) clearInterval(pollInterval);
+  // ── SUPABASE REALTIME ──────────────────────────────────────────────────────
+  async function startRealtime() {
+    // Cargar mensajes existentes
+    const { data, error } = await sb.from('messages').select('*').order('timestamp', { ascending: true });
+    if (error) { setStatus(false); toast('Error al conectar con Supabase', true); return; }
+    processMessages(data || []);
     setStatus(true);
-    poll();
-    pollInterval = setInterval(poll, 15000);
-  }
 
-  async function poll() {
-    try {
-      const res = await fetch(WEBHOOK_URL, { method: 'GET' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      processMessages(Array.isArray(data) ? data : (data.messages || []));
-      setStatus(true);
-    } catch (e) {
-      setStatus(false);
-    }
+    // Suscribirse a nuevos mensajes en tiempo real
+    if (realtimeChannel) realtimeChannel.unsubscribe();
+    realtimeChannel = sb
+      .channel('messages')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+        processMessages([payload.new]);
+      })
+      .subscribe(status => {
+        setStatus(status === 'SUBSCRIBED');
+      });
   }
 
   function processMessages(msgs) {
