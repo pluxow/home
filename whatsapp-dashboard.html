@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V4 API EPM – Dashboard</title>
+<title>Pluxow – WhatsApp Dashboard</title>
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -428,7 +428,7 @@
   <span class="nav-title">WhatsApp Business Dashboard</span>
   <div class="nav-right">
     <div class="status-dot" id="statusDot"></div>
-    <span class="status-label" id="statusLabel">Desconectado</span>
+    <span class="status-label" id="statusLabel">Disconnected</span>
   </div>
 </nav>
 
@@ -438,7 +438,7 @@
   <input class="config-token" type="password" id="cfgToken" placeholder="EAAxxxxxxx..." autocomplete="off">
 
   <label>Phone Number ID</label>
-  <input class="config-phone" type="text" id="cfgPhoneId" placeholder="Número de teléfono ID">
+  <input class="config-phone" type="text" id="cfgPhoneId" placeholder="Phone Number ID">
 
   <button class="config-save" id="btnSave">Conectar</button>
 </div>
@@ -449,12 +449,12 @@
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      Conversaciones
+      Conversations
       <span class="conv-count" id="convCount">0</span>
     </div>
     <div class="conv-list" id="convList">
       <div class="sidebar-empty" id="sidebarEmpty">
-        Conectá tu cuenta de WhatsApp<br>para ver las conversaciones
+        Connect your WhatsApp account<br>to view conversations
       </div>
     </div>
   </div>
@@ -463,14 +463,14 @@
   <div class="chat-area" id="chatArea">
     <div class="chat-empty" id="chatEmpty">
       <div class="chat-empty-icon">💬</div>
-      <div class="chat-empty-text">Seleccioná una conversación</div>
+      <div class="chat-empty-text">Select a conversation</div>
     </div>
 
     <div id="chatView" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
       <div class="chat-header" id="chatHeader"></div>
       <div class="messages" id="messages"></div>
       <div class="chat-input-area">
-        <textarea class="chat-input" id="chatInput" placeholder="Escribí un mensaje..." rows="1"></textarea>
+        <textarea class="chat-input" id="chatInput" placeholder="Type a message..." rows="1"></textarea>
         <button class="send-btn" id="sendBtn" disabled>
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
@@ -529,7 +529,7 @@
     cfg.phoneId = document.getElementById('cfgPhoneId').value.trim();
 
     if (!cfg.token || !cfg.phoneId) {
-      toast('Completá todos los campos', true); return;
+      toast('Please fill in all fields', true); return;
     }
 
     document.getElementById('configBar').style.display = 'none';
@@ -540,7 +540,7 @@
   async function startRealtime() {
     // Cargar mensajes existentes
     const { data, error } = await sb.from('messages').select('*').order('timestamp', { ascending: true });
-    if (error) { setStatus(false); toast('Error al conectar con Supabase', true); return; }
+    if (error) { setStatus(false); toast('Error connecting to database', true); return; }
     processMessages(data || []);
     setStatus(true);
 
@@ -589,7 +589,7 @@
     convCount.textContent = phones.length;
 
     if (phones.length === 0) {
-      convList.innerHTML = '<div class="sidebar-empty">Sin mensajes aún.<br>Esperando actividad...</div>';
+      convList.innerHTML = '<div class="sidebar-empty">No messages yet.<br>Waiting for activity...</div>';
       return;
     }
 
@@ -699,7 +699,7 @@
         throw new Error(err.error?.message || `HTTP ${res.status}`);
       }
     } catch (e) {
-      toast(`Error al enviar: ${e.message}`, true);
+      toast(`Failed to send: ${e.message}`, true);
       conversations[activePhone].messages = conversations[activePhone].messages.filter(m => m.id !== msgId);
       renderChat();
     } finally {
@@ -711,7 +711,7 @@
   // ── HELPERS ────────────────────────────────────────────────────────────────
   function setStatus(online) {
     statusDot.classList.toggle('active', online);
-    statusLabel.textContent = online ? 'En línea' : 'Sin conexión';
+    statusLabel.textContent = online ? 'Online' : 'Disconnected';
   }
 
   function formatPhone(p) { return `+${p}`; }
