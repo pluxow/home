@@ -538,7 +538,7 @@
     if (pollInterval) clearInterval(pollInterval);
     setStatus(true);
     poll();
-    pollInterval = setInterval(poll, 3000);
+    pollInterval = setInterval(poll, 15000);
   }
 
   async function poll() {
