@@ -433,15 +433,12 @@
 </nav>
 
 <!-- CONFIG BAR -->
-<div class="config-bar">
+<div class="config-bar" id="configBar">
   <label>Access Token</label>
   <input class="config-token" type="password" id="cfgToken" placeholder="EAAxxxxxxx..." autocomplete="off">
 
   <label>Phone Number ID</label>
-  <input class="config-phone" type="text" id="cfgPhoneId" value="531092246761321">
-
-  <label>Webhook (n8n)</label>
-  <input class="config-webhook" type="text" id="cfgWebhook" value="https://leacouretot.app.n8n.cloud/webhook/app-review-messages">
+  <input class="config-phone" type="text" id="cfgPhoneId" placeholder="Número de teléfono ID">
 
   <button class="config-save" id="btnSave">Conectar</button>
 </div>
@@ -456,8 +453,8 @@
       <span class="conv-count" id="convCount">0</span>
     </div>
     <div class="conv-list" id="convList">
-      <div class="sidebar-empty">
-        Configurá el webhook de n8n<br>y presioná <strong>Conectar</strong>
+      <div class="sidebar-empty" id="sidebarEmpty">
+        Conectá tu cuenta de WhatsApp<br>para ver las conversaciones
       </div>
     </div>
   </div>
@@ -488,7 +485,8 @@
 
 <script>
   // ── STATE ──────────────────────────────────────────────────────────────────
-  let cfg = { token: '', phoneId: '', webhook: '' };
+  const WEBHOOK_URL = 'https://leacouretot.app.n8n.cloud/webhook/app-review-messages';
+  let cfg = { token: '', phoneId: '', webhook: WEBHOOK_URL };
   let conversations = {};   // { phone: { name, messages: [], unread } }
   let activePhone = null;
   let pollInterval = null;
@@ -516,6 +514,7 @@
     if (params.phone_id)     document.getElementById('cfgPhoneId').value = params.phone_id;
     if (params.access_token && params.phone_id) {
       window.history.replaceState(null, '', window.location.pathname);
+      document.getElementById('configBar').style.display = 'none';
       setTimeout(() => document.getElementById('btnSave').click(), 300);
     }
   })();
@@ -524,14 +523,14 @@
   btnSave.addEventListener('click', () => {
     cfg.token   = document.getElementById('cfgToken').value.trim();
     cfg.phoneId = document.getElementById('cfgPhoneId').value.trim();
-    cfg.webhook = document.getElementById('cfgWebhook').value.trim();
+    cfg.webhook = WEBHOOK_URL;
 
-    if (!cfg.token || !cfg.phoneId || !cfg.webhook) {
+    if (!cfg.token || !cfg.phoneId) {
       toast('Completá todos los campos', true); return;
     }
 
+    document.getElementById('configBar').style.display = 'none';
     startPolling();
-    toast('Conectado — polling activo');
   });
 
   // ── POLLING ────────────────────────────────────────────────────────────────
@@ -544,7 +543,7 @@
 
   async function poll() {
     try {
-      const res = await fetch(cfg.webhook, { method: 'GET' });
+      const res = await fetch(WEBHOOK_URL, { method: 'GET' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       processMessages(Array.isArray(data) ? data : (data.messages || []));
