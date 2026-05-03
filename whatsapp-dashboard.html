@@ -678,22 +678,19 @@
     renderChat();
 
     try {
-      const res = await fetch(`https://graph.facebook.com/v25.0/${cfg.phoneId}/messages`, {
+      const res = await fetch('https://leacouretot.app.n8n.cloud/webhook/pluxow-wa-send', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${cfg.token}`,
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messaging_product: 'whatsapp',
-          to: activePhone,
-          type: 'text',
-          text: { body: text }
+          access_token:    cfg.token,
+          phone_number_id: cfg.phoneId,
+          to:              activePhone,
+          text
         })
       });
 
       if (!res.ok) {
-        const err = await res.json();
+        const err = await res.json().catch(() => ({}));
         throw new Error(err.error?.message || `HTTP ${res.status}`);
       }
     } catch (e) {
