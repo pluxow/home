@@ -679,6 +679,9 @@
     });
     renderChat();
 
+    // Argentina: Meta envía 549XXXXXXXXX en webhooks pero espera 54XXXXXXXXX al enviar
+    const toNumber = activePhone.startsWith('549') ? '54' + activePhone.slice(3) : activePhone;
+
     try {
       const res = await fetch('https://leacouretot.app.n8n.cloud/webhook/pluxow-wa-send', {
         method: 'POST',
@@ -686,7 +689,7 @@
         body: JSON.stringify({
           access_token:    cfg.token,
           phone_number_id: cfg.phoneId,
-          to:              activePhone,
+          to:              toNumber,
           text
         })
       });
