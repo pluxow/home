@@ -176,10 +176,16 @@
   <h1>Connect your WhatsApp Business number</h1>
   <p>Link your number to the Pluxow platform in under 2 minutes. We use Meta's official process.</p>
 
-  <button class="btn-connect" id="btnConnect" onclick="launchSignup()">
+  <button class="btn-connect" id="btnConnect" onclick="launchSignup()" style="margin-bottom:0.75rem;">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.525 5.85L0 24l6.335-1.508A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.65-.498-5.177-1.369l-.371-.22-3.762.895.952-3.672-.242-.381A9.962 9.962 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
     Connect with WhatsApp
   </button>
+
+  <p style="font-size:0.78rem;color:var(--ink-light);margin-bottom:1.5rem;">
+    By clicking "Connect with WhatsApp", you agree to our
+    <a href="/terms.html" style="color:var(--ink-mid);">Terms of Service</a> and
+    <a href="/privacy-policy.html" style="color:var(--ink-mid);">Privacy Policy</a>.
+  </p>
 
   <div id="status"></div>
   <div id="result"></div>
@@ -337,6 +343,14 @@
 </script>
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+<footer style="background:var(--ink);color:rgba(244,240,232,0.5);padding:2rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:0.82rem;font-family:var(--sans);">
+  <span style="font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--cream);">pluxow</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="/privacy-policy.html" style="color:rgba(244,240,232,0.5);text-decoration:none;">Privacy Policy</a>
+    <a href="/terms.html" style="color:rgba(244,240,232,0.5);text-decoration:none;">Terms of Service</a>
+  </div>
+</footer>
 
 </body>
 </html>

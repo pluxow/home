@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — Pluxow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #F4F0E8; --cream-dark: #E8E3D8;
+    --ink: #111111; --ink-mid: #3a3a3a; --ink-light: #6b6b6b;
+    --border: rgba(0,0,0,0.1); --white: #ffffff;
+    --sans: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.7; font-size: 16px; }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.5rem; letter-spacing: -0.02em;
+    color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .logo-icon { height: 40px; width: auto; border-radius: 8px; }
+  .nav-back { font-size: 0.85rem; color: var(--ink-light); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--ink); }
+  .page-wrap { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+  .page-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1.25rem; }
+  h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .last-updated { font-size: 0.85rem; color: var(--ink-light); margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+  .content h2 { font-family: var(--serif); font-size: 1.4rem; letter-spacing: -0.01em; margin-top: 2.75rem; margin-bottom: 0.85rem; color: var(--ink); }
+  .content h2:first-child { margin-top: 0; }
+  .content p { font-size: 1rem; color: var(--ink-mid); font-weight: 300; margin-bottom: 1rem; }
+  .content ul { list-style: none; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .content ul li { font-size: 1rem; color: var(--ink-mid); font-weight: 300; padding-left: 1.25rem; position: relative; }
+  .content ul li::before { content: '—'; position: absolute; left: 0; color: var(--ink-light); font-size: 0.85rem; }
+  .content ul li strong { font-weight: 500; color: var(--ink); }
+  .content a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; transition: opacity 0.2s; }
+  .content a:hover { opacity: 0.65; }
+  .highlight-box { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem 1.75rem; margin: 1.25rem 0 1.75rem; }
+  .highlight-box p { margin-bottom: 0; }
+  footer { background: var(--ink); color: rgba(244,240,232,0.5); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; }
+  .footer-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--cream); }
+  footer a { color: rgba(244,240,232,0.5); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--cream); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/"><img class="logo-icon" src="image copy.png" alt="Pluxow icon">pluxow</a>
+  <a class="nav-back" href="/">← Back to home</a>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-label">Legal</div>
+  <h1>Terms of Service</h1>
+  <p class="last-updated">Last updated: May 2026</p>
+
+  <div class="content">
+
+    <p>By accessing or using Pluxow ("Service"), you agree to be bound by these Terms. If you do not agree, do not use the Service.</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By accessing or using Pluxow, you agree to be bound by these Terms. If you do not agree, do not use the Service.</p>
+
+    <h2>2. Description of Service</h2>
+    <p>Pluxow provides a CRM platform that connects to Meta's WhatsApp Business API via Embedded Signup. The Service allows businesses to send and receive WhatsApp messages, manage conversations, and automate responses.</p>
+
+    <h2>3. User Responsibilities</h2>
+    <p>You agree to:</p>
+    <ul>
+      <li>Only connect WhatsApp Business numbers you own or have authorization to manage.</li>
+      <li>Comply with <a href="https://www.whatsapp.com/legal/business-policy/" target="_blank">WhatsApp Business Messaging Policy</a> and <a href="https://developers.facebook.com/terms/" target="_blank">Meta Platform Terms</a>.</li>
+      <li>Obtain opt-in consent before sending messages to end users.</li>
+      <li>Not use the Service for spam, illegal content, or unsolicited marketing.</li>
+      <li>Not send messages outside the 24-hour customer service window unless using pre-approved templates.</li>
+    </ul>
+
+    <h2>4. WhatsApp Business API Usage</h2>
+    <p>You acknowledge that:</p>
+    <ul>
+      <li><strong>Message delivery</strong> and rates are controlled by Meta, not Pluxow.</li>
+      <li>Pluxow uses Meta's official Embedded Signup flow. We do not store your Facebook password.</li>
+      <li>You are responsible for all message content sent through your connected number.</li>
+      <li>Meta may suspend your number if you violate WhatsApp policies. Pluxow is not liable for Meta enforcement actions.</li>
+    </ul>
+
+    <div class="highlight-box">
+      <p>By connecting your WhatsApp Business Account, you agree to <a href="https://developers.facebook.com/terms/" target="_blank">Meta's Platform Terms</a> and <a href="https://www.whatsapp.com/legal/business-policy/" target="_blank">WhatsApp Business Terms of Service</a>.</p>
+    </div>
+
+    <h2>5. Fees and Payments</h2>
+    <p>Meta charges per conversation as per WhatsApp Business API pricing. Pluxow may charge a separate subscription fee for access to the platform. All fees are non-refundable.</p>
+
+    <h2>6. Data and Privacy</h2>
+    <p>Your use of the Service is also governed by our <a href="/privacy-policy.html">Privacy Policy</a>. By connecting WhatsApp, you authorize Pluxow to access your WABA ID, phone_number_id, and message data as described in our Privacy Policy.</p>
+
+    <h2>7. Service Availability</h2>
+    <p>We strive for 99% uptime but do not guarantee uninterrupted access. The Service depends on Meta's WhatsApp Business API availability. We are not liable for Meta outages.</p>
+
+    <h2>8. Termination</h2>
+    <p>You may disconnect your WhatsApp number at any time from your Pluxow dashboard. We may suspend accounts that violate these Terms or Meta's policies.</p>
+
+    <h2>9. Limitation of Liability</h2>
+    <p>Pluxow is provided "as is". We are not liable for indirect damages, loss of profits, or data loss resulting from use of the Service or Meta API changes.</p>
+
+    <h2>10. Changes to Terms</h2>
+    <p>We may update these Terms. Continued use after changes constitutes acceptance.</p>
+
+    <h2>11. Contact</h2>
+    <p>For questions: <a href="mailto:leandro.couretot@pluxow.com">leandro.couretot@pluxow.com</a></p>
+
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">pluxow</span>
+  <span>Business Strategy & Technology</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="/privacy-policy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Service</a>
+  </div>
+</footer>
+
+</body>
+</html>
