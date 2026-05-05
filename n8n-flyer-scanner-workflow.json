@@ -20,7 +20,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.item.json;\nconst body_data = item.body || item;\n\nconst promptText = 'Analizá este flyer publicitario y extraé la siguiente información en formato JSON (solo el JSON, sin texto adicional ni bloques markdown):\\n\\n{\\n  \"empresa\": \"nombre del negocio o persona\",\\n  \"sector\": \"rubro en 2-3 palabras\",\\n  \"email\": \"email si aparece, sino null\",\\n  \"telefono\": \"número sin espacios ni caracteres especiales. Si es argentino y empieza con 11 o 15 agregá 54 al inicio. Solo dígitos. Sino null\",\\n  \"instagram\": \"handle sin @, sino null\",\\n  \"website\": \"URL completa con https://, sino null\",\\n  \"descripcion\": \"qué hace el negocio en 1-2 oraciones cortas\"\\n}';\n\nconst body = {\n  model: 'claude-haiku-4-5-20251001',\n  max_tokens: 1024,\n  messages: [{\n    role: 'user',\n    content: [\n      {\n        type: 'image',\n        source: {\n          type: 'base64',\n          media_type: body_data.mimeType || 'image/jpeg',\n          data: body_data.image\n        }\n      },\n      {\n        type: 'text',\n        text: promptText\n      }\n    ]\n  }]\n};\n\nreturn { json: { claudeBody: JSON.stringify(body) } };"
+        "jsCode": "const item = $input.item.json;\nconst body_data = item.body || item;\n\nconst promptText = 'Analizá este flyer publicitario y extraé la siguiente información en formato JSON (solo el JSON, sin texto adicional ni bloques markdown):\\n\\n{\\n  \"empresa\": \"nombre del negocio o persona\",\\n  \"sector\": \"rubro en 2-3 palabras\",\\n  \"email\": \"email si aparece, sino null\",\\n  \"telefono\": \"número sin espacios ni caracteres especiales. Si es argentino y empieza con 11 o 15 agregá 54 al inicio. Solo dígitos. Sino null\",\\n  \"instagram\": \"handle sin @, sino null\",\\n  \"website\": \"URL completa con https://, sino null\",\\n  \"descripcion\": \"qué hace el negocio en 1-2 oraciones cortas\"\\n}';\n\nconst body = {\n  contents: [{\n    parts: [\n      {\n        inline_data: {\n          mime_type: body_data.mimeType || 'image/jpeg',\n          data: body_data.image\n        }\n      },\n      {\n        text: promptText\n      }\n    ]\n  }]\n};\n\nreturn { json: { geminiBody: JSON.stringify(body) } };"
       },
       "id": "node-build-vision",
       "name": "Build Vision Request",
@@ -34,30 +34,26 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://api.anthropic.com/v1/messages",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=TU_GEMINI_API_KEY_AQUI",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
-              "name": "x-api-key",
-              "value": "TU_ANTHROPIC_API_KEY_AQUI"
-            },
-            {
-              "name": "anthropic-version",
-              "value": "2023-06-01"
+              "name": "Content-Type",
+              "value": "application/json"
             }
           ]
         },
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
-        "body": "={{ $json.claudeBody }}",
+        "body": "={{ $json.geminiBody }}",
         "options": {
           "timeout": 30000
         }
       },
-      "id": "node-claude-vision",
-      "name": "Claude — Leer Flyer",
+      "id": "node-gemini-vision",
+      "name": "Gemini — Leer Flyer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
@@ -67,7 +63,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const response = $input.item.json;\nconst text = response.content[0].text;\nconst clean = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n\nlet data;\ntry {\n  data = JSON.parse(clean);\n} catch(e) {\n  throw new Error('No se pudo parsear la respuesta de visión: ' + text);\n}\n\nreturn { json: data };"
+        "jsCode": "const response = $input.item.json;\nconst text = response.candidates[0].content.parts[0].text;\nconst clean = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n\nlet data;\ntry {\n  data = JSON.parse(clean);\n} catch(e) {\n  throw new Error('No se pudo parsear la respuesta de visión: ' + text);\n}\n\nreturn { json: data };"
       },
       "id": "node-parse-flyer",
       "name": "Parse Flyer Data",
@@ -187,18 +183,7 @@
       "main": [
         [
           {
-            "node": "Claude — Leer Flyer",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Claude — Leer Flyer": {
-      "main": [
-        [
-          {
-            "node": "Parse Flyer Data",
+            "node": "Gemini — Leer Flyer",
             "type": "main",
             "index": 0
           }
@@ -254,6 +239,17 @@
         [
           {
             "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini — Leer Flyer": {
+      "main": [
+        [
+          {
+            "node": "Parse Flyer Data",
             "type": "main",
             "index": 0
           }
