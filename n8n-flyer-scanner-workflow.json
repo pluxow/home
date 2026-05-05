@@ -12,7 +12,10 @@
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [200, 300],
+      "position": [
+        200,
+        300
+      ],
       "webhookId": "flyer-scan"
     },
     {
@@ -23,7 +26,10 @@
       "name": "Build Vision Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [420, 300]
+      "position": [
+        420,
+        300
+      ]
     },
     {
       "parameters": {
@@ -32,21 +38,32 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "x-api-key", "value": "TU_ANTHROPIC_API_KEY_AQUI" },
-            { "name": "anthropic-version", "value": "2023-06-01" }
+            {
+              "name": "x-api-key",
+              "value": "TU_ANTHROPIC_API_KEY_AQUI"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
           ]
         },
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
         "body": "={{ $json.claudeBody }}",
-        "options": { "timeout": 30000 }
+        "options": {
+          "timeout": 30000
+        }
       },
       "id": "node-claude-vision",
       "name": "Claude — Leer Flyer",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [640, 300]
+      "position": [
+        640,
+        300
+      ]
     },
     {
       "parameters": {
@@ -56,29 +73,40 @@
       "name": "Parse Flyer Data",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [860, 300]
+      "position": [
+        860,
+        300
+      ]
     },
     {
       "parameters": {
         "url": "={{ $json.website }}",
-        "options": { "timeout": 15000 }
+        "options": {
+          "timeout": 15000
+        }
       },
       "id": "node-fetch-website",
       "name": "Fetch Website",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1080, 300],
+      "position": [
+        1080,
+        300
+      ],
       "continueOnFail": true
     },
     {
       "parameters": {
-        "jsCode": "const flyerData = $('Parse Flyer Data').item.json;\nconst websiteInput = $input.item.json;\n\n// Extract website text if the HTTP request succeeded\nlet websiteContext = '';\nif (typeof websiteInput.data === 'string' && websiteInput.data.length > 0) {\n  websiteContext = websiteInput.data\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, '')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, '')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n    .substring(0, 3000);\n}\n\n// Detect contact channel: email > whatsapp > instagram\nlet canal = 'instagram';\nif (flyerData.email) canal = 'email';\nelse if (flyerData.telefono) canal = 'whatsapp';\n\nconst canalLabel = canal === 'email' ? 'email' : canal === 'whatsapp' ? 'WhatsApp' : 'Instagram DM';\nconst maxLength = canal === 'email' ? '8-10 oraciones' : '3-4 oraciones cortas';\nconst subjectInstruction = canal === 'email' ? '\\n3. Un asunto de email atractivo (máx 60 caracteres)' : '';\nconst subjectJson = canal === 'email' ? '\"asunto aquí\"' : 'null';\nconst webSection = websiteContext ? '\\n\\nSU SITIO WEB (extracto):\\n' + websiteContext : '';\n\nconst prompt = 'Sos un experto en ventas consultivas para Pluxow, agencia de marketing digital en Argentina.\\n\\n'\n  + 'SERVICIOS DE PLUXOW:\\n'\n  + '- Gestión de redes sociales (Instagram, Facebook, TikTok)\\n'\n  + '- Producción de contenido (fotos, videos, reels)\\n'\n  + '- Publicidad digital (Meta Ads, Google Ads)\\n'\n  + '- Diseño de identidad visual y branding\\n'\n  + '- Desarrollo web y landing pages\\n'\n  + '- Email marketing y automatizaciones\\n'\n  + '- Gestión de reputación online y reseñas\\n\\n'\n  + 'DATOS DEL PROSPECTO:\\n'\n  + '- Empresa/Persona: ' + flyerData.empresa + '\\n'\n  + '- Rubro: ' + flyerData.sector + '\\n'\n  + '- Descripción: ' + flyerData.descripcion + '\\n'\n  + '- Canal de contacto elegido: ' + canalLabel\n  + webSection + '\\n\\n'\n  + 'Tu tarea:\\n'\n  + '1. Identificá 3 pain points específicos de este negocio que Pluxow puede resolver (concretos, no genéricos)\\n'\n  + '2. Escribí un mensaje de primer contacto para ' + canalLabel + ':\\n'\n  + '   - Tono cercano, amigable, no invasivo\\n'\n  + '   - Mencioná algo específico de su negocio que muestre que lo conocés\\n'\n  + '   - Proponé una llamada o videollamada gratuita de 20 minutos\\n'\n  + '   - Largo: ' + maxLength\n  + subjectInstruction + '\\n\\n'\n  + 'Respondé SOLO con este JSON sin markdown:\\n'\n  + '{\\n'\n  + '  \"pain_points\": [\"punto 1\", \"punto 2\", \"punto 3\"],\\n'\n  + '  \"draft\": \"el mensaje completo\",\\n'\n  + '  \"subject\": ' + subjectJson + '\\n'\n  + '}';\n\nconst body = {\n  model: 'claude-sonnet-4-6',\n  max_tokens: 1024,\n  messages: [{ role: 'user', content: prompt }]\n};\n\nreturn {\n  json: {\n    claudeBody: JSON.stringify(body),\n    flyerData,\n    canal\n  }\n};"
+        "jsCode": "const flyerData = $('Parse Flyer Data').item.json;\nconst websiteInput = $input.item.json;\n\nlet websiteContext = '';\nif (typeof websiteInput.data === 'string' && websiteInput.data.length > 0) {\n  websiteContext = websiteInput.data\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, '')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, '')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n    .substring(0, 3000);\n}\n\nlet canal = 'instagram';\nif (flyerData.email) canal = 'email';\nelse if (flyerData.telefono) canal = 'whatsapp';\n\nconst canalLabel = canal === 'email' ? 'email' : canal === 'whatsapp' ? 'WhatsApp' : 'Instagram DM';\nconst maxLength = canal === 'email' ? '4-5 párrafos cortos' : '3-4 oraciones cortas';\nconst subjectInstruction = canal === 'email' ? '\\n3. Un asunto de email atractivo (máx 60 caracteres)' : '';\nconst subjectJson = canal === 'email' ? '\"asunto aquí\"' : 'null';\nconst webSection = websiteContext ? '\\n\\nSU SITIO WEB (extracto):\\n' + websiteContext : '';\n\nconst prompt = 'Sos un experto en ventas consultivas para Pluxow, empresa de automatización y estrategia digital en Argentina.\\n\\n'\n  + 'IDENTIDAD DE PLUXOW:\\n'\n  + 'Combinamos visión de negocio con ejecución tecnológica. No llegamos, implementamos y desaparecemos — nos integramos a la operación del cliente y acompañamos hasta que los resultados sean concretos y sostenibles.\\n\\n'\n  + 'SERVICIOS DE PLUXOW:\\n'\n  + '- Dashboards y reportes automáticos: métricas clave en tiempo real, sin exportar planillas manualmente\\n'\n  + '- Chatbots con IA: atención automática de consultas, calificación de leads y soporte 24/7\\n'\n  + '- Automatización financiera y administrativa: facturación y gestión sin errores manuales\\n'\n  + '- Automatización de flujos de trabajo: conectamos herramientas existentes para eliminar pasos repetitivos entre sistemas\\n'\n  + '- Agentes de lectura de documentos: IA que lee, clasifica y extrae datos de contratos, facturas o formularios\\n'\n  + '- Consultoría en estrategia digital: diagnóstico de procesos, identificación de oportunidades y hoja de ruta tecnológica\\n\\n'\n  + 'DATOS DEL PROSPECTO:\\n'\n  + '- Empresa/Persona: ' + flyerData.empresa + '\\n'\n  + '- Rubro: ' + flyerData.sector + '\\n'\n  + '- Descripción: ' + flyerData.descripcion + '\\n'\n  + '- Canal de contacto elegido: ' + canalLabel\n  + webSection + '\\n\\n'\n  + 'Tu tarea:\\n'\n  + '1. Identificá 3 pain points específicos de este negocio que Pluxow puede resolver (concretos, no genéricos)\\n'\n  + '2. Escribí un mensaje de primer contacto para ' + canalLabel + ':\\n'\n  + '   - Empezá mencionando que viste su flyer en el barrio (ej: \"vi que dejaste tu flyer por acá en mi barrio\")\\n'\n  + '   - Tono cercano, amigable, no invasivo, como si fuera de vecino a vecino\\n'\n  + '   - Mencioná algo específico de su negocio que muestre que lo conocés\\n'\n  + '   - Conectá con al menos uno de los servicios de Pluxow que le puede servir (sin ser agresivo en la venta)\\n'\n  + '   - Proponé una llamada o videollamada gratuita de 20 minutos\\n'\n  + '   - IMPORTANTE: separar los párrafos con \\\\n\\\\n (línea en blanco entre párrafo y párrafo)\\n'\n  + '   - Largo: ' + maxLength\n  + subjectInstruction + '\\n\\n'\n  + 'Respondé SOLO con este JSON sin markdown:\\n'\n  + '{\\n'\n  + '  \"pain_points\": [\"punto 1\", \"punto 2\", \"punto 3\"],\\n'\n  + '  \"draft\": \"el mensaje con \\\\\\\\n\\\\\\\\n entre párrafos\",\\n'\n  + '  \"subject\": ' + subjectJson + '\\n'\n  + '}';\n\nconst body = {\n  model: 'claude-sonnet-4-6',\n  max_tokens: 1024,\n  messages: [{ role: 'user', content: prompt }]\n};\n\nreturn {\n  json: {\n    claudeBody: JSON.stringify(body),\n    flyerData,\n    canal\n  }\n};"
       },
       "id": "node-build-draft",
       "name": "Build Draft Request",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1300, 300]
+      "position": [
+        1300,
+        300
+      ]
     },
     {
       "parameters": {
@@ -87,21 +115,32 @@
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
-            { "name": "x-api-key", "value": "TU_ANTHROPIC_API_KEY_AQUI" },
-            { "name": "anthropic-version", "value": "2023-06-01" }
+            {
+              "name": "x-api-key",
+              "value": "TU_ANTHROPIC_API_KEY_AQUI"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            }
           ]
         },
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
         "body": "={{ $json.claudeBody }}",
-        "options": { "timeout": 30000 }
+        "options": {
+          "timeout": 30000
+        }
       },
       "id": "node-claude-draft",
       "name": "Claude — Generar Draft",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1520, 300]
+      "position": [
+        1520,
+        300
+      ]
     },
     {
       "parameters": {
@@ -111,7 +150,10 @@
       "name": "Parse & Build Links",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1740, 300]
+      "position": [
+        1740,
+        300
+      ]
     },
     {
       "parameters": {
@@ -123,33 +165,100 @@
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1960, 300]
+      "position": [
+        1960,
+        300
+      ]
     }
   ],
   "connections": {
     "Webhook": {
-      "main": [[{ "node": "Build Vision Request", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Build Vision Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Build Vision Request": {
-      "main": [[{ "node": "Claude — Leer Flyer", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Claude — Leer Flyer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Claude — Leer Flyer": {
-      "main": [[{ "node": "Parse Flyer Data", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Parse Flyer Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Parse Flyer Data": {
-      "main": [[{ "node": "Fetch Website", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Fetch Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Fetch Website": {
-      "main": [[{ "node": "Build Draft Request", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Build Draft Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Build Draft Request": {
-      "main": [[{ "node": "Claude — Generar Draft", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Claude — Generar Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Claude — Generar Draft": {
-      "main": [[{ "node": "Parse & Build Links", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Parse & Build Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "Parse & Build Links": {
-      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
