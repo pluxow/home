@@ -55,3 +55,12 @@ Se agregó una nueva sección "Casos de Éxito" en la página de inicio, entre l
 - **Media & Entertainment** — Ecosistema de marketing inteligente con agente de IA generativa que aprende el estilo del artista y automatiza publicaciones en redes sociales.
 
 **Archivos involucrados:** `index.html`
+
+---
+
+## 10 de Mayo 2026 — Traducción de Casos de Éxito al inglés y portugués
+
+### Descripción
+Se agregaron traducciones completas de la sección "Casos de Éxito" para los idiomas inglés (EN) y portugués (PT), integrándolas al sistema i18n existente. Se crearon 35 claves de traducción por idioma cubriendo el label de sección, título, intro, y para cada uno de los 6 casos: badge de sector, título, descripción y tags. Las claves se actualizaron tanto en `content.json` (fuente primaria) como en el fallback JS del propio `index.html`. Los tags puramente técnicos (CRM, BI, Web Scraping, Analytics, Google Sheets) se mantuvieron como texto estático para no inflar innecesariamente el sistema de traducciones.
+
+**Archivos involucrados:** `index.html`, `content.json`
