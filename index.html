@@ -548,6 +548,67 @@
     color: var(--ink-light);
   }
 
+  /* CASES */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .case-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .case-sector {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    background: var(--cream-dark);
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    display: inline-block;
+    align-self: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .case-card h3 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .case-card p {
+    font-size: 0.88rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .case-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+  }
+
+  .case-tag {
+    font-size: 0.7rem;
+    color: var(--ink-light);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.2rem 0.65rem;
+  }
+
   /* CONTACT */
   .contact-section {
     background: var(--cream-dark);
@@ -856,6 +917,88 @@
       <span class="result-num" data-i18n="result.4.num">&lt;4 sem</span>
       <span class="result-label" data-i18n="result.4.label">de implementación en proyectos MVP</span>
     </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="section" id="casos">
+  <div class="section-label">Casos de Éxito</div>
+  <h2>Soluciones que ya transforman negocios reales</h2>
+  <p class="section-intro">Cada implementación es distinta. Lo que no cambia es el resultado: procesos más eficientes, equipos más libres y negocios que escalan.</p>
+  <div class="cases-grid">
+
+    <div class="case-card">
+      <span class="case-sector">Salud · Kinesiología</span>
+      <h3>Ecosistema de Atención Autónoma</h3>
+      <p>Chatbot conversacional con IA operativo 24/7 integrado con agenda digital y pasarela de pagos. Gestiona el proceso end-to-end: desde la consulta inicial y cotización de tratamientos hasta la reserva de turno, con cobranza automática y notificaciones instantáneas al profesional.</p>
+      <div class="case-tags">
+        <span class="case-tag">Chatbot IA</span>
+        <span class="case-tag">Agenda Digital</span>
+        <span class="case-tag">Pagos Automáticos</span>
+        <span class="case-tag">Notificaciones</span>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-sector">Salud · Policonsultorio</span>
+      <h3>CRM de Pacientes y Flujo Digital en Sitio</h3>
+      <p>CRM a medida para centralización de historias clínicas digitales con check-in por código QR que avisa al médico automáticamente. App orientada al paciente con acceso post-consulta a planes de rehabilitación, ejercicios y recomendaciones médicas.</p>
+      <div class="case-tags">
+        <span class="case-tag">CRM</span>
+        <span class="case-tag">Código QR</span>
+        <span class="case-tag">Historias Clínicas</span>
+        <span class="case-tag">App Paciente</span>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-sector">Salud · Clínica</span>
+      <h3>Procesamiento de Partes Médicos con IA</h3>
+      <p>Sistema de lectura automática de partes quirúrgicos mediante IA. Extrae y estructura los datos clínicos clave del documento y los vuelca en tiempo real a Google Sheets, eliminando la carga de carga manual y reduciendo errores en la gestión administrativa.</p>
+      <div class="case-tags">
+        <span class="case-tag">Lectura de Documentos</span>
+        <span class="case-tag">IA</span>
+        <span class="case-tag">Google Sheets</span>
+        <span class="case-tag">Automatización</span>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-sector">Industrial · Maquinaria</span>
+      <h3>Business Intelligence y Automatización Financiera</h3>
+      <p>Dashboards interactivos con KPIs críticos de venta y proyecciones financieras. Bot de web scraping que releva tipos de cambio y divisas en tiempo real, consolidando bases de datos históricas para análisis de tendencias. Migración a infraestructura escalable.</p>
+      <div class="case-tags">
+        <span class="case-tag">BI</span>
+        <span class="case-tag">Dashboards</span>
+        <span class="case-tag">Web Scraping</span>
+        <span class="case-tag">Bases de Datos</span>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-sector">Sports Tech</span>
+      <h3>Plataforma de Analítica Deportiva en Tiempo Real</h3>
+      <p>Aplicación móvil de alta performance para visualización de estadísticas avanzadas de torneos y temporadas históricas. Procesa métricas complejas de manera ágil y dinámica, permitiendo al usuario final consumir datos detallados en tiempo real.</p>
+      <div class="case-tags">
+        <span class="case-tag">App Móvil</span>
+        <span class="case-tag">Analytics</span>
+        <span class="case-tag">Estadísticas</span>
+        <span class="case-tag">Tiempo Real</span>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <span class="case-sector">Media & Entertainment</span>
+      <h3>Ecosistema de Marketing Inteligente para Artistas</h3>
+      <p>CRM integrado con agente de IA generativa que aprende el tono y estilo del artista mediante feedback loop continuo. Automatización de publicaciones en redes sociales con control manual o modo autónomo según cronograma, más agenda digital de reservas sincronizada al calendar del productor.</p>
+      <div class="case-tags">
+        <span class="case-tag">IA Generativa</span>
+        <span class="case-tag">CRM</span>
+        <span class="case-tag">Redes Sociales</span>
+        <span class="case-tag">Agenda Digital</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
