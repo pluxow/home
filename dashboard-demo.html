@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Dashboard BI Demo</title>
+<meta name="description" content="Demo interactiva de Dashboard de Business Intelligence construido por Pluxow.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --cream: #F4F0E8;
+  --cream-dark: #E8E3D8;
+  --ink: #111111;
+  --ink-mid: #3a3a3a;
+  --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1);
+  --white: #ffffff;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+  --positive: #2a5c3f;
+  --negative: #8b2020;
+  --bar-primary: #111111;
+  --bar-secondary: #c8c2b4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.6; font-size: 15px; }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.header-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+.demo-badge {
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+  background: var(--ink); color: var(--cream);
+  padding: 0.25rem 0.6rem; border-radius: 100px;
+}
+.header-nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.header-nav a {
+  font-size: 0.82rem; color: var(--ink-light); text-decoration: none;
+  transition: color 0.2s; white-space: nowrap;
+}
+.header-nav a:hover { color: var(--ink); }
+.header-back { font-size: 0.82rem; color: var(--ink-light); text-decoration: none; white-space: nowrap; transition: color 0.2s; }
+.header-back:hover { color: var(--ink); }
+
+/* ── SECTION BASE ── */
+.section-wrapper { padding: 4rem 2rem; }
+.section-wrapper.alt { background: var(--cream-dark); }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-label {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-light); margin-bottom: 0.75rem;
+}
+.section-wrapper h2 {
+  font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.2; margin-bottom: 0.75rem;
+}
+.section-intro { color: var(--ink-mid); font-size: 0.95rem; max-width: 600px; margin-bottom: 2.5rem; }
+
+/* ── INTRO CARDS ── */
+.how-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem; margin-top: 2.5rem;
+}
+.how-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 2rem;
+}
+.how-icon { font-size: 1.75rem; margin-bottom: 1rem; line-height: 1; }
+.how-card h3 { font-family: var(--serif); font-size: 1.05rem; margin-bottom: 0.5rem; }
+.how-card p { font-size: 0.87rem; color: var(--ink-mid); line-height: 1.65; }
+
+/* ── KPI SECTION ── */
+.kpi-section { background: var(--ink); color: var(--cream); }
+.kpi-section .section-label { color: rgba(244,240,232,0.4); }
+.kpi-section h2 { color: var(--cream); margin-bottom: 2rem; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; }
+.kpi-card { background: rgba(255,255,255,0.04); padding: 2rem 1.75rem; }
+.kpi-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244,240,232,0.5); margin-bottom: 0.75rem; }
+.kpi-value { font-family: var(--serif); font-size: 2.2rem; line-height: 1; color: var(--cream); margin-bottom: 0.5rem; }
+.kpi-sub { font-size: 0.82rem; }
+.kpi-up { color: #6dbf8e; }
+.kpi-down { color: #e07070; }
+.kpi-neutral { color: rgba(244,240,232,0.5); }
+
+/* ── MACRO ── */
+.macro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.macro-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem;
+}
+.macro-card-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+.macro-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.4rem 0; border-bottom: 1px solid var(--border); gap: 0.5rem; }
+.macro-row:last-child { border-bottom: none; }
+.macro-row-label { font-size: 0.85rem; color: var(--ink-mid); }
+.macro-row-value { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; text-align: right; }
+.macro-source { font-size: 0.72rem; color: var(--ink-light); margin-top: 0.75rem; }
+.macro-source a { color: var(--ink-light); }
+
+/* ── NOVEDADES ── */
+.novedades-table { width: 100%; border-collapse: collapse; }
+.novedades-table th {
+  text-align: left; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-light); padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+}
+.novedades-table td { padding: 1rem; font-size: 0.88rem; vertical-align: top; border-bottom: 1px solid var(--border); }
+.novedades-table tr:last-child td { border-bottom: none; }
+.novedades-table tr:nth-child(odd) td { background: var(--white); }
+.novedades-table tr:nth-child(even) td { background: var(--cream-dark); }
+.nov-cat { display: inline-block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; background: var(--cream-dark); color: var(--ink-light); padding: 0.2rem 0.6rem; border-radius: 100px; white-space: nowrap; }
+.nov-link { font-size: 0.8rem; color: var(--ink-light); word-break: break-all; }
+.nov-link a { color: var(--ink-mid); text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── CHARTS ── */
+.chart-container { position: relative; width: 100%; }
+.chart-h-md { height: 320px; }
+.chart-h-lg { height: 380px; }
+.chart-h-sm { height: 260px; }
+.chart-label { font-size: 0.82rem; color: var(--ink-mid); margin-bottom: 1.25rem; font-weight: 500; }
+
+/* ── TABLES ── */
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.data-table th {
+  text-align: left; padding: 0.65rem 0.85rem; font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-light);
+  border-bottom: 1px solid var(--border);
+}
+.data-table th.num, .data-table td.num { text-align: right; }
+.data-table td { padding: 0.65rem 0.85rem; border-bottom: 1px solid var(--border); }
+.data-table tr:last-child td { border-bottom: none; font-weight: 500; background: var(--cream-dark); }
+.data-table td.pos { color: var(--positive); }
+.data-table td.neg { color: var(--negative); }
+.data-table td.zero { color: var(--ink-light); }
+.table-wrapper { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-top: 2rem; }
+.table-title { font-size: 0.8rem; font-weight: 500; color: var(--ink-mid); padding: 1rem 1rem 0; letter-spacing: 0.02em; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border); padding: 2rem;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+  font-size: 0.82rem; color: var(--ink-light);
+}
+.footer-logo { font-family: var(--serif); color: var(--ink); }
+
+@media (max-width: 768px) {
+  header { padding: 0.75rem 1rem; }
+  .header-nav { display: none; }
+  .section-wrapper { padding: 3rem 1rem; }
+  .two-col { grid-template-columns: 1fr; }
+  .chart-h-lg { height: 280px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <a href="/" class="header-logo">pluxow</a>
+    <span class="demo-badge">Demo</span>
+  </div>
+  <nav class="header-nav">
+    <a href="#intro">Cómo funciona</a>
+    <a href="#kpis">KPIs</a>
+    <a href="#macro">Macro</a>
+    <a href="#historico">Histórico</a>
+    <a href="#proyectado">Proyectado</a>
+    <a href="#yoy">Comparativo</a>
+    <a href="#categorias">Categorías</a>
+    <a href="#marcas">Por marca</a>
+  </nav>
+  <a href="/demos.html" class="header-back">← Volver a demos</a>
+</header>
+
+<!-- INTRO -->
+<section id="intro" class="section-wrapper">
+  <div class="section-inner">
+    <div class="section-label">Dashboard de Business Intelligence</div>
+    <h2>Datos operativos de tu negocio,<br>siempre actualizados.</h2>
+    <p class="section-intro">Un dashboard construido a medida que centraliza ventas, presupuesto, contexto macro y novedades del sector en un solo lugar. Esta es una demo con datos de ejemplo.</p>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon">📥</div>
+        <h3>Datos del negocio vía email</h3>
+        <p>El cliente envía periódicamente sus datos operativos en formato tabla. Un proceso ETL automatizado los recibe, valida y actualiza los gráficos sin intervención manual.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">🎯</div>
+        <h3>Dashboard alineado al negocio</h3>
+        <p>Cada dashboard se construye en colaboración con el cliente. Las secciones, KPIs y visualizaciones se ajustan de forma iterativa según las necesidades reales de la operación.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">🌐</div>
+        <h3>Contexto macro automático</h3>
+        <p>Inflación, tipos de cambio y novedades del sector se obtienen automáticamente vía APIs oficiales y web research, manteniéndose siempre actualizados sin carga manual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KPIs -->
+<section id="kpis" class="section-wrapper kpi-section">
+  <div class="section-inner">
+    <div class="section-label">Resumen ejecutivo · Abril 2026</div>
+    <h2>KPIs del mes</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Facturación neta</div>
+        <div class="kpi-value">$739.563</div>
+        <div class="kpi-sub kpi-neutral">Mes en curso</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Proyectado anual</div>
+        <div class="kpi-value">$9.450.000</div>
+        <div class="kpi-sub kpi-neutral">Objetivo 2026</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">vs Proyectado mes</div>
+        <div class="kpi-value kpi-down">-21,2%</div>
+        <div class="kpi-sub kpi-down">$199.202 por debajo</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">vs Mes anterior</div>
+        <div class="kpi-value kpi-down">-1,7%</div>
+        <div class="kpi-sub kpi-neutral">Marzo: $752.415</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MACRO -->
+<section id="macro" class="section-wrapper alt">
+  <div class="section-inner">
+    <div class="section-label">Contexto económico · Actualización automática</div>
+    <h2>Inflación y tipos de cambio</h2>
+    <p class="section-intro">Datos actualizados automáticamente desde fuentes oficiales.</p>
+    <div class="macro-grid">
+      <div class="macro-card">
+        <div class="macro-card-label">Inflación · INDEC</div>
+        <div class="macro-row">
+          <span class="macro-row-label">Mensual (abr 2026)</span>
+          <span class="macro-row-value">2,6%</span>
+        </div>
+        <div class="macro-row">
+          <span class="macro-row-label">Interanual</span>
+          <span class="macro-row-value">32,4%</span>
+        </div>
+        <div class="macro-row">
+          <span class="macro-row-label">Acumulada 2026</span>
+          <span class="macro-row-value">12,3%</span>
+        </div>
+        <div class="macro-source">Fuente: <a href="#">indec.gob.ar</a></div>
+      </div>
+      <div class="macro-card">
+        <div class="macro-card-label">Dólar mayorista · BCRA</div>
+        <div class="macro-row">
+          <span class="macro-row-label">TC Mayorista (may 2026)</span>
+          <span class="macro-row-value">$1.397,24</span>
+        </div>
+        <div class="macro-source">Fuente: <a href="#">bcra.gob.ar</a></div>
+      </div>
+      <div class="macro-card">
+        <div class="macro-card-label">Tipos de cambio sectoriales</div>
+        <div class="macro-row">
+          <span class="macro-row-label">Doméstico (feb 2026)</span>
+          <span class="macro-row-value">$1.500</span>
+        </div>
+        <div class="macro-row">
+          <span class="macro-row-label">Industrial (feb 2026)</span>
+          <span class="macro-row-value">$1.473</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Novedades -->
+    <div id="novedades" style="padding-top:1rem;">
+      <div class="section-label" style="margin-bottom:1rem;">Novedades del mes</div>
+      <div class="table-wrapper">
+        <table class="novedades-table">
+          <thead>
+            <tr>
+              <th style="width:130px">Categoría</th>
+              <th>Novedad</th>
+              <th style="width:220px">Fuente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="nov-cat">Laboral</span></td>
+              <td>Actualización del Convenio Colectivo de Trabajo del sector. Nuevas escalas salariales vigentes a partir del 1° de mayo.</td>
+              <td class="nov-link"><a href="#">Ver detalle →</a></td>
+            </tr>
+            <tr>
+              <td><span class="nov-cat">Comex</span></td>
+              <td>Reducción arancelaria del 20% al 2% para importaciones de línea doméstica bajo dictamen CCM 184/25. Línea bordadora exceptuada.</td>
+              <td class="nov-link"><a href="#">Ver dictamen →</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTÓRICO ANUAL -->
+<section id="historico" class="section-wrapper">
+  <div class="section-inner">
+    <div class="section-label">Evolución histórica</div>
+    <h2>Facturación neta anual</h2>
+    <p class="section-intro">Evolución de la facturación neta desde 2015 con variación interanual.</p>
+    <div class="chart-container chart-h-lg">
+      <canvas id="chartHistorico"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- PROYECTADO VS EFECTIVO -->
+<section id="proyectado" class="section-wrapper alt">
+  <div class="section-inner">
+    <div class="section-label">Control presupuestario · 2026</div>
+    <h2>Proyectado vs Efectivo</h2>
+    <p class="section-intro">Seguimiento mensual y trimestral del presupuesto frente a la ejecución real.</p>
+    <div class="chart-container chart-h-lg">
+      <canvas id="chartProyectado"></canvas>
+    </div>
+
+    <div class="two-col" style="margin-top:2rem;">
+      <div>
+        <div class="table-wrapper">
+          <div class="table-title">Detalle mensual</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Mes</th>
+                <th class="num">Efectivo</th>
+                <th class="num">Proyectado</th>
+                <th class="num">Variación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Enero</td><td class="num">$536.766</td><td class="num">$511.098</td><td class="num pos">+5,0%</td></tr>
+              <tr><td>Febrero</td><td class="num">$460.470</td><td class="num">$784.403</td><td class="num neg">-41,3%</td></tr>
+              <tr><td>Marzo</td><td class="num">$752.415</td><td class="num">$739.857</td><td class="num pos">+1,7%</td></tr>
+              <tr><td>Abril</td><td class="num">$739.563</td><td class="num">$938.765</td><td class="num neg">-21,2%</td></tr>
+              <tr><td>Mayo</td><td class="num zero">—</td><td class="num">$1.100.442</td><td class="num zero">-100%</td></tr>
+              <tr><td>Junio</td><td class="num zero">—</td><td class="num">$798.014</td><td class="num zero">-100%</td></tr>
+              <tr><td>Julio</td><td class="num zero">—</td><td class="num">$1.197.668</td><td class="num zero">-100%</td></tr>
+              <tr><td>Agosto</td><td class="num zero">—</td><td class="num">$669.674</td><td class="num zero">-100%</td></tr>
+              <tr><td>Septiembre</td><td class="num zero">—</td><td class="num">$912.650</td><td class="num zero">-100%</td></tr>
+              <tr><td>Octubre</td><td class="num zero">—</td><td class="num">$863.442</td><td class="num zero">-100%</td></tr>
+              <tr><td>Noviembre</td><td class="num zero">—</td><td class="num">$472.467</td><td class="num zero">-100%</td></tr>
+              <tr><td>Diciembre</td><td class="num zero">—</td><td class="num">$461.523</td><td class="num zero">-100%</td></tr>
+              <tr><td>Total</td><td class="num">$2.489.214</td><td class="num">$9.450.006</td><td class="num neg">-73,7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="table-wrapper">
+          <div class="table-title">Resumen trimestral</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Trimestre</th>
+                <th class="num">Efectivo</th>
+                <th class="num">Proyectado</th>
+                <th class="num">Variación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>T1 (ene–mar)</td><td class="num">$1.749.651</td><td class="num">$2.035.358</td><td class="num neg">-14,0%</td></tr>
+              <tr><td>T2 (abr–jun)</td><td class="num">$739.563</td><td class="num">$2.837.221</td><td class="num neg">-73,9%</td></tr>
+              <tr><td>T3 (jul–sep)</td><td class="num zero">—</td><td class="num">$2.779.992</td><td class="num zero">-100%</td></tr>
+              <tr><td>T4 (oct–dic)</td><td class="num zero">—</td><td class="num">$1.797.432</td><td class="num zero">-100%</td></tr>
+              <tr><td>Total 2026</td><td class="num">$2.489.214</td><td class="num">$9.450.003</td><td class="num neg">-73,7%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVO YOY -->
+<section id="yoy" class="section-wrapper">
+  <div class="section-inner">
+    <div class="section-label">Análisis comparativo</div>
+    <h2>Facturación mensual vs año anterior</h2>
+    <p class="section-intro">Comparación mes a mes de 2025 vs 2026 para identificar tendencias estacionales.</p>
+    <div class="chart-container chart-h-lg">
+      <canvas id="chartYoY"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- VENTAS POR CATEGORÍA -->
+<section id="categorias" class="section-wrapper alt">
+  <div class="section-inner">
+    <div class="section-label">Mix de productos · Últimos 2 meses</div>
+    <h2>Ventas por categoría de producto</h2>
+    <p class="section-intro">Comparativo de facturación por línea de producto entre los últimos dos períodos.</p>
+    <div class="chart-container chart-h-md">
+      <canvas id="chartCategorias"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- DETALLE POR MARCA -->
+<section id="marcas" class="section-wrapper">
+  <div class="section-inner">
+    <div class="section-label">Ventas comparativas · Últimos 2 meses</div>
+    <h2>Detalle por unidad de negocio</h2>
+    <p class="section-intro">Tendencia en cantidades vendidas por categoría e ítem, desglosadas por marca.</p>
+    <div class="two-col">
+      <div>
+        <div class="table-wrapper">
+          <div class="table-title">Marca A — Tendencia por categoría</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Categoría</th>
+                <th class="num">Mar 2026</th>
+                <th class="num">Abr 2026</th>
+                <th class="num">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Mecánica</td><td class="num">1.326</td><td class="num">1.835</td><td class="num">3.161</td></tr>
+              <tr><td>Bordadora</td><td class="num">114</td><td class="num">114</td><td class="num">228</td></tr>
+              <tr><td>Overlock</td><td class="num">92</td><td class="num">95</td><td class="num">187</td></tr>
+              <tr><td>Computarizada</td><td class="num">20</td><td class="num">38</td><td class="num">58</td></tr>
+              <tr><td>Collareta</td><td class="num">23</td><td class="num">23</td><td class="num">46</td></tr>
+              <tr><td>Total</td><td class="num">1.575</td><td class="num">2.105</td><td class="num">3.680</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="table-wrapper">
+          <div class="table-title">Marca B — Tendencia por ítem (Top 8)</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th class="num">Mar 2026</th>
+                <th class="num">Abr 2026</th>
+                <th class="num">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>SKU-001</td><td class="num">14</td><td class="num">39</td><td class="num">53</td></tr>
+              <tr><td>SKU-002</td><td class="num">33</td><td class="num">9</td><td class="num">42</td></tr>
+              <tr><td>SKU-003</td><td class="num zero">—</td><td class="num">33</td><td class="num">33</td></tr>
+              <tr><td>SKU-004</td><td class="num">20</td><td class="num">2</td><td class="num">22</td></tr>
+              <tr><td>SKU-005</td><td class="num">12</td><td class="num">6</td><td class="num">18</td></tr>
+              <tr><td>SKU-006</td><td class="num">17</td><td class="num zero">—</td><td class="num">17</td></tr>
+              <tr><td>SKU-007</td><td class="num">12</td><td class="num">3</td><td class="num">15</td></tr>
+              <tr><td>SKU-008</td><td class="num zero">—</td><td class="num">15</td><td class="num">15</td></tr>
+              <tr><td>Total</td><td class="num">174</td><td class="num">144</td><td class="num">318</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">pluxow</span>
+  <span>Dashboard BI — Demo con datos de ejemplo</span>
+  <span>pluxow.com</span>
+</footer>
+
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#6b6b6b';
+
+const gridColor = 'rgba(0,0,0,0.06)';
+const tickColor = '#6b6b6b';
+
+const fmt = v => v === 0 || v == null ? '' : '$' + v.toLocaleString('es-AR');
+const fmtM = v => v >= 1000000 ? '$' + (v/1000000).toFixed(1) + 'M' : '$' + (v/1000).toFixed(0) + 'k';
+
+// ── HISTÓRICO ANUAL ──
+new Chart(document.getElementById('chartHistorico'), {
+  type: 'bar',
+  data: {
+    labels: ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'],
+    datasets: [{
+      label: 'Facturación neta',
+      data: [15516369,14640168,14208425,7723406,4673450,9255156,11196155,12808815,9104837,7116987,8622392,2591375],
+      backgroundColor: '#111111',
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.raw) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor, callback: v => fmtM(v) }
+      }
+    }
+  }
+});
+
+// ── PROYECTADO VS EFECTIVO ──
+new Chart(document.getElementById('chartProyectado'), {
+  type: 'bar',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    datasets: [
+      {
+        label: 'Proyectado',
+        data: [511098,784403,739857,938765,1100442,798014,1197668,669674,912650,863442,472467,461523],
+        backgroundColor: '#c8c2b4',
+        borderRadius: 3,
+        order: 2,
+      },
+      {
+        label: 'Efectivo',
+        data: [536766,460470,752415,739563,null,null,null,null,null,null,null,null],
+        backgroundColor: '#111111',
+        borderRadius: 3,
+        order: 1,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', align: 'end', labels: { boxWidth: 12, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => fmtM(v) } }
+    }
+  }
+});
+
+// ── YOY ──
+new Chart(document.getElementById('chartYoY'), {
+  type: 'bar',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    datasets: [
+      {
+        label: '2025',
+        data: [472154,679430,868376,739563,1000188,738975,1158501,618431,838013,789537,433794,428253],
+        backgroundColor: '#c8c2b4',
+        borderRadius: 3,
+      },
+      {
+        label: '2026',
+        data: [536766,460470,752415,739563,null,null,null,null,null,null,null,null],
+        backgroundColor: '#111111',
+        borderRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', align: 'end', labels: { boxWidth: 12, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => fmtM(v) } }
+    }
+  }
+});
+
+// ── CATEGORÍAS ──
+new Chart(document.getElementById('chartCategorias'), {
+  type: 'bar',
+  data: {
+    labels: ['Máq. industriales', 'Bordadoras', 'Máq. domésticas'],
+    datasets: [
+      {
+        label: 'Mar 2026',
+        data: [217220, 176400, 469680],
+        backgroundColor: '#c8c2b4',
+        borderRadius: 4,
+      },
+      {
+        label: 'Abr 2026',
+        data: [143567, 149654, 558428],
+        backgroundColor: '#111111',
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', align: 'end', labels: { boxWidth: 12, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => fmtM(v) } }
+    }
+  }
+});
+</script>
+</body>
+</html>
