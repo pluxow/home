@@ -118,6 +118,12 @@ header {
 .nov-link a { color: var(--ink-mid); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ── CHARTS ── */
+.chart-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
 .chart-container { position: relative; width: 100%; }
 .chart-h-md { height: 320px; }
 .chart-h-lg { height: 380px; }
@@ -316,8 +322,10 @@ footer {
     <div class="section-label">Evolución histórica</div>
     <h2>Facturación neta anual</h2>
     <p class="section-intro">Evolución de la facturación neta desde 2015 con variación interanual.</p>
-    <div class="chart-container chart-h-lg">
-      <canvas id="chartHistorico"></canvas>
+    <div class="chart-card">
+      <div class="chart-container chart-h-lg">
+        <canvas id="chartHistorico"></canvas>
+      </div>
     </div>
   </div>
 </section>
@@ -328,8 +336,10 @@ footer {
     <div class="section-label">Control presupuestario · 2026</div>
     <h2>Proyectado vs Efectivo</h2>
     <p class="section-intro">Seguimiento mensual y trimestral del presupuesto frente a la ejecución real.</p>
-    <div class="chart-container chart-h-lg">
-      <canvas id="chartProyectado"></canvas>
+    <div class="chart-card">
+      <div class="chart-container chart-h-lg">
+        <canvas id="chartProyectado"></canvas>
+      </div>
     </div>
 
     <div class="two-col" style="margin-top:2rem;">
@@ -395,8 +405,10 @@ footer {
     <div class="section-label">Análisis comparativo</div>
     <h2>Facturación mensual vs año anterior</h2>
     <p class="section-intro">Comparación mes a mes de 2025 vs 2026 para identificar tendencias estacionales.</p>
-    <div class="chart-container chart-h-lg">
-      <canvas id="chartYoY"></canvas>
+    <div class="chart-card">
+      <div class="chart-container chart-h-lg">
+        <canvas id="chartYoY"></canvas>
+      </div>
     </div>
   </div>
 </section>
@@ -407,8 +419,10 @@ footer {
     <div class="section-label">Mix de productos · Últimos 2 meses</div>
     <h2>Ventas por categoría de producto</h2>
     <p class="section-intro">Comparativo de facturación por línea de producto entre los últimos dos períodos.</p>
-    <div class="chart-container chart-h-md">
-      <canvas id="chartCategorias"></canvas>
+    <div class="chart-card">
+      <div class="chart-container chart-h-md">
+        <canvas id="chartCategorias"></canvas>
+      </div>
     </div>
   </div>
 </section>
