@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Demo: CRM con Bot de Agenda e Historia Clínica</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F4F0E8; --cream-dark: #E8E3D8;
+  --ink: #111111; --ink-mid: #3a3a3a; --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1); --white: #ffffff;
+  --sans: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+  --green: #059669; --green-dark: #047857; --green-light: #d1fae5; --green-mid: #34d399;
+  --wa-green: #25d366; --wa-dark: #128C7E; --wa-bg: #efeae2; --wa-sent: #dcf8c6;
+  --blue: #3b82f6; --blue-light: #dbeafe; --red: #ef4444; --amber: #f59e0b; --amber-light: #fef3c7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); }
+
+/* ── HEADER ── */
+header { position: sticky; top: 0; z-index: 100; background: var(--cream); border-bottom: 1px solid var(--border); padding: 0.9rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.header-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+.demo-badge { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 0.25rem 0.6rem; border-radius: 100px; }
+.header-back { font-size: 0.82rem; color: var(--ink-light); text-decoration: none; transition: color 0.2s; }
+.header-back:hover { color: var(--ink); }
+
+/* ── INTRO ── */
+.intro { padding: 3rem 4rem 1.5rem; max-width: 1400px; margin: 0 auto; }
+.section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.6rem; }
+.intro h1 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.75rem; }
+.intro p { color: var(--ink-mid); font-size: 0.95rem; max-width: 560px; }
+
+/* ── SCENE SELECTOR ── */
+.scene-selector { display: flex; gap: 1rem; max-width: 1400px; margin: 0 auto; padding: 1.5rem 4rem; }
+.scene-card {
+  flex: 1; background: var(--white); border: 2px solid var(--border); border-radius: 14px;
+  padding: 1.25rem 1.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 1rem;
+}
+.scene-card:hover { border-color: var(--green-mid); }
+.scene-card.active { border-color: var(--green); background: var(--green-light); }
+.scene-icon { font-size: 1.6rem; flex-shrink: 0; }
+.scene-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+.scene-card p { font-size: 0.78rem; color: var(--ink-light); }
+
+/* ── GUIDE LABEL ── */
+.guide-wrap { max-width: 1400px; margin: 0 auto; padding: 0 4rem 0.75rem; }
+.guide-label { background: var(--green-light); border: 1px solid var(--green-mid); border-radius: 10px; padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.6rem; }
+.guide-label span.icon { font-size: 1rem; flex-shrink: 0; }
+.guide-label span.text { font-size: 0.85rem; color: var(--green-dark); font-weight: 500; }
+
+/* ── APP WINDOW ── */
+.app-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4rem 4rem; }
+.app-window { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.08); }
+.app-titlebar { background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%); padding: 0.85rem 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+.titlebar-dot { width: 12px; height: 12px; border-radius: 50%; }
+.titlebar-dot.red { background: #ff5f57; } .titlebar-dot.yellow { background: #febc2e; } .titlebar-dot.green { background: #28c840; }
+.titlebar-name { margin-left: 0.5rem; color: rgba(255,255,255,0.9); font-size: 0.85rem; font-weight: 500; }
+
+.scene { display: none; animation: fadeIn 0.25s ease; }
+.scene.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─────────────────────────────────────────────
+   SCENE 1: WHATSAPP
+───────────────────────────────────────────── */
+.wa-shell { display: flex; height: 600px; }
+.wa-sidebar { width: 320px; border-right: 1px solid #e5e7eb; background: white; display: flex; flex-direction: column; flex-shrink: 0; }
+.wa-sidebar-header { background: var(--green-dark); color: white; padding: 0.75rem 1rem; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+.wa-conv-list { flex: 1; overflow-y: auto; }
+.wa-conv-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; cursor: default; }
+.wa-conv-item.active-conv { background: #f0fdf4; }
+.wa-conv-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 600; flex-shrink: 0; }
+.wa-conv-info { flex: 1; min-width: 0; }
+.wa-conv-name { font-size: 0.85rem; font-weight: 600; color: #111827; }
+.wa-conv-last { font-size: 0.75rem; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.1rem; }
+.wa-conv-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; flex-shrink: 0; }
+.wa-conv-time { font-size: 0.7rem; color: #9ca3af; }
+.wa-badge-count { background: var(--wa-green); color: white; border-radius: 100px; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.45rem; }
+.wa-mode-badge { font-size: 0.65rem; color: #6b7280; }
+
+.wa-chat-area { flex: 1; display: flex; flex-direction: column; background: var(--wa-bg); }
+.wa-chat-header { background: #f0f0f0; border-bottom: 1px solid #e0e0e0; padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.75rem; }
+.wa-chat-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; flex-shrink: 0; }
+.wa-chat-name { font-size: 0.9rem; font-weight: 600; color: #111827; }
+.wa-chat-sub { font-size: 0.72rem; color: #6b7280; }
+.wa-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.wa-msg { max-width: 75%; padding: 0.5rem 0.75rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.5; position: relative; animation: msgIn 0.2s ease; }
+@keyframes msgIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+.wa-msg.bot { background: white; align-self: flex-start; border-top-left-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.wa-msg.patient { background: var(--wa-sent); align-self: flex-end; border-top-right-radius: 2px; }
+.wa-msg.admin-msg { background: #bbf7d0; align-self: flex-end; border-top-right-radius: 2px; }
+.wa-msg-time { font-size: 0.65rem; color: #9ca3af; margin-top: 0.2rem; text-align: right; }
+.wa-options { display: flex; flex-wrap: wrap; gap: 0.4rem; align-self: flex-start; margin-top: 0.25rem; max-width: 80%; }
+.wa-opt-btn { background: white; border: 1px solid var(--wa-green); color: var(--wa-dark); font-family: var(--sans); font-size: 0.8rem; padding: 0.4rem 0.85rem; border-radius: 100px; cursor: default; transition: all 0.15s; }
+.wa-opt-btn.selected { background: var(--wa-green); color: white; border-color: var(--wa-green); }
+.wa-loading { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: #6b7280; align-self: flex-start; background: white; padding: 0.5rem 0.75rem; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.wa-dots span { animation: bounce 1.2s infinite; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #9ca3af; margin: 0 1px; }
+.wa-dots span:nth-child(2) { animation-delay: 0.2s; }
+.wa-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-5px); } }
+.wa-payment-btn { background: var(--green); color: white; border: none; border-radius: 8px; padding: 0.6rem 1.25rem; font-family: var(--sans); font-size: 0.85rem; font-weight: 500; cursor: default; display: inline-flex; align-items: center; gap: 0.4rem; }
+.wa-confirmed { background: var(--green-light); border: 1px solid var(--green-mid); border-radius: 8px; padding: 0.75rem 1rem; font-size: 0.85rem; color: var(--green-dark); align-self: flex-start; }
+.wa-chat-footer { background: #f0f0f0; padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.75rem; border-top: 1px solid #e0e0e0; }
+.wa-input-field { flex: 1; background: white; border: none; border-radius: 100px; padding: 0.5rem 1rem; font-family: var(--sans); font-size: 0.85rem; color: #374151; outline: none; }
+.wa-send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--wa-green); border: none; cursor: default; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.wa-progress-wrap { background: white; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.75rem; }
+.wa-progress-label { font-size: 0.72rem; color: #6b7280; white-space: nowrap; }
+.wa-progress-bar { flex: 1; height: 4px; background: #e5e7eb; border-radius: 100px; overflow: hidden; }
+.wa-progress-fill { height: 100%; background: var(--wa-green); border-radius: 100px; transition: width 0.5s ease; }
+.wa-restart-btn { font-size: 0.72rem; color: var(--green-dark); background: none; border: 1px solid var(--green-mid); padding: 0.2rem 0.6rem; border-radius: 100px; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+.wa-restart-btn:hover { background: var(--green-light); }
+
+/* ─────────────────────────────────────────────
+   SCENE 2: PROFESSIONAL
+───────────────────────────────────────────── */
+.pro-shell { background: #f9fafb; min-height: 600px; }
+.pro-header { background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+.pro-title { font-size: 1rem; font-weight: 700; color: #111827; }
+.pro-date { font-size: 0.8rem; color: #6b7280; }
+.pro-stats { display: flex; gap: 0; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+.pro-stat { padding: 0.5rem 1.25rem; text-align: center; border-right: 1px solid #e5e7eb; }
+.pro-stat:last-child { border-right: none; }
+.pro-stat-num { font-size: 1.2rem; font-weight: 700; color: #111827; font-family: var(--serif); }
+.pro-stat-num.green { color: var(--green); }
+.pro-stat-label { font-size: 0.68rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
+.pro-body { padding: 1.25rem 1.5rem; }
+.pro-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.appt-row { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.85rem 1rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
+.appt-row.highlight { border-color: var(--green); background: #f0fdf4; }
+.appt-time { font-size: 0.88rem; font-weight: 700; color: #374151; width: 44px; flex-shrink: 0; }
+.appt-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.appt-dot.confirmado { background: #d1d5db; }
+.appt-dot.checkin { background: var(--green); }
+.appt-dot.en_consulta { background: var(--blue); }
+.appt-dot.atendido { background: #10b981; }
+.appt-info { flex: 1; }
+.appt-name { font-size: 0.88rem; font-weight: 600; color: #111827; }
+.appt-spec { font-size: 0.75rem; color: #6b7280; }
+.appt-amount { font-size: 0.82rem; font-weight: 500; color: #374151; }
+.appt-status-badge { font-size: 0.72rem; padding: 0.2rem 0.65rem; border-radius: 100px; font-weight: 500; white-space: nowrap; }
+.badge-confirmado { background: #f3f4f6; color: #6b7280; }
+.badge-checkin { background: var(--green-light); color: var(--green-dark); }
+.badge-en_consulta { background: var(--blue-light); color: #1d4ed8; }
+.badge-atendido { background: #d1fae5; color: #065f46; }
+.appt-action { font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.85rem; border-radius: 6px; cursor: default; white-space: nowrap; }
+.action-iniciar { background: var(--green); color: white; border: none; }
+.action-finalizar { background: var(--blue); color: white; border: none; }
+.action-done { background: #f3f4f6; color: #9ca3af; border: none; }
+.pro-toast { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #111827; color: white; padding: 0.65rem 1.25rem; border-radius: 8px; font-size: 0.82rem; white-space: nowrap; opacity: 0; transition: opacity 0.3s; z-index: 10; }
+.pro-toast.show { opacity: 1; }
+.pro-body { position: relative; }
+.pro-moment-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+.pro-step-label { font-size: 0.8rem; color: var(--green-dark); font-weight: 500; background: var(--green-light); padding: 0.35rem 0.85rem; border-radius: 100px; }
+.btn-advance { background: var(--green); color: white; border: none; border-radius: 8px; padding: 0.5rem 1.1rem; font-family: var(--sans); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+.btn-advance:hover { background: var(--green-dark); }
+.btn-advance:disabled { background: #d1d5db; cursor: default; }
+
+/* ─────────────────────────────────────────────
+   SCENE 3: ADMIN
+───────────────────────────────────────────── */
+.admin-shell { display: flex; height: 600px; }
+.admin-sidebar { width: 240px; background: #1f2937; color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+.admin-brand { padding: 1rem; font-weight: 700; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.5rem; }
+.admin-nav { flex: 1; padding: 0.5rem; }
+.admin-nav-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 0.75rem; border-radius: 8px; cursor: pointer; font-size: 0.82rem; color: rgba(255,255,255,0.7); transition: all 0.15s; }
+.admin-nav-item.active { background: var(--green); color: white; }
+.admin-nav-item:hover:not(.active) { background: rgba(255,255,255,0.08); color: white; }
+.admin-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Inbox */
+.inbox-layout { display: flex; flex: 1; overflow: hidden; }
+.inbox-list { width: 280px; border-right: 1px solid #e5e7eb; overflow-y: auto; background: white; flex-shrink: 0; }
+.inbox-header { padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.8rem; font-weight: 600; color: #374151; background: #fafafa; }
+.inbox-item { padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; cursor: pointer; transition: background 0.15s; display: flex; gap: 0.75rem; align-items: flex-start; }
+.inbox-item:hover { background: #f9fafb; }
+.inbox-item.active-inbox { background: #f0fdf4; border-left: 3px solid var(--green); }
+.inbox-avatar { width: 36px; height: 36px; border-radius: 50%; background: #374151; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; }
+.inbox-item-info { flex: 1; min-width: 0; }
+.inbox-item-name { font-size: 0.82rem; font-weight: 600; color: #111827; }
+.inbox-item-last { font-size: 0.73rem; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 0.1rem; }
+.inbox-item-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; flex-shrink: 0; }
+.inbox-time { font-size: 0.68rem; color: #9ca3af; }
+.inbox-unread { background: var(--green); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 100px; }
+.inbox-mode { font-size: 0.65rem; color: #9ca3af; }
+
+.chat-panel { flex: 1; display: flex; flex-direction: column; background: var(--wa-bg); }
+.chat-panel-header { background: #f9fafb; border-bottom: 1px solid #e5e7eb; padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.75rem; }
+.chat-panel-info { flex: 1; }
+.chat-panel-name { font-size: 0.88rem; font-weight: 600; color: #111827; }
+.chat-panel-status { font-size: 0.72rem; color: #6b7280; }
+.mode-toggle { font-size: 0.75rem; font-weight: 500; padding: 0.35rem 0.85rem; border-radius: 100px; cursor: pointer; border: none; transition: all 0.2s; font-family: var(--sans); }
+.mode-toggle.bot-mode { background: #f0fdf4; color: var(--green-dark); border: 1px solid var(--green-mid); }
+.mode-toggle.manual-mode { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.chat-input-bar { background: #f0f0f0; padding: 0.65rem 1rem; display: flex; gap: 0.75rem; align-items: center; border-top: 1px solid #e0e0e0; }
+.chat-input { flex: 1; background: white; border: none; border-radius: 100px; padding: 0.5rem 1rem; font-family: var(--sans); font-size: 0.82rem; color: #374151; outline: none; }
+.chat-input:disabled { opacity: 0.5; }
+.chat-send { width: 34px; height: 34px; border-radius: 50%; background: var(--wa-green); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: opacity 0.2s; }
+.chat-send:disabled { opacity: 0.4; cursor: default; }
+
+/* Agenda tab */
+.agenda-panel { flex: 1; overflow-y: auto; background: #f9fafb; padding: 1.25rem; }
+.agenda-stats { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.agenda-stat-card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.75rem 1.25rem; flex: 1; min-width: 100px; }
+.agenda-stat-n { font-family: var(--serif); font-size: 1.5rem; color: #111827; line-height: 1; }
+.agenda-stat-n.green { color: var(--green); }
+.agenda-stat-l { font-size: 0.7rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+.agenda-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.agenda-row { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.85rem; cursor: pointer; transition: border-color 0.15s; }
+.agenda-row:hover { border-color: var(--green-mid); }
+.agenda-row.open { border-color: var(--green); background: #f0fdf4; }
+.agenda-time { font-size: 0.85rem; font-weight: 700; color: #374151; width: 44px; flex-shrink: 0; }
+.agenda-name { font-size: 0.85rem; font-weight: 600; flex: 1; }
+.agenda-spec { font-size: 0.75rem; color: #6b7280; }
+.agenda-pay { font-size: 0.72rem; padding: 0.15rem 0.55rem; border-radius: 100px; font-weight: 500; }
+.pay-paid { background: var(--green-light); color: var(--green-dark); }
+.pay-pending { background: var(--amber-light); color: #92400e; }
+
+/* Patient drawer */
+.patient-drawer { width: 0; overflow: hidden; transition: width 0.3s; background: white; border-left: 1px solid #e5e7eb; flex-shrink: 0; }
+.patient-drawer.open { width: 260px; }
+.drawer-header { padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; display: flex; align-items: center; justify-content: space-between; background: #fafafa; }
+.drawer-name { font-size: 0.88rem; font-weight: 700; }
+.drawer-close { background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 1.1rem; line-height: 1; }
+.drawer-body { padding: 1rem; overflow-y: auto; height: calc(100% - 45px); }
+.drawer-section { margin-bottom: 1.25rem; }
+.drawer-section-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.5rem; }
+.drawer-field { display: flex; justify-content: space-between; align-items: baseline; padding: 0.3rem 0; border-bottom: 1px solid #f9fafb; font-size: 0.82rem; }
+.drawer-field-label { color: #6b7280; }
+.drawer-field-value { font-weight: 500; color: #111827; }
+.progress-wrap { margin-top: 0.35rem; }
+.progress-bar { height: 6px; background: #e5e7eb; border-radius: 100px; overflow: hidden; margin-top: 0.25rem; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 100px; }
+.session-row { display: flex; align-items: center; justify-content: space-between; padding: 0.3rem 0; font-size: 0.78rem; border-bottom: 1px solid #f9fafb; }
+.session-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-right: 0.4rem; flex-shrink: 0; }
+
+/* Admin moment nav */
+.admin-moment-nav { background: #fafafa; border-bottom: 1px solid #e5e7eb; padding: 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-shrink: 0; }
+.moment-label { font-size: 0.78rem; color: var(--green-dark); font-weight: 500; }
+
+@media (max-width: 768px) {
+  .intro, .scene-selector, .guide-wrap, .app-wrapper { padding-left: 1rem; padding-right: 1rem; }
+  .scene-selector { flex-direction: column; }
+  .wa-sidebar { display: none; }
+  .admin-sidebar { display: none; }
+  .inbox-list { width: 220px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="/" class="header-logo">pluxow</a>
+    <span class="demo-badge">Demo</span>
+  </div>
+  <a href="/demos.html" class="header-back">← Volver a demos</a>
+</header>
+
+<div class="intro">
+  <div class="section-label">Salud · CRM y gestión de turnos</div>
+  <h1>Bot de Agenda e Historia Clínica</h1>
+  <p>Sistema que automatiza la agenda desde WhatsApp, gestiona cobros y mantiene la historia clínica de cada paciente. Explorá las tres perspectivas del mismo sistema.</p>
+</div>
+
+<div class="scene-selector">
+  <div class="scene-card active" id="card-patient" onclick="setScene('patient')">
+    <span class="scene-icon">📱</span>
+    <div><h3>Perspectiva Paciente</h3><p>Así agenda un turno por WhatsApp</p></div>
+  </div>
+  <div class="scene-card" id="card-pro" onclick="setScene('pro')">
+    <span class="scene-icon">🩺</span>
+    <div><h3>Perspectiva Profesional</h3><p>Así ve el Dr. Torres su día de trabajo</p></div>
+  </div>
+  <div class="scene-card" id="card-admin" onclick="setScene('admin')">
+    <span class="scene-icon">🖥️</span>
+    <div><h3>Perspectiva Admin</h3><p>Así gestiona la administrativa el consultorio</p></div>
+  </div>
+</div>
+
+<div class="guide-wrap">
+  <div class="guide-label">
+    <span class="icon">💬</span>
+    <span class="text" id="guideText">El bot recibe al paciente y lo guía paso a paso para reservar su turno</span>
+  </div>
+</div>
+
+<div class="app-wrapper">
+  <div class="app-window">
+    <div class="app-titlebar">
+      <div class="titlebar-dot red"></div><div class="titlebar-dot yellow"></div><div class="titlebar-dot green"></div>
+      <span class="titlebar-name" id="titlebarName">Policonsultorio Ciudad Jardín — Vista del paciente</span>
+    </div>
+    <div class="app-body">
+
+      <!-- ── SCENE 1: PATIENT ── -->
+      <div class="scene active" id="scene-patient">
+        <div class="wa-shell">
+          <!-- Sidebar: conversation list -->
+          <div class="wa-sidebar">
+            <div class="wa-sidebar-header">💬 Conversaciones recientes</div>
+            <div class="wa-conv-list">
+              <div class="wa-conv-item active-conv">
+                <div class="wa-conv-avatar">TU</div>
+                <div class="wa-conv-info">
+                  <div class="wa-conv-name">Policonsultorio CJ</div>
+                  <div class="wa-conv-last">¡Hola! 👋 Bienvenido al Policonsu...</div>
+                </div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">ahora</span><span class="wa-mode-badge">🤖 Bot</span></div>
+              </div>
+              <div class="wa-conv-item" style="opacity:0.5">
+                <div class="wa-conv-avatar" style="background:#6b7280">DF</div>
+                <div class="wa-conv-info"><div class="wa-conv-name">Delivery Flash</div><div class="wa-conv-last">Tu pedido está en camino 🛵</div></div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">10:24</span></div>
+              </div>
+              <div class="wa-conv-item" style="opacity:0.5">
+                <div class="wa-conv-avatar" style="background:#8b5cf6">MA</div>
+                <div class="wa-conv-info"><div class="wa-conv-name">Mamá</div><div class="wa-conv-last">¿Venís a cenar el domingo?</div></div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">ayer</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat area -->
+          <div class="wa-chat-area">
+            <div class="wa-progress-wrap">
+              <span class="wa-progress-label" id="waStepLabel">Paso 1 / 8</span>
+              <div class="wa-progress-bar"><div class="wa-progress-fill" id="waProgressFill" style="width:0%"></div></div>
+              <button class="wa-restart-btn" onclick="startChat()">↺ Reiniciar</button>
+            </div>
+            <div class="wa-chat-header">
+              <div class="wa-chat-avatar">PC</div>
+              <div><div class="wa-chat-name">Policonsultorio Ciudad Jardín</div><div class="wa-chat-sub">🤖 Bot activo · en línea</div></div>
+            </div>
+            <div class="wa-messages" id="waMessages"></div>
+            <div class="wa-chat-footer">
+              <input class="wa-input-field" placeholder="El bot responde automáticamente..." disabled>
+              <button class="wa-send-btn" disabled>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCENE 2: PROFESSIONAL ── -->
+      <div class="scene" id="scene-pro">
+        <div class="pro-shell">
+          <div class="pro-header">
+            <div>
+              <div class="pro-title">Dr. Sebastián Torres</div>
+              <div class="pro-date">📅 Lunes 9 de junio · Turnos del día</div>
+            </div>
+            <div class="pro-stats">
+              <div class="pro-stat"><div class="pro-stat-num green" id="statAtendidos">0</div><div class="pro-stat-label">Atendidos</div></div>
+              <div class="pro-stat"><div class="pro-stat-num" id="statPorVer">5</div><div class="pro-stat-label">Por ver</div></div>
+              <div class="pro-stat"><div class="pro-stat-num" id="statCobros">$0</div><div class="pro-stat-label">Cobros</div></div>
+            </div>
+          </div>
+          <div class="pro-body">
+            <div class="pro-moment-nav">
+              <span class="pro-step-label" id="proStepLabel">Momento 1 / 4 — Inicio del día</span>
+              <button class="btn-advance" id="btnAdvancePro" onclick="advancePro()">Avanzar →</button>
+            </div>
+            <div class="pro-list" id="proList"></div>
+            <div class="pro-toast" id="proToast">📲 ¡Ana Rodríguez llegó a sala de espera!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCENE 3: ADMIN ── -->
+      <div class="scene" id="scene-admin">
+        <div class="admin-shell">
+          <!-- Sidebar -->
+          <div class="admin-sidebar">
+            <div class="admin-brand">🏥 Ciudad Jardín</div>
+            <div class="admin-nav">
+              <div class="admin-nav-item active" id="navInbox" onclick="adminTab('inbox')">💬 Inbox WhatsApp <span id="inboxBadge" style="margin-left:auto;background:var(--wa-green);color:white;font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:100px;font-weight:700">3</span></div>
+              <div class="admin-nav-item" id="navAgenda" onclick="adminTab('agenda')">📅 Agenda del día</div>
+              <div class="admin-nav-item" id="navPacientes" onclick="adminTab('pacientes')" style="opacity:0.5">👥 Pacientes</div>
+            </div>
+          </div>
+
+          <!-- Main area -->
+          <div class="admin-main">
+            <div class="admin-moment-nav">
+              <span class="moment-label" id="adminMomentLabel">Momento 1 / 5 — Revisando el inbox</span>
+              <button class="btn-advance" id="btnAdvanceAdmin" onclick="advanceAdmin()">Avanzar →</button>
+            </div>
+
+            <!-- Inbox panel -->
+            <div id="adminInboxPanel" style="display:flex;flex:1;overflow:hidden">
+              <div class="inbox-list">
+                <div class="inbox-header">Conversaciones · hoy</div>
+                <div class="inbox-item" id="inboxItemAna" onclick="openConv('ana')">
+                  <div class="inbox-avatar" style="background:var(--green)">AR</div>
+                  <div class="inbox-item-info"><div class="inbox-item-name">Ana Rodríguez</div><div class="inbox-item-last">Muchas gracias! Ahí pago 😊</div></div>
+                  <div class="inbox-item-meta"><span class="inbox-time">hace 2 min</span><span class="inbox-mode">🤖 Bot</span></div>
+                </div>
+                <div class="inbox-item active-inbox" id="inboxItemCarlos" onclick="openConv('carlos')">
+                  <div class="inbox-avatar" style="background:#3b82f6">CM</div>
+                  <div class="inbox-item-info"><div class="inbox-item-name">Carlos Méndez</div><div class="inbox-item-last">¿Tienen lugar el viernes?</div></div>
+                  <div class="inbox-item-meta"><span class="inbox-time">hace 15 min</span><span class="inbox-unread" id="carlosBadge">2</span><span class="inbox-mode">🤖 Bot</span></div>
+                </div>
+                <div class="inbox-item" onclick="openConv('laura')">
+                  <div class="inbox-avatar" style="background:#8b5cf6">LV</div>
+                  <div class="inbox-item-info"><div class="inbox-item-name">Laura Vega</div><div class="inbox-item-last">Ok perfecto, hasta mañana!</div></div>
+                  <div class="inbox-item-meta"><span class="inbox-time">hace 1h</span><span class="inbox-mode">🤖 Bot</span></div>
+                </div>
+                <div class="inbox-item" onclick="openConv('martin')">
+                  <div class="inbox-avatar" style="background:#ef4444">MS</div>
+                  <div class="inbox-item-info"><div class="inbox-item-name">Martín Silva</div><div class="inbox-item-last">Necesito cancelar mi turno</div></div>
+                  <div class="inbox-item-meta"><span class="inbox-time">hace 3h</span><span class="inbox-unread">1</span><span class="inbox-mode">🤖 Bot</span></div>
+                </div>
+              </div>
+
+              <div class="chat-panel">
+                <div class="chat-panel-header">
+                  <div class="wa-chat-avatar" id="chatAvatar" style="background:#3b82f6">CM</div>
+                  <div class="chat-panel-info">
+                    <div class="chat-panel-name" id="chatName">Carlos Méndez</div>
+                    <div class="chat-panel-status" id="chatStatus">🤖 Bot activo</div>
+                  </div>
+                  <button class="mode-toggle bot-mode" id="modeToggle" onclick="toggleMode()">🤖 Bot</button>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                  <div class="wa-msg bot">¡Hola Carlos! Soy el asistente del Policonsultorio Ciudad Jardín. ¿En qué puedo ayudarte? 😊<div class="wa-msg-time">10:14</div></div>
+                  <div class="wa-msg patient">Quería saber si tienen turnos disponibles para traumatología<div class="wa-msg-time">10:15</div></div>
+                  <div class="wa-msg bot">¡Claro! Para traumatología tenés disponibles:<br>• Miércoles 10:00 hs<br>• Jueves 14:00 hs<br>• Viernes 9:00 hs<div class="wa-msg-time">10:15</div></div>
+                  <div class="wa-msg patient">¿Tienen lugar el viernes?<div class="wa-msg-time">10:16</div></div>
+                </div>
+                <div class="chat-input-bar">
+                  <input class="chat-input" id="adminChatInput" placeholder="El bot está respondiendo..." disabled>
+                  <button class="chat-send" id="adminSendBtn" onclick="sendAdminMsg()" disabled>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agenda panel (hidden initially) -->
+            <div id="adminAgendaPanel" style="display:none;flex:1;overflow:hidden">
+              <div class="agenda-panel">
+                <div class="agenda-stats">
+                  <div class="agenda-stat-card"><div class="agenda-stat-n">5</div><div class="agenda-stat-l">Total</div></div>
+                  <div class="agenda-stat-card"><div class="agenda-stat-n green">2</div><div class="agenda-stat-l">Atendidos</div></div>
+                  <div class="agenda-stat-card"><div class="agenda-stat-n">3</div><div class="agenda-stat-l">Pendientes</div></div>
+                  <div class="agenda-stat-card"><div class="agenda-stat-n" style="color:var(--red)">0</div><div class="agenda-stat-l">No vinieron</div></div>
+                </div>
+                <div class="agenda-list" id="agendaList"></div>
+              </div>
+              <div class="patient-drawer" id="patientDrawer">
+                <div class="drawer-header">
+                  <span class="drawer-name" id="drawerName">Ana Rodríguez</span>
+                  <button class="drawer-close" onclick="closeDrawer()">✕</button>
+                </div>
+                <div class="drawer-body">
+                  <div class="drawer-section">
+                    <div class="drawer-section-label">Datos del paciente</div>
+                    <div class="drawer-field"><span class="drawer-field-label">DNI</span><span class="drawer-field-value">32.456.789</span></div>
+                    <div class="drawer-field"><span class="drawer-field-label">Teléfono</span><span class="drawer-field-value">+54 9 11 4521-8874</span></div>
+                    <div class="drawer-field"><span class="drawer-field-label">Especialidad</span><span class="drawer-field-value">Kinesiología</span></div>
+                    <div class="drawer-field"><span class="drawer-field-label">Última sesión</span><span class="drawer-field-value">02/06/2026</span></div>
+                  </div>
+                  <div class="drawer-section">
+                    <div class="drawer-section-label">Progreso de sesiones</div>
+                    <div style="font-size:0.82rem;color:#374151">8 de 12 sesiones</div>
+                    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div></div>
+                  </div>
+                  <div class="drawer-section">
+                    <div class="drawer-section-label">Últimas sesiones</div>
+                    <div class="session-row"><span style="display:flex;align-items:center"><span class="session-dot"></span>02/06 — Asistió</span><span style="font-size:0.75rem;color:#6b7280">$15.000 ✓</span></div>
+                    <div class="session-row"><span style="display:flex;align-items:center"><span class="session-dot"></span>26/05 — Asistió</span><span style="font-size:0.75rem;color:#6b7280">$15.000 ✓</span></div>
+                    <div class="session-row"><span style="display:flex;align-items:center"><span class="session-dot" style="background:#ef4444"></span>19/05 — No vino</span><span style="font-size:0.75rem;color:#6b7280">—</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- admin-main -->
+        </div>
+      </div>
+
+    </div><!-- app-body -->
+  </div>
+</div>
+
+<footer style="border-top:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;font-size:0.82rem;color:var(--ink-light);">
+  <span style="font-family:var(--serif);color:var(--ink)">pluxow</span>
+  <span>Demo interactiva · Datos de ejemplo</span>
+  <span>pluxow.com</span>
+</footer>
+
+<script>
+/* ── SCENE MANAGEMENT ── */
+let currentScene = 'patient';
+
+const guideTexts = {
+  patient: 'El bot recibe al paciente y lo guía paso a paso para reservar su turno desde WhatsApp',
+  pro: 'El profesional ve su agenda del día, recibe check-ins en tiempo real y registra las consultas',
+  admin: 'La administrativa gestiona el inbox, toma control del bot cuando es necesario y revisa la agenda'
+};
+const titlebarTexts = {
+  patient: 'Policonsultorio Ciudad Jardín — Vista del paciente',
+  pro: 'Dashboard del Profesional — Dr. Sebastián Torres',
+  admin: 'Panel de Administración — Valentina Ríos'
+};
+
+function setScene(scene) {
+  document.getElementById('scene-' + currentScene).classList.remove('active');
+  document.getElementById('card-' + currentScene).classList.remove('active');
+  currentScene = scene;
+  document.getElementById('scene-' + scene).classList.add('active');
+  document.getElementById('card-' + scene).classList.add('active');
+  document.getElementById('guideText').textContent = guideTexts[scene];
+  document.getElementById('titlebarName').textContent = titlebarTexts[scene];
+  if (scene === 'patient' && !chatStarted) startChat();
+  if (scene === 'pro') initPro();
+  if (scene === 'admin') initAdmin();
+  window.scrollTo({ top: document.querySelector('.guide-wrap').offsetTop - 100, behavior: 'smooth' });
+}
+
+/* ── SCENE 1: WHATSAPP CHAT ── */
+let chatStarted = false;
+let chatStep = 0;
+let chatTimer = null;
+
+const chatFlow = [
+  { type: 'bot', text: '¡Hola! 👋 Bienvenido al Policonsultorio Ciudad Jardín.\nSoy el asistente virtual. ¿En qué puedo ayudarte?', delay: 800 },
+  { type: 'options', opts: ['Necesito un turno 📅', 'Consultar precios 💰', '¿Dónde están? 📍', 'Hablar con alguien 👩'], autoIdx: 0, delay: 700 },
+  { type: 'patient', text: 'Necesito un turno 📅', delay: 1600 },
+  { type: 'bot', text: '¡Perfecto! ¿Para qué especialidad necesitás el turno?', delay: 700 },
+  { type: 'options', opts: ['Kinesiología', 'Traumatología', 'Nutrición', 'Osteopatía', 'Masaje Deportivo', 'RPG'], autoIdx: 0, delay: 600 },
+  { type: 'patient', text: 'Kinesiología', delay: 1500 },
+  { type: 'bot', text: '¡Genial! Kinesiología con el Dr. Sebastián Torres.\n¿Tenés orden médica?', delay: 700 },
+  { type: 'options', opts: ['✅ Sí, tengo orden', '❌ No tengo orden'], autoIdx: 0, delay: 600 },
+  { type: 'patient', text: '✅ Sí, tengo orden', delay: 1500 },
+  { type: 'bot', text: 'Perfecto. Estos son los turnos disponibles para esta semana:', delay: 700 },
+  { type: 'options', opts: ['Lun 9:00 hs', 'Lun 10:00 hs', 'Mar 11:00 hs', 'Mié 9:00 hs', 'Jue 14:00 hs', 'Vie 10:00 hs'], autoIdx: 0, delay: 600 },
+  { type: 'patient', text: 'Lun 9:00 hs', delay: 1500 },
+  { type: 'loading', delay: 1600 },
+  { type: 'bot', text: '¡Turno reservado! Para confirmarlo necesitás abonar la seña de $5.000.', delay: 700 },
+  { type: 'payment', delay: 600 },
+  { type: 'bot', text: '✅ ¡Seña recibida con éxito!\n\nTu turno está confirmado:\n📅 Lunes 9:00 hs\n👨‍⚕️ Dr. Sebastián Torres\n🏥 Policonsultorio Ciudad Jardín\n\n¡Te esperamos! 😊', delay: 2000 },
+];
+
+function startChat() {
+  chatStarted = true;
+  chatStep = 0;
+  if (chatTimer) clearTimeout(chatTimer);
+  document.getElementById('waMessages').innerHTML = '';
+  updateWaProgress(0);
+  runChatStep();
+}
+
+function runChatStep() {
+  if (chatStep >= chatFlow.length) return;
+  const step = chatFlow[chatStep];
+  chatTimer = setTimeout(() => {
+    const msgs = document.getElementById('waMessages');
+
+    if (step.type === 'loading') {
+      const el = document.createElement('div');
+      el.className = 'wa-loading';
+      el.innerHTML = '<div class="wa-dots"><span></span><span></span><span></span></div><span>escribiendo...</span>';
+      msgs.appendChild(el);
+      msgs.scrollTop = msgs.scrollHeight;
+      chatStep++;
+      runChatStep();
+      return;
+    }
+
+    // Remove loading if present
+    const loading = msgs.querySelector('.wa-loading');
+    if (loading) loading.remove();
+
+    if (step.type === 'bot') {
+      const el = document.createElement('div');
+      el.className = 'wa-msg bot';
+      el.innerHTML = step.text.replace(/\n/g, '<br>') + '<div class="wa-msg-time">' + getTime() + '</div>';
+      msgs.appendChild(el);
+    } else if (step.type === 'patient') {
+      const el = document.createElement('div');
+      el.className = 'wa-msg patient';
+      el.innerHTML = step.text + '<div class="wa-msg-time">' + getTime() + '</div>';
+      msgs.appendChild(el);
+    } else if (step.type === 'options') {
+      const el = document.createElement('div');
+      el.className = 'wa-options';
+      step.opts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'wa-opt-btn';
+        btn.textContent = opt;
+        if (i === step.autoIdx) btn.classList.add('selected');
+        el.appendChild(btn);
+      });
+      msgs.appendChild(el);
+    } else if (step.type === 'payment') {
+      const el = document.createElement('div');
+      el.className = 'wa-msg bot';
+      el.innerHTML = '<button class="wa-payment-btn">💳 Pagar seña — $5.000</button><div class="wa-msg-time">' + getTime() + '</div>';
+      msgs.appendChild(el);
+    }
+
+    msgs.scrollTop = msgs.scrollHeight;
+    chatStep++;
+    const pct = Math.round((chatStep / chatFlow.length) * 100);
+    const stepN = Math.min(chatStep, chatFlow.length);
+    updateWaProgress(pct, stepN);
+    runChatStep();
+  }, step.delay);
+}
+
+function updateWaProgress(pct, step) {
+  document.getElementById('waProgressFill').style.width = pct + '%';
+  if (step !== undefined) document.getElementById('waStepLabel').textContent = 'Paso ' + step + ' / ' + chatFlow.length;
+}
+
+function getTime() {
+  const now = new Date(); return now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+}
+
+/* ── SCENE 2: PROFESSIONAL ── */
+let proMoment = 0;
+const appts = [
+  { time: '09:00', name: 'Ana Rodríguez', spec: 'Kinesiología', amount: 15000, status: 'confirmado' },
+  { time: '10:00', name: 'Carlos Méndez', spec: 'Traumatología', amount: 18000, status: 'confirmado' },
+  { time: '11:00', name: 'Laura Vega', spec: 'RPG', amount: 16000, status: 'confirmado' },
+  { time: '14:00', name: 'Martín Silva', spec: 'Osteopatía', amount: 20000, status: 'confirmado' },
+  { time: '15:30', name: 'Sofía Torres', spec: 'Nutrición', amount: 12000, status: 'confirmado' },
+];
+let apptStates = appts.map(a => ({ ...a }));
+
+const proMoments = [
+  { label: 'Momento 1 / 4 — Inicio del día', guide: 'El Dr. Torres abre su dashboard y ve los 5 turnos confirmados para el día' },
+  { label: 'Momento 2 / 4 — Check-in por QR', guide: 'Ana Rodríguez escaneó el código QR en la sala de espera. El doctor recibe la notificación instantánea', action: () => { apptStates[0].status = 'checkin'; showToast(); } },
+  { label: 'Momento 3 / 4 — Sesión en curso', guide: 'El doctor hace click en "Iniciar" y el turno pasa a estado "En consulta"', action: () => { apptStates[0].status = 'en_consulta'; } },
+  { label: 'Momento 4 / 4 — Sesión finalizada', guide: 'Al finalizar, el sistema actualiza el historial y los cobros del día automáticamente', action: () => { apptStates[0].status = 'atendido'; } },
+];
+
+function initPro() {
+  proMoment = 0;
+  apptStates = appts.map(a => ({ ...a }));
+  renderProList();
+  updateProStats();
+  document.getElementById('proStepLabel').textContent = proMoments[0].label;
+  document.getElementById('btnAdvancePro').disabled = false;
+  document.getElementById('btnAdvancePro').textContent = 'Avanzar →';
+}
+
+function advancePro() {
+  proMoment++;
+  if (proMoment >= proMoments.length) return;
+  const m = proMoments[proMoment];
+  if (m.action) m.action();
+  renderProList();
+  updateProStats();
+  document.getElementById('proStepLabel').textContent = m.label;
+  document.getElementById('guideText').textContent = m.guide;
+  if (proMoment === proMoments.length - 1) {
+    document.getElementById('btnAdvancePro').textContent = 'Reiniciar';
+    document.getElementById('btnAdvancePro').onclick = initPro;
+  }
+}
+
+function renderProList() {
+  const list = document.getElementById('proList');
+  list.innerHTML = '';
+  apptStates.forEach((a, i) => {
+    const row = document.createElement('div');
+    row.className = 'appt-row' + (i === 0 && a.status !== 'confirmado' ? ' highlight' : '');
+    const badgeClass = 'badge-' + a.status;
+    const badgeText = { confirmado: 'Confirmado', checkin: '✓ Llegó', en_consulta: '🔵 En consulta', atendido: '✓ Atendido' }[a.status];
+    let actionHtml = '';
+    if (a.status === 'checkin') actionHtml = '<button class="appt-action action-iniciar" style="cursor:default">Iniciar →</button>';
+    else if (a.status === 'en_consulta') actionHtml = '<button class="appt-action action-finalizar" style="cursor:default">Finalizar →</button>';
+    else if (a.status === 'atendido') actionHtml = '<button class="appt-action action-done">Listo ✓</button>';
+    row.innerHTML = `
+      <div class="appt-time">${a.time}</div>
+      <div class="appt-dot ${a.status}"></div>
+      <div class="appt-info"><div class="appt-name">${a.name}</div><div class="appt-spec">${a.spec}</div></div>
+      <div class="appt-amount">$${a.amount.toLocaleString('es-AR')}</div>
+      <span class="appt-status-badge ${badgeClass}">${badgeText}</span>
+      ${actionHtml}
+    `;
+    list.appendChild(row);
+  });
+}
+
+function updateProStats() {
+  const atendidos = apptStates.filter(a => a.status === 'atendido').length;
+  const porVer = apptStates.filter(a => ['confirmado','checkin','en_consulta'].includes(a.status)).length;
+  const cobros = apptStates.filter(a => a.status === 'atendido').reduce((s, a) => s + a.amount, 0);
+  document.getElementById('statAtendidos').textContent = atendidos;
+  document.getElementById('statPorVer').textContent = porVer;
+  document.getElementById('statCobros').textContent = cobros > 0 ? '$' + cobros.toLocaleString('es-AR') : '$0';
+}
+
+function showToast() {
+  const t = document.getElementById('proToast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ── SCENE 3: ADMIN ── */
+let adminMoment = 0;
+let isManualMode = false;
+
+const adminMoments = [
+  { label: 'Momento 1 / 5 — Inbox del día', guide: 'La administrativa ve el inbox. Carlos Méndez tiene 2 mensajes sin leer' },
+  { label: 'Momento 2 / 5 — Tomar control', guide: 'Hace clic en "Tomar control" para responder ella directamente, pausando el bot', action: toggleMode },
+  { label: 'Momento 3 / 5 — Respuesta manual', guide: 'Escribe y envía el mensaje. El paciente recibe una respuesta personalizada', action: sendAdminMsgAuto },
+  { label: 'Momento 4 / 5 — Ver la agenda', guide: 'Cambia al tab de Agenda para ver el estado del día del doctor', action: () => adminTab('agenda') },
+  { label: 'Momento 5 / 5 — Ficha del paciente', guide: 'Hace clic en un turno para ver la historia clínica y el progreso de sesiones del paciente', action: () => openAgendaDrawer(0) },
+];
+
+function initAdmin() {
+  adminMoment = 0;
+  isManualMode = false;
+  document.getElementById('adminMomentLabel').textContent = adminMoments[0].label;
+  document.getElementById('guideText').textContent = adminMoments[0].guide;
+  document.getElementById('modeToggle').className = 'mode-toggle bot-mode';
+  document.getElementById('modeToggle').textContent = '🤖 Bot';
+  document.getElementById('chatStatus').textContent = '🤖 Bot activo';
+  document.getElementById('adminChatInput').disabled = true;
+  document.getElementById('adminChatInput').placeholder = 'El bot está respondiendo...';
+  document.getElementById('adminSendBtn').disabled = true;
+  document.getElementById('btnAdvanceAdmin').disabled = false;
+  document.getElementById('btnAdvanceAdmin').textContent = 'Avanzar →';
+  adminTab('inbox');
+}
+
+function advanceAdmin() {
+  adminMoment++;
+  if (adminMoment >= adminMoments.length) { initAdmin(); return; }
+  const m = adminMoments[adminMoment];
+  if (m.action) m.action();
+  document.getElementById('adminMomentLabel').textContent = m.label;
+  document.getElementById('guideText').textContent = m.guide;
+  if (adminMoment === adminMoments.length - 1) {
+    document.getElementById('btnAdvanceAdmin').textContent = 'Reiniciar →';
+  }
+}
+
+function adminTab(tab) {
+  document.getElementById('navInbox').classList.remove('active');
+  document.getElementById('navAgenda').classList.remove('active');
+  document.getElementById('adminInboxPanel').style.display = 'none';
+  document.getElementById('adminAgendaPanel').style.display = 'none';
+  if (tab === 'inbox') {
+    document.getElementById('navInbox').classList.add('active');
+    document.getElementById('adminInboxPanel').style.display = 'flex';
+  } else if (tab === 'agenda') {
+    document.getElementById('navAgenda').classList.add('active');
+    document.getElementById('adminAgendaPanel').style.display = 'flex';
+    renderAgendaList();
+  }
+}
+
+function toggleMode() {
+  isManualMode = !isManualMode;
+  const btn = document.getElementById('modeToggle');
+  const input = document.getElementById('adminChatInput');
+  const sendBtn = document.getElementById('adminSendBtn');
+  if (isManualMode) {
+    btn.className = 'mode-toggle manual-mode'; btn.textContent = '👩 Vos';
+    document.getElementById('chatStatus').textContent = '👩 Modo manual activo';
+    input.disabled = false; input.placeholder = 'Escribí tu mensaje...';
+    sendBtn.disabled = false;
+    document.getElementById('carlosBadge').remove();
+    document.getElementById('inboxBadge').textContent = '2';
+  } else {
+    btn.className = 'mode-toggle bot-mode'; btn.textContent = '🤖 Bot';
+    document.getElementById('chatStatus').textContent = '🤖 Bot activo';
+    input.disabled = true; input.placeholder = 'El bot está respondiendo...';
+    sendBtn.disabled = true;
+  }
+}
+
+function sendAdminMsgAuto() {
+  const input = document.getElementById('adminChatInput');
+  input.value = '¡Hola Carlos! Sí tenemos lugar el viernes a las 9:00 hs. ¿Te lo reservo? 😊';
+  setTimeout(() => { sendAdminMsg(); }, 400);
+}
+
+function sendAdminMsg() {
+  const input = document.getElementById('adminChatInput');
+  const text = input.value.trim();
+  if (!text || !isManualMode) return;
+  const msgs = document.getElementById('chatMessages');
+  const el = document.createElement('div');
+  el.className = 'wa-msg admin-msg';
+  el.innerHTML = text + '<div class="wa-msg-time">' + getTime() + '</div>';
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  input.value = '';
+}
+
+function openConv(who) {
+  // visual only
+}
+
+const agendaAppts = [
+  { time: '09:00', name: 'Ana Rodríguez', spec: 'Kinesiología', pay: 'paid', status: 'atendido' },
+  { time: '10:00', name: 'Carlos Méndez', spec: 'Traumatología', pay: 'paid', status: 'atendido' },
+  { time: '11:00', name: 'Laura Vega', spec: 'RPG', pay: 'paid', status: 'confirmado' },
+  { time: '14:00', name: 'Martín Silva', spec: 'Osteopatía', pay: 'pending', status: 'confirmado' },
+  { time: '15:30', name: 'Sofía Torres', spec: 'Nutrición', pay: 'paid', status: 'confirmado' },
+];
+
+function renderAgendaList() {
+  const list = document.getElementById('agendaList');
+  list.innerHTML = '';
+  agendaAppts.forEach((a, i) => {
+    const row = document.createElement('div');
+    row.className = 'agenda-row';
+    row.id = 'agRow' + i;
+    row.onclick = () => openAgendaDrawer(i);
+    row.innerHTML = `
+      <div class="agenda-time">${a.time}</div>
+      <div style="flex:1"><div class="agenda-name">${a.name}</div><div class="agenda-spec">${a.spec}</div></div>
+      <span class="agenda-pay ${a.pay === 'paid' ? 'pay-paid' : 'pay-pending'}">${a.pay === 'paid' ? 'Seña ✓' : 'Pendiente'}</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function openAgendaDrawer(i) {
+  document.querySelectorAll('.agenda-row').forEach(r => r.classList.remove('open'));
+  document.getElementById('agRow' + i)?.classList.add('open');
+  document.getElementById('patientDrawer').classList.add('open');
+  document.getElementById('drawerName').textContent = agendaAppts[i].name;
+}
+
+function closeDrawer() {
+  document.getElementById('patientDrawer').classList.remove('open');
+  document.querySelectorAll('.agenda-row').forEach(r => r.classList.remove('open'));
+}
+
+// Init on load
+startChat();
+initPro();
+</script>
+</body>
+</html>
