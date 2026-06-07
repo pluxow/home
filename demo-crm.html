@@ -193,7 +193,49 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 .btn-advance:disabled { background: #d1d5db; cursor: default; }
 
 /* ─────────────────────────────────────────────
-   SCENE 3: FINANCE
+   SCENE 3: HISTORIAL CLÍNICO
+───────────────────────────────────────────── */
+.hist-shell { display: flex; height: 600px; background: #f9fafb; }
+.hist-list { width: 280px; background: white; border-right: 1px solid #e5e7eb; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
+.hist-list-hdr { padding: 0.65rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.8rem; font-weight: 600; color: #374151; background: #fafafa; display: flex; align-items: center; justify-content: space-between; }
+.hist-patient-item { padding: 0.85rem 1rem; border-bottom: 1px solid #f3f4f6; cursor: pointer; transition: background 0.15s; }
+.hist-patient-item:hover { background: #f9fafb; }
+.hist-patient-item.active { background: #f0fdf4; border-left: 3px solid var(--green); }
+.hist-patient-name { font-size: 0.85rem; font-weight: 600; color: #111827; }
+.hist-patient-spec { font-size: 0.73rem; color: #6b7280; margin-top: 0.1rem; }
+.hist-patient-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+.hist-progress-mini { flex: 1; height: 4px; background: #e5e7eb; border-radius: 100px; overflow: hidden; }
+.hist-progress-mini-fill { height: 100%; background: var(--green); border-radius: 100px; }
+.hist-sessions-label { font-size: 0.68rem; color: #9ca3af; white-space: nowrap; }
+.hist-pending-yes { color: #d97706; font-weight: 500; }
+.hist-pending-no { color: var(--green); font-weight: 500; }
+.hist-status-badge { font-size: 0.72rem; font-weight: 500; padding: 0.2rem 0.65rem; border-radius: 100px; }
+.hist-status-active { background: var(--green-light); color: var(--green-dark); }
+.hist-status-done { background: #dbeafe; color: #1d4ed8; }
+.hist-detail { flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem; background: #f9fafb; }
+.hist-detail-name { font-family: var(--serif); font-size: 1.1rem; font-weight: 700; color: #111827; }
+.hist-detail-meta { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.35rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.hist-summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+.hist-summary-card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.85rem 1rem; }
+.hist-summary-label { font-size: 0.67rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; font-weight: 500; }
+.hist-summary-value { font-family: var(--serif); font-size: 1.15rem; color: #111827; }
+.hist-summary-value.amber { color: #d97706; }
+.hist-summary-value.green { color: var(--green); }
+.hist-progress-card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; }
+.hist-progress-label-row { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.5rem; }
+.hist-progress-label-row span:first-child { font-weight: 500; color: #374151; }
+.hist-progress-label-row span:last-child { color: #6b7280; }
+.hist-progress-bar-big { height: 8px; background: #e5e7eb; border-radius: 100px; overflow: hidden; }
+.hist-progress-bar-fill { height: 100%; border-radius: 100px; transition: width 0.5s; }
+.hist-sessions-card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+.hist-sessions-hdr { padding: 0.65rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.8rem; font-weight: 600; color: #374151; background: #fafafa; }
+.hist-table { width: 100%; border-collapse: collapse; }
+.hist-table th { font-size: 0.67rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.5rem 1rem; border-bottom: 1px solid #f3f4f6; text-align: left; }
+.hist-table td { padding: 0.55rem 1rem; font-size: 0.8rem; border-bottom: 1px solid #f9fafb; }
+.hist-table tr:last-child td { border-bottom: none; }
+
+/* ─────────────────────────────────────────────
+   SCENE 4: FINANCE
 ───────────────────────────────────────────── */
 .fin-shell { background: #f9fafb; }
 .fin-header { background: white; border-bottom: 1px solid #e5e7eb; padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
@@ -363,15 +405,19 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 <div class="scene-selector">
   <div class="scene-card active" id="card-patient" onclick="setScene('patient')">
     <span class="scene-icon">📱</span>
-    <div><h3>Perspectiva Paciente</h3><p>Así agenda un turno por WhatsApp</p></div>
+    <div><h3>Simulación chatbot</h3><p>Así agenda un turno por WhatsApp</p></div>
   </div>
   <div class="scene-card" id="card-pro" onclick="setScene('pro')">
-    <span class="scene-icon">🩺</span>
-    <div><h3>Perspectiva Profesional</h3><p>Así ve el Dr. Torres su día de trabajo</p></div>
+    <span class="scene-icon">📅</span>
+    <div><h3>Agenda digital</h3><p>Así ve el Dr. Torres su día de trabajo</p></div>
+  </div>
+  <div class="scene-card" id="card-hist" onclick="setScene('hist')">
+    <span class="scene-icon">🗂️</span>
+    <div><h3>Historial clínico</h3><p>Tratamientos, sesiones y saldo por paciente</p></div>
   </div>
   <div class="scene-card" id="card-admin" onclick="setScene('admin')">
-    <span class="scene-icon">🖥️</span>
-    <div><h3>Perspectiva Admin</h3><p>Así gestiona la administrativa el consultorio</p></div>
+    <span class="scene-icon">💰</span>
+    <div><h3>Panel financiero</h3><p>Ingresos, cobros y desglose por especialidad</p></div>
   </div>
 </div>
 
@@ -474,7 +520,80 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
         </div>
       </div>
 
-      <!-- ── SCENE 3: FINANCE ── -->
+      <!-- ── SCENE 3: HISTORIAL CLÍNICO ── -->
+      <div class="scene" id="scene-hist">
+        <div class="hist-shell">
+          <div class="hist-list">
+            <div class="hist-list-hdr">
+              <span>Pacientes activos</span>
+              <span style="font-size:0.72rem;color:var(--green);font-weight:500">5 pacientes</span>
+            </div>
+            <div class="hist-patient-item active" id="histItem-ana" onclick="selectPatient('ana')">
+              <div class="hist-patient-name">Ana Rodríguez</div>
+              <div class="hist-patient-spec">Kinesiología</div>
+              <div class="hist-patient-row">
+                <div class="hist-progress-mini"><div class="hist-progress-mini-fill" style="width:66%"></div></div>
+                <span class="hist-sessions-label">8/12</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:0.3rem">
+                <span class="hist-status-badge hist-status-active" style="font-size:0.68rem;padding:0.1rem 0.5rem">En curso</span>
+                <span class="hist-pending-yes" style="font-size:0.7rem">$30.000 pend.</span>
+              </div>
+            </div>
+            <div class="hist-patient-item" id="histItem-carlos" onclick="selectPatient('carlos')">
+              <div class="hist-patient-name">Carlos Méndez</div>
+              <div class="hist-patient-spec">Traumatología</div>
+              <div class="hist-patient-row">
+                <div class="hist-progress-mini"><div class="hist-progress-mini-fill" style="width:50%;background:#3b82f6"></div></div>
+                <span class="hist-sessions-label">3/6</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:0.3rem">
+                <span class="hist-status-badge hist-status-active" style="font-size:0.68rem;padding:0.1rem 0.5rem">En curso</span>
+                <span class="hist-pending-yes" style="font-size:0.7rem">$18.000 pend.</span>
+              </div>
+            </div>
+            <div class="hist-patient-item" id="histItem-laura" onclick="selectPatient('laura')">
+              <div class="hist-patient-name">Laura Vega</div>
+              <div class="hist-patient-spec">RPG</div>
+              <div class="hist-patient-row">
+                <div class="hist-progress-mini"><div class="hist-progress-mini-fill" style="width:50%;background:#8b5cf6"></div></div>
+                <span class="hist-sessions-label">5/10</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:0.3rem">
+                <span class="hist-status-badge hist-status-active" style="font-size:0.68rem;padding:0.1rem 0.5rem">En curso</span>
+                <span class="hist-pending-yes" style="font-size:0.7rem">$16.000 pend.</span>
+              </div>
+            </div>
+            <div class="hist-patient-item" id="histItem-martin" onclick="selectPatient('martin')">
+              <div class="hist-patient-name">Martín Silva</div>
+              <div class="hist-patient-spec">Osteopatía</div>
+              <div class="hist-patient-row">
+                <div class="hist-progress-mini"><div class="hist-progress-mini-fill" style="width:12%;background:#f59e0b"></div></div>
+                <span class="hist-sessions-label">1/8</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:0.3rem">
+                <span class="hist-status-badge hist-status-active" style="font-size:0.68rem;padding:0.1rem 0.5rem">En curso</span>
+                <span class="hist-pending-yes" style="font-size:0.7rem">$20.000 pend.</span>
+              </div>
+            </div>
+            <div class="hist-patient-item" id="histItem-sofia" onclick="selectPatient('sofia')">
+              <div class="hist-patient-name">Sofía Torres</div>
+              <div class="hist-patient-spec">Nutrición</div>
+              <div class="hist-patient-row">
+                <div class="hist-progress-mini"><div class="hist-progress-mini-fill" style="width:100%;background:#10b981"></div></div>
+                <span class="hist-sessions-label">6/6</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:0.3rem">
+                <span class="hist-status-badge hist-status-done" style="font-size:0.68rem;padding:0.1rem 0.5rem">Completo</span>
+                <span class="hist-pending-no" style="font-size:0.7rem">Sin deuda ✓</span>
+              </div>
+            </div>
+          </div>
+          <div class="hist-detail" id="histDetail"></div>
+        </div>
+      </div>
+
+      <!-- ── SCENE 4: FINANCE ── -->
       <div class="scene" id="scene-admin">
         <div class="fin-shell">
           <div class="fin-header">
@@ -660,10 +779,10 @@ const modalData = {
     bullets: ['📅 Vista diaria con los turnos del día y especialidad de cada paciente', '🗓️ Vista semanal para ver la carga de trabajo de la semana completa', '📆 Vista mensual con el panorama del mes y días ocupados']
   },
   admin: {
-    badge: '💰 Perspectiva Admin',
-    title: 'Panel de finanzas',
-    desc: 'Resumen de ingresos del consultorio: por mes, por especialidad y cobros recientes',
-    bullets: ['📊 KPIs del mes: total, cobrado y pendiente de cobro', '📈 Evolución mensual de ingresos de los últimos 6 meses', '🏷️ Desglose por especialidad y tabla de cobros recientes']
+    badge: '💰 Panel Financiero',
+    title: 'Resumen de ingresos',
+    desc: 'Ingresos del mes, evolución histórica y desglose por especialidad',
+    bullets: ['📊 KPIs del mes: total facturado, cobrado y pendiente', '📈 Evolución mensual de los últimos 6 meses', '🏷️ Desglose por especialidad y cobros recientes']
   }
 };
 let pendingScene = 'patient';
@@ -688,16 +807,19 @@ let currentScene = 'patient';
 
 const guideTexts = {
   patient: 'El bot recibe al paciente y lo guía paso a paso para reservar su turno desde WhatsApp',
-  pro: 'El profesional ve su agenda del día, recibe check-ins en tiempo real y registra las consultas',
-  admin: 'La administrativa gestiona el inbox, toma control del bot cuando es necesario y revisa la agenda'
+  pro: 'Vista diaria, semanal y mensual de la agenda. Hacé clic en los tabs para cambiar la vista',
+  hist: 'Hacé clic en un paciente para ver su tratamiento, progreso de sesiones y estado de cobros',
+  admin: 'Resumen de ingresos del mes: total, cobrado, pendiente y desglose por especialidad'
 };
 const titlebarTexts = {
-  patient: 'Policonsultorio Ciudad Jardín — Vista del paciente',
-  pro: 'Dashboard del Profesional — Dr. Sebastián Torres',
-  admin: 'Panel de Administración — Valentina Ríos'
+  patient: 'Policonsultorio Ciudad Jardín — Simulación chatbot',
+  pro: 'Agenda Digital — Dr. Sebastián Torres',
+  hist: 'Historial Clínico — Policonsultorio Ciudad Jardín',
+  admin: 'Panel Financiero — Policonsultorio Ciudad Jardín'
 };
 
 function setScene(scene) {
+  if (scene === 'pro' || scene === 'hist') { activateScene(scene); return; }
   showModal(scene);
 }
 
@@ -711,6 +833,7 @@ function activateScene(scene) {
   document.getElementById('titlebarName').textContent = titlebarTexts[scene];
   if (scene === 'patient') { chatStarted = false; startChat(); }
   if (scene === 'pro') initPro();
+  if (scene === 'hist') initHist();
   if (scene === 'admin') initAdmin();
   window.scrollTo({ top: document.querySelector('.guide-wrap').offsetTop - 80, behavior: 'smooth' });
 }
@@ -920,7 +1043,107 @@ function renderCalMonth() {
   document.getElementById('calBody').innerHTML = h + '</div>';
 }
 
-/* ── SCENE 3: FINANCE ── */
+/* ── SCENE 3: HISTORIAL CLÍNICO ── */
+const patientData = {
+  ana: {
+    name: 'Ana Rodríguez', spec: 'Kinesiología', colorHex: '#059669',
+    sessions: { done: 8, total: 12 }, status: 'active',
+    finance: { total: 180000, cobrado: 90000, pendiente: 30000 },
+    history: [
+      { date: '09/06', attended: true, paid: true, amount: 15000 },
+      { date: '02/06', attended: true, paid: true, amount: 15000 },
+      { date: '26/05', attended: true, paid: true, amount: 15000 },
+      { date: '19/05', attended: false, paid: null, amount: null },
+      { date: '12/05', attended: true, paid: true, amount: 15000 },
+      { date: '05/05', attended: true, paid: false, amount: 15000 },
+    ]
+  },
+  carlos: {
+    name: 'Carlos Méndez', spec: 'Traumatología', colorHex: '#3b82f6',
+    sessions: { done: 3, total: 6 }, status: 'active',
+    finance: { total: 108000, cobrado: 36000, pendiente: 18000 },
+    history: [
+      { date: '09/06', attended: true, paid: false, amount: 18000 },
+      { date: '05/06', attended: true, paid: true, amount: 18000 },
+      { date: '29/05', attended: true, paid: true, amount: 18000 },
+    ]
+  },
+  laura: {
+    name: 'Laura Vega', spec: 'RPG', colorHex: '#8b5cf6',
+    sessions: { done: 5, total: 10 }, status: 'active',
+    finance: { total: 160000, cobrado: 64000, pendiente: 16000 },
+    history: [
+      { date: '09/06', attended: true, paid: false, amount: 16000 },
+      { date: '02/06', attended: true, paid: true, amount: 16000 },
+      { date: '26/05', attended: true, paid: true, amount: 16000 },
+      { date: '19/05', attended: true, paid: true, amount: 16000 },
+      { date: '12/05', attended: true, paid: true, amount: 16000 },
+    ]
+  },
+  martin: {
+    name: 'Martín Silva', spec: 'Osteopatía', colorHex: '#f59e0b',
+    sessions: { done: 1, total: 8 }, status: 'active',
+    finance: { total: 160000, cobrado: 0, pendiente: 20000 },
+    history: [
+      { date: '09/06', attended: true, paid: false, amount: 20000 },
+    ]
+  },
+  sofia: {
+    name: 'Sofía Torres', spec: 'Nutrición', colorHex: '#10b981',
+    sessions: { done: 6, total: 6 }, status: 'done',
+    finance: { total: 72000, cobrado: 72000, pendiente: 0 },
+    history: [
+      { date: '26/05', attended: true, paid: true, amount: 12000 },
+      { date: '12/05', attended: true, paid: true, amount: 12000 },
+      { date: '28/04', attended: true, paid: true, amount: 12000 },
+      { date: '14/04', attended: false, paid: null, amount: null },
+      { date: '07/04', attended: true, paid: true, amount: 12000 },
+      { date: '31/03', attended: true, paid: true, amount: 12000 },
+    ]
+  }
+};
+
+function initHist() { selectPatient('ana'); }
+
+function selectPatient(id) {
+  document.querySelectorAll('.hist-patient-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('histItem-' + id).classList.add('active');
+  const p = patientData[id];
+  const pct = Math.round((p.sessions.done / p.sessions.total) * 100);
+  const statusBadge = p.status === 'done'
+    ? '<span class="hist-status-badge hist-status-done">Completo ✓</span>'
+    : '<span class="hist-status-badge hist-status-active">En curso</span>';
+  const rows = p.history.map(s => {
+    const payBadge = s.paid === null ? '—'
+      : s.paid ? '<span style="color:#059669;font-weight:500">Cobrado ✓</span>'
+      : '<span style="color:#d97706;font-weight:500">Pendiente</span>';
+    const att = s.attended
+      ? '<span style="color:#059669">✓ Asistió</span>'
+      : '<span style="color:#ef4444">✗ No asistió</span>';
+    return `<tr><td>${s.date}</td><td>${att}</td><td>${s.amount ? '$' + s.amount.toLocaleString('es-AR') : '—'}</td><td>${payBadge}</td></tr>`;
+  }).join('');
+  document.getElementById('histDetail').innerHTML = `
+    <div class="hist-detail-name">${p.name}</div>
+    <div class="hist-detail-meta"><span style="font-size:0.8rem;color:#6b7280">${p.spec}</span>${statusBadge}</div>
+    <div class="hist-summary-grid">
+      <div class="hist-summary-card"><div class="hist-summary-label">Total tratamiento</div><div class="hist-summary-value">$${p.finance.total.toLocaleString('es-AR')}</div></div>
+      <div class="hist-summary-card"><div class="hist-summary-label">Cobrado</div><div class="hist-summary-value green">$${p.finance.cobrado.toLocaleString('es-AR')}</div></div>
+      <div class="hist-summary-card"><div class="hist-summary-label">Pendiente</div><div class="hist-summary-value ${p.finance.pendiente > 0 ? 'amber' : 'green'}">${p.finance.pendiente > 0 ? '$' + p.finance.pendiente.toLocaleString('es-AR') : 'Sin deuda ✓'}</div></div>
+    </div>
+    <div class="hist-progress-card">
+      <div class="hist-progress-label-row"><span>Progreso de sesiones</span><span>${p.sessions.done} de ${p.sessions.total} · ${pct}%</span></div>
+      <div class="hist-progress-bar-big"><div class="hist-progress-bar-fill" style="width:${pct}%;background:${p.colorHex}"></div></div>
+    </div>
+    <div class="hist-sessions-card">
+      <div class="hist-sessions-hdr">Registro de sesiones</div>
+      <table class="hist-table">
+        <thead><tr><th>Fecha</th><th>Asistencia</th><th>Monto</th><th>Cobro</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ── SCENE 4: FINANCE ── */
 
 function initAdmin() {
   document.getElementById('guideText').textContent = 'Resumen de ingresos del mes, evolución histórica y desglose por especialidad y cobros';
