@@ -1048,7 +1048,7 @@ const patientData = {
   ana: {
     name: 'Ana Rodríguez', spec: 'Kinesiología', colorHex: '#059669',
     sessions: { done: 8, total: 12 }, status: 'active',
-    finance: { total: 180000, cobrado: 90000, pendiente: 30000 },
+    finance: { total: 120000, cobrado: 90000, pendiente: 30000 },
     history: [
       { date: '09/06', attended: true, paid: true, amount: 15000 },
       { date: '02/06', attended: true, paid: true, amount: 15000 },
@@ -1126,7 +1126,7 @@ function selectPatient(id) {
     <div class="hist-detail-name">${p.name}</div>
     <div class="hist-detail-meta"><span style="font-size:0.8rem;color:#6b7280">${p.spec}</span>${statusBadge}</div>
     <div class="hist-summary-grid">
-      <div class="hist-summary-card"><div class="hist-summary-label">Total tratamiento</div><div class="hist-summary-value">$${p.finance.total.toLocaleString('es-AR')}</div></div>
+      <div class="hist-summary-card"><div class="hist-summary-label">Total facturado</div><div class="hist-summary-value">$${p.finance.total.toLocaleString('es-AR')}</div></div>
       <div class="hist-summary-card"><div class="hist-summary-label">Cobrado</div><div class="hist-summary-value green">$${p.finance.cobrado.toLocaleString('es-AR')}</div></div>
       <div class="hist-summary-card"><div class="hist-summary-label">Pendiente</div><div class="hist-summary-value ${p.finance.pendiente > 0 ? 'amber' : 'green'}">${p.finance.pendiente > 0 ? '$' + p.finance.pendiente.toLocaleString('es-AR') : 'Sin deuda ✓'}</div></div>
     </div>
