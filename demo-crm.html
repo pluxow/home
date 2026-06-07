@@ -28,31 +28,45 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 .header-back:hover { color: var(--ink); }
 
 /* ── INTRO ── */
-.intro { padding: 3rem 4rem 1.5rem; max-width: 1400px; margin: 0 auto; }
-.section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.6rem; }
-.intro h1 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.75rem; }
-.intro p { color: var(--ink-mid); font-size: 0.95rem; max-width: 560px; }
+.intro { padding: 1.25rem 4rem 0.5rem; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.3rem; }
+.intro h1 { font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 1.5rem); color: var(--ink); }
+.intro-text { flex: 1; }
 
 /* ── SCENE SELECTOR ── */
-.scene-selector { display: flex; gap: 1rem; max-width: 1400px; margin: 0 auto; padding: 1.5rem 4rem; }
+.scene-selector { display: flex; gap: 0.75rem; max-width: 1400px; margin: 0 auto; padding: 0.6rem 4rem; }
 .scene-card {
-  flex: 1; background: var(--white); border: 2px solid var(--border); border-radius: 14px;
-  padding: 1.25rem 1.5rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 1rem;
+  flex: 1; background: var(--white); border: 2px solid var(--border); border-radius: 12px;
+  padding: 0.75rem 1rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 0.75rem;
 }
 .scene-card:hover { border-color: var(--green-mid); }
 .scene-card.active { border-color: var(--green); background: var(--green-light); }
-.scene-icon { font-size: 1.6rem; flex-shrink: 0; }
-.scene-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
-.scene-card p { font-size: 0.78rem; color: var(--ink-light); }
+.scene-icon { font-size: 1.35rem; flex-shrink: 0; }
+.scene-card h3 { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-bottom: 0.1rem; }
+.scene-card p { font-size: 0.72rem; color: var(--ink-light); }
 
 /* ── GUIDE LABEL ── */
-.guide-wrap { max-width: 1400px; margin: 0 auto; padding: 0 4rem 0.75rem; }
-.guide-label { background: var(--green-light); border: 1px solid var(--green-mid); border-radius: 10px; padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.6rem; }
-.guide-label span.icon { font-size: 1rem; flex-shrink: 0; }
-.guide-label span.text { font-size: 0.85rem; color: var(--green-dark); font-weight: 500; }
+.guide-wrap { max-width: 1400px; margin: 0 auto; padding: 0 4rem 0.4rem; }
+.guide-label { background: var(--green-light); border: 1px solid var(--green-mid); border-radius: 8px; padding: 0.5rem 0.85rem; display: flex; align-items: center; gap: 0.6rem; }
+.guide-label span.icon { font-size: 0.9rem; flex-shrink: 0; }
+.guide-label span.text { font-size: 0.82rem; color: var(--green-dark); font-weight: 500; }
 
 /* ── APP WINDOW ── */
-.app-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4rem 4rem; }
+.app-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4rem 1.5rem; }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal-box { background: white; border-radius: 20px; padding: 2rem 2.25rem; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes modalIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-scene-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--green-light); color: var(--green-dark); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 100px; margin-bottom: 1rem; }
+.modal-box h2 { font-family: var(--serif); font-size: 1.4rem; color: var(--ink); margin-bottom: 0.5rem; }
+.modal-box p { font-size: 0.88rem; color: var(--ink-mid); margin-bottom: 1.25rem; }
+.modal-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.75rem; }
+.modal-bullets li { font-size: 0.85rem; color: var(--ink-mid); display: flex; align-items: flex-start; gap: 0.5rem; }
+.modal-bullets li::before { content: ''; flex-shrink: 0; }
+.modal-start-btn { width: 100%; padding: 0.85rem; background: var(--green); color: white; border: none; border-radius: 10px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.modal-start-btn:hover { background: var(--green-dark); }
 .app-window { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.08); }
 .app-titlebar { background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%); padding: 0.85rem 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
 .titlebar-dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -260,10 +274,26 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
   <a href="/demos.html" class="header-back">← Volver a demos</a>
 </header>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-scene-badge" id="modalBadge">📱 Perspectiva Paciente</div>
+    <h2 id="modalTitle">Vista del paciente</h2>
+    <p id="modalDesc">Seguí la conversación de Juan García agendando su turno de kinesiología por WhatsApp</p>
+    <ul class="modal-bullets" id="modalBullets">
+      <li>💬 El bot lo guía paso a paso con opciones claras</li>
+      <li>📅 Elige especialidad, valida su orden y elige horario</li>
+      <li>💳 El link de pago se genera automáticamente</li>
+    </ul>
+    <button class="modal-start-btn" id="modalBtn" onclick="startDemo()">▶ Iniciar demo</button>
+  </div>
+</div>
+
 <div class="intro">
-  <div class="section-label">Salud · CRM y gestión de turnos</div>
-  <h1>Bot de Agenda e Historia Clínica</h1>
-  <p>Sistema que automatiza la agenda desde WhatsApp, gestiona cobros y mantiene la historia clínica de cada paciente. Explorá las tres perspectivas del mismo sistema.</p>
+  <div class="intro-text">
+    <div class="section-label">Salud · CRM y gestión de turnos</div>
+    <h1>Bot de Agenda e Historia Clínica</h1>
+  </div>
 </div>
 
 <div class="scene-selector">
@@ -301,25 +331,35 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
         <div class="wa-shell">
           <!-- Sidebar: conversation list -->
           <div class="wa-sidebar">
-            <div class="wa-sidebar-header">💬 Conversaciones recientes</div>
+            <div class="wa-sidebar-header">💬 Inbox del consultorio</div>
             <div class="wa-conv-list">
               <div class="wa-conv-item active-conv">
-                <div class="wa-conv-avatar">TU</div>
+                <div class="wa-conv-avatar" style="background:#0284c7">JG</div>
                 <div class="wa-conv-info">
-                  <div class="wa-conv-name">Policonsultorio CJ</div>
-                  <div class="wa-conv-last">¡Hola! 👋 Bienvenido al Policonsu...</div>
+                  <div class="wa-conv-name">Juan García</div>
+                  <div class="wa-conv-last" id="convLastJuan">Nuevo contacto...</div>
                 </div>
                 <div class="wa-conv-meta"><span class="wa-conv-time">ahora</span><span class="wa-mode-badge">🤖 Bot</span></div>
               </div>
-              <div class="wa-conv-item" style="opacity:0.5">
-                <div class="wa-conv-avatar" style="background:#6b7280">DF</div>
-                <div class="wa-conv-info"><div class="wa-conv-name">Delivery Flash</div><div class="wa-conv-last">Tu pedido está en camino 🛵</div></div>
-                <div class="wa-conv-meta"><span class="wa-conv-time">10:24</span></div>
+              <div class="wa-conv-item">
+                <div class="wa-conv-avatar" style="background:var(--green)">AR</div>
+                <div class="wa-conv-info"><div class="wa-conv-name">Ana Rodríguez</div><div class="wa-conv-last">Turno confirmado ✓ Muchas gracias!</div></div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">hace 5 min</span><span class="wa-mode-badge">🤖 Bot</span></div>
               </div>
-              <div class="wa-conv-item" style="opacity:0.5">
-                <div class="wa-conv-avatar" style="background:#8b5cf6">MA</div>
-                <div class="wa-conv-info"><div class="wa-conv-name">Mamá</div><div class="wa-conv-last">¿Venís a cenar el domingo?</div></div>
-                <div class="wa-conv-meta"><span class="wa-conv-time">ayer</span></div>
+              <div class="wa-conv-item">
+                <div class="wa-conv-avatar" style="background:#3b82f6">CM</div>
+                <div class="wa-conv-info"><div class="wa-conv-name">Carlos Méndez</div><div class="wa-conv-last">¿Tienen lugar el viernes?</div></div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">hace 20 min</span><span class="wa-badge-count">1</span></div>
+              </div>
+              <div class="wa-conv-item">
+                <div class="wa-conv-avatar" style="background:#8b5cf6">LV</div>
+                <div class="wa-conv-info"><div class="wa-conv-name">Laura Vega</div><div class="wa-conv-last">Perfecto, hasta mañana!</div></div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">hace 1h</span><span class="wa-mode-badge">🤖 Bot</span></div>
+              </div>
+              <div class="wa-conv-item">
+                <div class="wa-conv-avatar" style="background:#ef4444">MS</div>
+                <div class="wa-conv-info"><div class="wa-conv-name">Martín Silva</div><div class="wa-conv-last">Necesito cancelar mi turno</div></div>
+                <div class="wa-conv-meta"><span class="wa-conv-time">hace 3h</span><span class="wa-badge-count">1</span></div>
               </div>
             </div>
           </div>
@@ -332,8 +372,8 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
               <button class="wa-restart-btn" onclick="startChat()">↺ Reiniciar</button>
             </div>
             <div class="wa-chat-header">
-              <div class="wa-chat-avatar">PC</div>
-              <div><div class="wa-chat-name">Policonsultorio Ciudad Jardín</div><div class="wa-chat-sub">🤖 Bot activo · en línea</div></div>
+              <div class="wa-chat-avatar" style="background:#0284c7">JG</div>
+              <div><div class="wa-chat-name">Juan García</div><div class="wa-chat-sub">🤖 Bot activo · nuevo paciente</div></div>
             </div>
             <div class="wa-messages" id="waMessages"></div>
             <div class="wa-chat-footer">
@@ -495,6 +535,44 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 </footer>
 
 <script>
+/* ── MODAL ── */
+const modalData = {
+  patient: {
+    badge: '📱 Perspectiva Paciente',
+    title: 'Vista del paciente',
+    desc: 'Seguí la conversación de Juan García agendando su turno de kinesiología por WhatsApp',
+    bullets: ['💬 El bot lo guía paso a paso con opciones claras', '📅 Elige especialidad, valida su orden y elige horario', '💳 El link de pago se genera automáticamente y confirma el turno']
+  },
+  pro: {
+    badge: '🩺 Perspectiva Profesional',
+    title: 'Vista del profesional',
+    desc: 'Mirá cómo el Dr. Torres gestiona su jornada de trabajo desde su dashboard',
+    bullets: ['📲 Recibe notificaciones de check-in en tiempo real', '🔵 Inicia y cierra sesiones con un clic', '📊 Los stats de cobros se actualizan automáticamente']
+  },
+  admin: {
+    badge: '🖥️ Perspectiva Admin',
+    title: 'Vista de la administrativa',
+    desc: 'Seguí a Valentina gestionando el consultorio desde el panel de administración',
+    bullets: ['💬 Monitorea todas las conversaciones activas del bot', '👩 Toma el control manualmente cuando es necesario', '📅 Revisa la agenda del día y la ficha de cada paciente']
+  }
+};
+let pendingScene = 'patient';
+
+function showModal(scene) {
+  pendingScene = scene;
+  const d = modalData[scene];
+  document.getElementById('modalBadge').textContent = d.badge;
+  document.getElementById('modalTitle').textContent = d.title;
+  document.getElementById('modalDesc').textContent = d.desc;
+  document.getElementById('modalBullets').innerHTML = d.bullets.map(b => '<li>' + b + '</li>').join('');
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function startDemo() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  activateScene(pendingScene);
+}
+
 /* ── SCENE MANAGEMENT ── */
 let currentScene = 'patient';
 
@@ -510,6 +588,10 @@ const titlebarTexts = {
 };
 
 function setScene(scene) {
+  showModal(scene);
+}
+
+function activateScene(scene) {
   document.getElementById('scene-' + currentScene).classList.remove('active');
   document.getElementById('card-' + currentScene).classList.remove('active');
   currentScene = scene;
@@ -517,10 +599,10 @@ function setScene(scene) {
   document.getElementById('card-' + scene).classList.add('active');
   document.getElementById('guideText').textContent = guideTexts[scene];
   document.getElementById('titlebarName').textContent = titlebarTexts[scene];
-  if (scene === 'patient' && !chatStarted) startChat();
+  if (scene === 'patient') { chatStarted = false; startChat(); }
   if (scene === 'pro') initPro();
   if (scene === 'admin') initAdmin();
-  window.scrollTo({ top: document.querySelector('.guide-wrap').offsetTop - 100, behavior: 'smooth' });
+  window.scrollTo({ top: document.querySelector('.guide-wrap').offsetTop - 80, behavior: 'smooth' });
 }
 
 /* ── SCENE 1: WHATSAPP CHAT ── */
@@ -841,7 +923,7 @@ function closeDrawer() {
 }
 
 // Init on load
-startChat();
+showModal('patient');
 initPro();
 </script>
 </body>
