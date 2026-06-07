@@ -205,9 +205,140 @@ footer {
 }
 .footer-logo { font-family: var(--serif); color: var(--ink); }
 
+/* ── PRICING ── */
+.pricing-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+.pricing-header {
+  text-align: center;
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border);
+}
+.pricing-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 1rem;
+}
+.pricing-header h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  line-height: 1.2;
+  margin-bottom: 0.85rem;
+}
+.pricing-header h2 em { font-style: italic; color: var(--ink-mid); }
+.pricing-header p { font-size: 0.95rem; color: var(--ink-mid); max-width: 500px; margin: 0 auto; }
+
+/* Table */
+.pricing-table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.pricing-table thead tr {
+  background: var(--ink);
+  color: var(--cream);
+}
+.pricing-table th {
+  padding: 0.9rem 1.25rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.pricing-table th:last-child,
+.pricing-table td:last-child { text-align: right; }
+.pricing-table td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.pricing-table tbody tr:last-child td { border-bottom: none; }
+.pricing-table tbody tr { background: var(--white); transition: background 0.15s; }
+.pricing-table tbody tr:hover { background: var(--cream); }
+.pack-name { font-weight: 500; color: var(--ink); }
+.pack-focus { color: var(--ink-mid); font-size: 0.82rem; line-height: 1.5; }
+.price-regular { color: var(--ink-light); text-decoration: line-through; font-size: 0.82rem; }
+.price-deal {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--serif); font-size: 1.05rem; color: var(--ink);
+}
+.deal-badge {
+  font-family: var(--sans); font-size: 0.65rem; font-weight: 600;
+  background: var(--ink); color: var(--cream);
+  padding: 0.2rem 0.5rem; border-radius: 100px; letter-spacing: 0.04em;
+}
+.pricing-note {
+  font-size: 0.8rem;
+  color: var(--ink-light);
+  line-height: 1.65;
+  padding: 1rem 1.25rem;
+  background: var(--cream);
+  border-radius: 10px;
+  margin-bottom: 3rem;
+  border: 1px solid var(--border);
+}
+.pricing-note strong { color: var(--ink-mid); }
+
+/* Pack details — accordion */
+.packs-detail-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+}
+.acc-row { border-bottom: 1px solid var(--border); }
+.acc-row:last-child { border-bottom: none; }
+.acc-trigger {
+  width: 100%; background: none; border: none; font-family: var(--sans);
+  padding: 1.1rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+  cursor: pointer; text-align: left; transition: background 0.15s;
+}
+.acc-trigger:hover { background: var(--cream); }
+.acc-num {
+  font-family: var(--serif); font-size: 1.1rem; color: var(--ink-light);
+  flex-shrink: 0; width: 1.5rem; text-align: center;
+}
+.acc-trigger-text { flex: 1; }
+.acc-title { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+.acc-subtitle { font-size: 0.76rem; color: var(--ink-light); margin-top: 0.1rem; }
+.acc-chevron {
+  flex-shrink: 0; width: 18px; height: 18px; color: var(--ink-light);
+  transition: transform 0.25s; margin-left: auto;
+}
+.acc-row.open .acc-chevron { transform: rotate(180deg); }
+.acc-body {
+  display: none;
+  padding: 0 1.5rem 1.25rem 4rem;
+}
+.acc-row.open .acc-body { display: flex; flex-direction: column; gap: 1rem; }
+.acc-row.open .acc-body.acc-body-grid { display: grid; }
+.pack-item-title { font-size: 0.83rem; font-weight: 500; color: var(--ink); margin-bottom: 0.25rem; }
+.pack-item-desc { font-size: 0.8rem; color: var(--ink-mid); line-height: 1.65; }
+.acc-body-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+
+@media (max-width: 600px) {
+  .acc-body { padding-left: 1.5rem; }
+  .acc-body-grid { grid-template-columns: 1fr; }
+}
+
 @media (max-width: 600px) {
   .hero { padding: 3rem 1.5rem 2.5rem; }
   .demos-grid { padding: 0 1.5rem 4rem; grid-template-columns: 1fr; }
+  .pricing-section { padding: 0 1.5rem 4rem; }
+  .pack-card.full .pack-items { grid-template-columns: 1fr; }
+  .pricing-table th:nth-child(2), .pricing-table td:nth-child(2) { display: none; }
 }
 </style>
 </head>
@@ -228,27 +359,11 @@ footer {
 
 <div class="demos-grid">
 
-  <div class="demo-card">
-    <span class="demo-sector">Marketing Digital</span>
-    <div class="demo-icon">📊</div>
-    <h2>Análisis de Campañas Meta Ads</h2>
-    <p>Integración directa con Meta Ads que centraliza el rendimiento de tus campañas publicitarias en un dashboard inteligente. Visualizá métricas clave, detectá oportunidades de optimización y tomá decisiones basadas en datos reales sin salir de una sola pantalla.</p>
-    <div class="demo-tags">
-      <span class="demo-tag">Meta Ads</span>
-      <span class="demo-tag">Dashboards</span>
-      <span class="demo-tag">Automatización</span>
-      <span class="demo-tag">Analytics</span>
-    </div>
-    <a href="https://script.google.com/a/macros/titofree.com/s/AKfycbwgARXLjPQah9i_1tdkEDx0VV13riZtTIgv08Xb-SDlzMERUWOjsY-NHqFC-2MCtpQD/exec" target="_blank" rel="noopener" class="demo-btn">
-      Ver demo
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    </a>
-  </div>
-
+  <!-- 1. Policonsultorio -->
   <div class="demo-card">
     <span class="demo-sector">Salud · Policonsultorio</span>
     <div class="demo-icon">🏥</div>
-    <h2>CRM con Bot de Agenda e Historia Clínica</h2>
+    <h2>Gestión Clínica 360°: Bot de Turnos, Historial Médico y Control Financiero</h2>
     <p>Sistema integral para clínicas y consultorios: un bot conversacional toma turnos automáticamente y construye el historial clínico del paciente en tiempo real. Panel de administración para gestionar citas, ver historias clínicas y hacer seguimiento de tratamientos desde un solo lugar.</p>
     <div class="demo-tags">
       <span class="demo-tag">CRM</span>
@@ -262,16 +377,35 @@ footer {
     </a>
   </div>
 
+  <!-- 2. CRM Tainy Loops -->
   <div class="demo-card">
-    <span class="demo-sector">Sports Tech</span>
-    <div class="demo-icon">🏀</div>
-    <h2>Plataforma de Torneos de Básquet</h2>
-    <p>Aplicación completa para la organización y seguimiento de torneos de básquet. Gestión de equipos, fixtures, resultados y estadísticas en tiempo real. Diseñada para que organizadores, jugadores y espectadores tengan toda la información del torneo al instante.</p>
+    <span class="demo-sector">Música · Estudio de Grabación</span>
+    <div class="demo-icon">🎙️</div>
+    <h2>CRM de Leads + Generador de Contenido con IA</h2>
+    <p>Plataforma interna para un estudio de grabación urbano: generador de ideas de contenido con IA basado en los 5 Niveles de Conciencia y CRM de leads organizado por semana.</p>
     <div class="demo-tags">
-      <span class="demo-tag">App Web</span>
+      <span class="demo-tag">IA Generativa</span>
+      <span class="demo-tag">CRM</span>
+      <span class="demo-tag">Contenido Estratégico</span>
+      <span class="demo-tag">Música Urbana</span>
+    </div>
+    <a href="/demo-tainy.html" target="_blank" rel="noopener" class="demo-btn">
+      Ver demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 3. App Mobile Torneos -->
+  <div class="demo-card">
+    <span class="demo-sector">App Mobile · Deportes</span>
+    <div class="demo-icon">🏆</div>
+    <h2>App Mobile para Gestión de Torneos Deportivos</h2>
+    <p>Aplicación mobile desarrollada a medida para la organización y seguimiento de torneos. Gestión de equipos, generación de fixtures, carga de resultados y tabla de posiciones en tiempo real — accesible desde cualquier dispositivo para organizadores, jugadores y espectadores.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">App Mobile</span>
       <span class="demo-tag">Tiempo Real</span>
-      <span class="demo-tag">Estadísticas</span>
-      <span class="demo-tag">Sports Tech</span>
+      <span class="demo-tag">Desarrollo a Medida</span>
+      <span class="demo-tag">Gestión Deportiva</span>
     </div>
     <a href="https://basketapp.pluxow.com/" target="_blank" rel="noopener" class="demo-btn">
       Ver demo
@@ -279,40 +413,7 @@ footer {
     </a>
   </div>
 
-  <div class="demo-card">
-    <span class="demo-sector">Uso Interno · Pluxow</span>
-    <div class="demo-icon">🤖</div>
-    <h2>Analizador de Prospectos y Propuestas</h2>
-    <p>Agente de IA que investiga en internet, analiza el perfil público de un prospecto y genera automáticamente una propuesta comercial personalizada. Acelera el proceso de ventas reduciendo el tiempo de investigación y redacción de propuestas de horas a minutos.</p>
-    <div class="demo-tags">
-      <span class="demo-tag">IA Generativa</span>
-      <span class="demo-tag">Web Research</span>
-      <span class="demo-tag">Propuestas Comerciales</span>
-      <span class="demo-tag">Automatización</span>
-    </div>
-    <a href="/propuesta.html" target="_blank" rel="noopener" class="demo-btn">
-      Ver demo
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    </a>
-  </div>
-
-  <div class="demo-card">
-    <span class="demo-sector">Salud · Procesamiento de documentos</span>
-    <div class="demo-icon">⚕️</div>
-    <h2>Procesador de Partes Médicos con IA</h2>
-    <p>Sistema que lee imágenes de partes quirúrgicos, extrae automáticamente más de 14 campos con IA y los guarda en Google Sheets. Incluye gestión de archivos en Drive, detección de urgencias por horario y reglas de validación dinámicas.</p>
-    <div class="demo-tags">
-      <span class="demo-tag">Claude IA</span>
-      <span class="demo-tag">Google Sheets</span>
-      <span class="demo-tag">Google Drive</span>
-      <span class="demo-tag">Automatización</span>
-    </div>
-    <a href="/demo-shiwes.html" target="_blank" rel="noopener" class="demo-btn">
-      Ver demo
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    </a>
-  </div>
-
+  <!-- 4. Dashboard BI -->
   <div class="demo-card">
     <span class="demo-sector">Industrial · Business Intelligence</span>
     <div class="demo-icon">📈</div>
@@ -330,7 +431,262 @@ footer {
     </a>
   </div>
 
+  <!-- 5. Partes Médicos -->
+  <div class="demo-card">
+    <span class="demo-sector">Salud · Procesamiento de documentos</span>
+    <div class="demo-icon">⚕️</div>
+    <h2>Procesador de Partes Médicos con IA</h2>
+    <p>Sistema que lee imágenes de partes quirúrgicos, extrae automáticamente más de 14 campos con IA y los guarda en Google Sheets. Incluye gestión de archivos en Drive, detección de urgencias por horario y reglas de validación dinámicas.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Claude IA</span>
+      <span class="demo-tag">Google Sheets</span>
+      <span class="demo-tag">Google Drive</span>
+      <span class="demo-tag">Automatización</span>
+    </div>
+    <a href="/demo-shiwes.html" target="_blank" rel="noopener" class="demo-btn">
+      Ver demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 6. Meta Ads -->
+  <div class="demo-card">
+    <span class="demo-sector">Marketing · Publicidad Digital</span>
+    <div class="demo-icon">📊</div>
+    <h2>Análisis de Campañas Meta Ads</h2>
+    <p>Integración directa con Meta Ads que centraliza el rendimiento de tus campañas publicitarias en un dashboard inteligente. Visualizá métricas clave, detectá oportunidades de optimización y tomá decisiones basadas en datos reales sin salir de una sola pantalla.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Meta Ads</span>
+      <span class="demo-tag">Dashboards</span>
+      <span class="demo-tag">Automatización</span>
+      <span class="demo-tag">Analytics</span>
+    </div>
+    <a href="https://script.google.com/a/macros/titofree.com/s/AKfycbwgARXLjPQah9i_1tdkEDx0VV13riZtTIgv08Xb-SDlzMERUWOjsY-NHqFC-2MCtpQD/exec" target="_blank" rel="noopener" class="demo-btn">
+      Ver demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 7. Analizador de Prospectos (último) -->
+  <div class="demo-card">
+    <span class="demo-sector">Uso Interno · Pluxow</span>
+    <div class="demo-icon">🤖</div>
+    <h2>Analizador de Prospectos y Propuestas</h2>
+    <p>Agente de IA que investiga en internet, analiza el perfil público de un prospecto y genera automáticamente una propuesta comercial personalizada. Acelera el proceso de ventas reduciendo el tiempo de investigación y redacción de propuestas de horas a minutos.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">IA Generativa</span>
+      <span class="demo-tag">Web Research</span>
+      <span class="demo-tag">Propuestas Comerciales</span>
+      <span class="demo-tag">Automatización</span>
+    </div>
+    <a href="/propuesta.html" target="_blank" rel="noopener" class="demo-btn">
+      Ver demo
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
 </div>
+
+<!-- ══════════════════ PRICING ══════════════════ -->
+<section class="pricing-section">
+
+  <div class="pricing-header">
+    <div class="pricing-label">Tabla de precios · Convenio AESST</div>
+    <p>El convenio AESST incluye un 15% de descuento sobre todos los paquetes.</p>
+  </div>
+
+  <div class="pricing-table-wrap">
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Paquete</th>
+          <th>Enfoque principal</th>
+          <th>Precio</th>
+          <th>Convenio AESST</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="pack-name">Pack 1</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Digital Presence & Marketing</div></td>
+          <td class="pack-focus">Web + Agente IA · Agenda Digital · Contenido para Redes</td>
+          <td><span class="price-regular">$2.300</span></td>
+          <td><span class="price-deal">$1.955 <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Pack 2</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Intelligent Operations</div></td>
+          <td class="pack-focus">Dashboards · Facturación Electrónica · Captura de Datos · Reconciliaciones</td>
+          <td><span class="price-regular">$3.800</span></td>
+          <td><span class="price-deal">$3.230 <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Pack 3</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Core AI & Automation</div></td>
+          <td class="pack-focus">Agentes Conversacionales · CRM End-to-End · RPA & Flujos de Trabajo</td>
+          <td><span class="price-regular">$7.000</span></td>
+          <td><span class="price-deal">$5.950 <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Pack 4</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Enterprise Transformation</div></td>
+          <td class="pack-focus">Coaching Ejecutivo · Modelado de Procesos · Transformación Digital</td>
+          <td><span class="price-regular">$3.000</span></td>
+          <td><span class="price-deal">$2.550 <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Soporte & Mantenimiento</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Fee mensual</div></td>
+          <td class="pack-focus">Monitoreo proactivo · Ajustes · Ticketera · Alertas de límites</td>
+          <td><span class="price-regular">$1.000<span style="font-size:0.72rem;font-weight:400;">/mes</span></span></td>
+          <td><span class="price-deal">$850<span style="font-size:0.78rem;font-weight:400;">/mes</span> <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="pricing-note">
+    <strong>* Costos de licencias no incluidos.</strong> Los costos de licencias de herramientas de terceros (hosting, base de datos, automatizaciones, pasarela de pago, etc.) no están incluidos en este presupuesto y son abonados directamente por el cliente según el proveedor elegido. La mayoría de las herramientas utilizadas cuentan con planes gratuitos que cubren el volumen inicial del negocio; el upgrade a planes pagos dependerá del crecimiento y volumen de operaciones.
+  </p>
+
+  <div class="packs-detail-title">Detalle de cada paquete</div>
+
+  <div class="accordion">
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">1</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Digital Presence & Marketing</span>
+          <span class="acc-subtitle">Web + Agente IA · Agenda Digital · Contenido para Redes</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item">
+          <div class="pack-item-title">Sitio Web completo con Agente de IA integrado</div>
+          <div class="pack-item-desc">Plataforma web profesional, responsiva y optimizada para SEO. El núcleo incluye un Agente de IA a medida entrenado para interactuar con visitantes y responder preguntas frecuentes.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Integración de Agenda Digital (Gmail o Outlook)</div>
+          <div class="pack-item-desc">Sincronización automatizada de 1 cuenta operativa. El Agente de IA o los usuarios web pueden agendar reuniones directamente en el calendario, sin fricción.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Creación de Contenido Avanzado — 3 plantillas para carruseles</div>
+          <div class="pack-item-desc">3 plantillas exclusivas alineadas con la identidad visual de la marca, con sistema de posteo automático para distribuir contenido de forma consistente sin esfuerzo manual diario.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">2</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Intelligent Operations</span>
+          <span class="acc-subtitle">Dashboards · Facturación Electrónica · Captura de Datos · Reconciliaciones</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item">
+          <div class="pack-item-title">5 Dashboards Automatizados a Medida</div>
+          <div class="pack-item-desc">5 paneles de control dinámicos e interactivos que centralizan métricas clave en tiempo real para tomar decisiones estratégicas de forma ágil.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Facturación Electrónica hasta 1.000/mes con integración API</div>
+          <div class="pack-item-desc">Automatización de hasta 1.000 facturas en PDF por mes. Extrae información y la conecta con ERP, CRM o software contable vía API, eliminando el registro manual. Incluye envío automatizado por mail.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Captura Inteligente de Datos con 8 reglas de negocio custom</div>
+          <div class="pack-item-desc">Motor inteligente de extracción y validación documental con hasta 8 reglas personalizadas. Los datos capturados son auditados, clasificados y aprobados automáticamente.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">3</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Core AI & Automation</span>
+          <span class="acc-subtitle">Agentes Conversacionales · CRM End-to-End · RPA & Flujos de Trabajo</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item">
+          <div class="pack-item-title">Estrategia e implementación de CRM completo (punta a punta)</div>
+          <div class="pack-item-desc">Despliegue integral de CRM adaptado al negocio, integrando canales de mayor impacto: WhatsApp, Instagram, TikTok y LinkedIn. Todo el historial de prospectos centralizado en un solo lugar.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">1 Agente Conversacional principal interconectado</div>
+          <div class="pack-item-desc">Agente de IA que opera de forma unificada en todos los canales. Responde consultas, califica oportunidades y actualiza el CRM en tiempo real según cada interacción.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Automatización RPA y Flujos de Trabajo End-to-End</div>
+          <div class="pack-item-desc">Flujos automatizados que conectan el front-office con la operación interna. Los datos del Agente de IA desencadenan acciones consecutivas: actualización de bases, asignación de tareas, generación de alertas.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">4</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Enterprise Transformation</span>
+          <span class="acc-subtitle">Coaching Ejecutivo · Modelado de Procesos · Transformación Digital</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item">
+          <div class="pack-item-title">10 sesiones de Coaching personalizado y gestión de proyectos</div>
+          <div class="pack-item-desc">Acompañamiento ejecutivo uno a uno enfocado en transferencia de best practices metodológicas, gestión del cambio y adopción de marcos ágiles para liderar la transformación interna.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Análisis y modelado de procesos actuales (Workflows y Diagramas)</div>
+          <div class="pack-item-desc">Auditoría profunda de la operación vigente: diagramas de flujo, mapas de procesos y flujos de trabajo visuales para identificar cuellos de botella, redundancias y tareas candidatas a ser optimizadas.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Sugerencias de Best Practices para la Transformación Digital</div>
+          <div class="pack-item-desc">Plan de recomendaciones estratégicas para modernizar la arquitectura de procesos: qué áreas automatizar, qué tecnologías incorporar y cómo medir el impacto en la eficiencia operativa.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num" style="font-size:0.9rem;">☁</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Soporte & Mantenimiento</span>
+          <span class="acc-subtitle">Monitoreo proactivo · Ticketera · Alertas · Actualizaciones</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body acc-body-grid">
+        <div class="pack-item">
+          <div class="pack-item-title">Ticketera de reporte y seguimiento</div>
+          <div class="pack-item-desc">Sistema de tickets para reportar y hacer seguimiento de issues con tiempo de respuesta de 72 hs hábiles.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Monitoreo proactivo de infraestructura</div>
+          <div class="pack-item-desc">Monitoreo continuo de la infraestructura y herramientas de terceros para detectar problemas antes de que impacten la operación.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Alertas anticipadas de límites de uso</div>
+          <div class="pack-item-desc">Notificaciones preventivas cuando el consumo se acerca al límite del plan, con recomendación de upgrade antes de que afecte la operación.</div>
+        </div>
+        <div class="pack-item">
+          <div class="pack-item-title">Actualizaciones periódicas de la solución</div>
+          <div class="pack-item-desc">Mantenimiento continuo para conservar compatibilidad, seguridad y rendimiento a lo largo del tiempo.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+function toggleAcc(trigger) {
+  const row = trigger.closest('.acc-row');
+  const isOpen = row.classList.contains('open');
+  row.classList.toggle('open', !isOpen);
+}
+</script>
 
 <footer>
   <span class="footer-logo">pluxow</span>

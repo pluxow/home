@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Demo: Suite Tainy Loops</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F4F0E8; --cream-dark: #E8E3D8;
+  --ink: #111111; --ink-mid: #3a3a3a; --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1); --white: #ffffff;
+  --sans: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+  --red: #C0392B; --red-light: #fdecea; --red-mid: #e74c3c;
+  --green: #059669; --green-light: #d1fae5;
+  --amber: #b45309; --amber-light: #fef3c7;
+  --blue: #1d4ed8; --blue-light: #dbeafe;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  padding: 0.9rem 2rem; display: flex; align-items: center; justify-content: space-between;
+}
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.header-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+.demo-badge {
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+  background: var(--ink); color: var(--cream); padding: 0.25rem 0.6rem; border-radius: 100px;
+}
+.header-back { font-size: 0.82rem; color: var(--ink-light); text-decoration: none; transition: color 0.2s; }
+.header-back:hover { color: var(--ink); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal-box {
+  background: var(--white); border-radius: 20px; padding: 2.25rem 2.5rem;
+  max-width: 460px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes modalIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-sector {
+  display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; background: var(--cream-dark); color: var(--ink-light);
+  padding: 0.3rem 0.75rem; border-radius: 100px; margin-bottom: 1rem;
+}
+.modal-box h2 { font-family: var(--serif); font-size: 1.55rem; margin-bottom: 0.6rem; line-height: 1.25; }
+.modal-box > p { font-size: 0.88rem; color: var(--ink-mid); margin-bottom: 1.25rem; line-height: 1.65; }
+.modal-steps { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.75rem; }
+.modal-step {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  background: var(--cream); border-radius: 10px; padding: 0.65rem 0.85rem;
+}
+.modal-step-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+.modal-step-text { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.5; }
+.modal-step-text strong { color: var(--ink); }
+.modal-note {
+  font-size: 0.78rem; color: var(--ink-light); border-top: 1px solid var(--border);
+  padding-top: 0.85rem; margin-bottom: 1.25rem; line-height: 1.5;
+}
+.modal-btn {
+  width: 100%; padding: 0.9rem; background: var(--ink); color: var(--cream);
+  border: none; border-radius: 12px; font-family: var(--sans); font-size: 0.95rem;
+  font-weight: 500; cursor: pointer; transition: opacity 0.2s;
+}
+.modal-btn:hover { opacity: 0.85; }
+
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── HOME VIEW ── */
+.home-hero {
+  max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; text-align: center;
+}
+.home-label {
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-light); margin-bottom: 0.9rem;
+}
+.home-hero h1 { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; margin-bottom: 0.85rem; }
+.home-hero h1 em { font-style: italic; color: var(--ink-mid); }
+.home-hero p { font-size: 0.95rem; color: var(--ink-mid); max-width: 480px; margin: 0 auto; }
+
+.tools-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem; max-width: 960px; margin: 0 auto; padding: 2rem 2rem 5rem;
+}
+.tool-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 18px;
+  padding: 1.75rem; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s;
+  text-align: left; position: relative; display: flex; flex-direction: column; gap: 0.75rem;
+}
+.tool-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.tool-card.disabled { opacity: 0.5; cursor: default; }
+.tool-card.disabled:hover { box-shadow: none; transform: none; }
+.tool-status {
+  position: absolute; top: 1.25rem; right: 1.25rem;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+}
+.tool-status.active { background: var(--green-light); color: var(--green); }
+.tool-status.soon { background: var(--amber-light); color: var(--amber); }
+.tool-status.external { background: var(--blue-light); color: var(--blue); }
+.tool-icon { font-size: 1.75rem; line-height: 1; }
+.tool-card h3 { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
+.tool-card p { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.6; flex: 1; }
+.tool-arrow {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.82rem; font-weight: 500; color: var(--ink); margin-top: 0.25rem;
+  transition: gap 0.2s;
+}
+.tool-card:hover .tool-arrow { gap: 0.65rem; }
+
+/* ── INNER PAGES ── */
+.page-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+.page-back {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.82rem; color: var(--ink-light); cursor: pointer;
+  border: none; background: none; font-family: var(--sans); margin-bottom: 1.75rem;
+  transition: color 0.2s; padding: 0;
+}
+.page-back:hover { color: var(--ink); }
+
+/* App window chrome */
+.app-window { border-radius: 16px; overflow: hidden; box-shadow: 0 4px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.07); }
+.app-titlebar {
+  background: var(--ink); padding: 0.75rem 1.1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.tb-dot { width: 11px; height: 11px; border-radius: 50%; }
+.tb-dot.r { background: #ff5f57; } .tb-dot.y { background: #febc2e; } .tb-dot.g { background: #28c840; }
+.tb-name { margin-left: 0.4rem; color: rgba(255,255,255,0.6); font-size: 0.78rem; }
+.app-body { background: var(--white); }
+
+/* ── CONTENT GENERATOR ── */
+.gen-body { padding: 2rem; }
+.gen-header { margin-bottom: 1.5rem; }
+.gen-header h2 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 0.4rem; }
+.gen-header p { font-size: 0.85rem; color: var(--ink-mid); }
+.context-box {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+}
+.context-box h4 { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.85rem; }
+.context-levels { display: flex; flex-direction: column; gap: 0.5rem; }
+.level-row { display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.82rem; color: var(--ink-mid); }
+.level-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 0.3rem; }
+.level-dot.l1 { background: #e74c3c; } .level-dot.l2 { background: #e67e22; }
+.level-dot.l3 { background: #f1c40f; } .level-dot.l4 { background: #27ae60; } .level-dot.l5 { background: #2980b9; }
+.gen-btn {
+  width: 100%; padding: 0.9rem; background: var(--ink); color: var(--cream);
+  border: none; border-radius: 12px; font-family: var(--sans); font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.gen-btn:hover { opacity: 0.85; }
+.gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.gen-spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Stats bar */
+.stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0 1.25rem; }
+.stat-box {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.85rem; text-align: center;
+}
+.stat-num { font-family: var(--serif); font-size: 1.6rem; color: var(--ink); }
+.stat-label { font-size: 0.72rem; color: var(--ink-light); margin-top: 0.1rem; }
+
+/* Idea cards */
+.ideas-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem; }
+.idea-card {
+  border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem;
+  border-left-width: 4px; animation: fadeUp 0.3s ease both;
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.idea-card.l1 { border-left-color: #e74c3c; }
+.idea-card.l2 { border-left-color: #e67e22; }
+.idea-card.l3 { border-left-color: #f1c40f; }
+.idea-card.l4 { border-left-color: #27ae60; }
+.idea-card.l5 { border-left-color: #2980b9; }
+.idea-level { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.5rem; }
+.idea-title { font-family: var(--serif); font-size: 1rem; margin-bottom: 0.6rem; }
+.idea-how-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-light); margin-bottom: 0.35rem; }
+.idea-how { font-size: 0.85rem; color: var(--ink-mid); line-height: 1.65; }
+.idea-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+.idea-btn {
+  flex: 1; padding: 0.55rem 0.75rem; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--white); font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 0.3rem;
+  color: var(--ink-mid);
+}
+.idea-btn:hover { background: var(--cream); border-color: rgba(0,0,0,0.2); color: var(--ink); }
+.idea-btn.liked { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.idea-btn.disliked { background: var(--red-light); border-color: #f87171; color: var(--red); }
+.idea-btn.expanded-btn { background: var(--cream-dark); border-color: rgba(0,0,0,0.15); color: var(--ink); }
+.idea-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.expand-box {
+  margin-top: 1rem; padding: 1rem; background: var(--cream); border-radius: 8px;
+  font-size: 0.83rem; color: var(--ink-mid); line-height: 1.7; white-space: pre-line;
+  border: 1px solid var(--border);
+}
+.expand-box strong { color: var(--ink); display: block; margin-bottom: 0.35rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── CRM VIEW ── */
+.crm-body { padding: 1.5rem 2rem 2rem; }
+.crm-header { margin-bottom: 1.25rem; }
+.crm-header h2 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 0.3rem; }
+.crm-header p { font-size: 0.85rem; color: var(--ink-mid); }
+.week-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.week-tab {
+  padding: 0.45rem 1rem; border-radius: 100px; border: 1px solid var(--border);
+  background: var(--white); font-family: var(--sans); font-size: 0.8rem; font-weight: 500;
+  cursor: pointer; color: var(--ink-mid); transition: all 0.15s;
+}
+.week-tab:hover { background: var(--cream); }
+.week-tab.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.crm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+.crm-stat {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.85rem 1rem; text-align: center;
+}
+.crm-stat-num { font-family: var(--serif); font-size: 1.5rem; }
+.crm-stat-label { font-size: 0.72rem; color: var(--ink-light); margin-top: 0.15rem; }
+.crm-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.crm-table th {
+  text-align: left; padding: 0.6rem 0.75rem; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-light);
+  border-bottom: 1px solid var(--border);
+}
+.crm-table td { padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.crm-table tr:last-child td { border-bottom: none; }
+.crm-table tr:hover td { background: var(--cream); }
+.plat-badge { font-size: 0.72rem; font-weight: 500; padding: 0.2rem 0.55rem; border-radius: 100px; }
+.plat-badge.wa { background: #dcfce7; color: #15803d; }
+.plat-badge.ig { background: #fce7f3; color: #be185d; }
+.plat-badge.li { background: #dbeafe; color: #1d4ed8; }
+.cat-badge { font-size: 0.72rem; font-weight: 500; padding: 0.2rem 0.55rem; border-radius: 100px; }
+.cat-badge.servicio { background: var(--green-light); color: var(--green); }
+.cat-badge.saludos { background: var(--amber-light); color: var(--amber); }
+.cat-badge.otros { background: var(--cream-dark); color: var(--ink-light); }
+.crm-action-btn {
+  font-size: 0.72rem; font-weight: 500; padding: 0.3rem 0.65rem; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--white); cursor: pointer;
+  font-family: var(--sans); color: var(--ink-mid); transition: all 0.15s; text-decoration: none;
+  display: inline-block;
+}
+.crm-action-btn:hover { background: var(--cream-dark); color: var(--ink); }
+.crm-msg { font-size: 0.8rem; color: var(--ink-mid); max-width: 200px; }
+.crm-date { font-size: 0.78rem; color: var(--ink-light); white-space: nowrap; }
+.no-leads { text-align: center; padding: 2.5rem; color: var(--ink-light); font-size: 0.88rem; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border); padding: 1.75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.8rem; color: var(--ink-light); flex-wrap: wrap; gap: 0.5rem;
+}
+.footer-logo { font-family: var(--serif); color: var(--ink); }
+
+@media (max-width: 640px) {
+  .tools-grid { grid-template-columns: 1fr; }
+  .crm-stats { grid-template-columns: repeat(2, 1fr); }
+  .crm-table th:nth-child(4), .crm-table td:nth-child(4),
+  .crm-table th:nth-child(5), .crm-table td:nth-child(5) { display: none; }
+  .stats-bar { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay show" id="modal">
+  <div class="modal-box">
+    <span class="modal-sector">Música · Estudio de Grabación</span>
+    <h2>Suite de herramientas para Tainy Loops</h2>
+    <p>Esta demo muestra la plataforma interna que Pluxow construyó para un estudio de grabación urbano. Explorá las herramientas como si fueras el equipo del estudio.</p>
+    <div class="modal-steps">
+      <div class="modal-step">
+        <span class="modal-step-icon">💡</span>
+        <div class="modal-step-text"><strong>Generador de ideas</strong> — hacé clic en "Generar" y la IA crea 5 ideas de contenido estratégico, una por cada nivel de conciencia del cliente.</div>
+      </div>
+      <div class="modal-step">
+        <span class="modal-step-icon">👥</span>
+        <div class="modal-step-text"><strong>CRM de Leads</strong> — tabla de contactos reales filtrable por semana, con accesos directos a WhatsApp e Instagram.</div>
+      </div>
+      <div class="modal-step">
+        <span class="modal-step-icon">🔍</span>
+        <div class="modal-step-text">En el generador podés <strong>guardar, descartar o profundizar</strong> cada idea para obtener sub-ideas más específicas.</div>
+      </div>
+    </div>
+    <p class="modal-note">Las respuestas de IA están simuladas para esta demo. En producción se conecta a Google Gemini 2.5 Flash en tiempo real.</p>
+    <button class="modal-btn" onclick="closeModal()">Explorar la suite →</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <a href="/" class="header-logo">pluxow</a>
+    <span class="demo-badge">Demo</span>
+  </div>
+  <a href="/demos.html" class="header-back">← Volver a demos</a>
+</header>
+
+<!-- ══════════════════════════ HOME VIEW ══════════════════════════ -->
+<div class="view active" id="view-home">
+  <div class="home-hero">
+    <div class="home-label">Tainy Loops · Suite de Herramientas</div>
+    <h1>Tu estudio, más <em>inteligente.</em></h1>
+    <p>Herramientas para crear contenido estratégico, gestionar leads y planificar publicaciones — todo en un solo lugar.</p>
+  </div>
+
+  <div class="tools-grid">
+    <div class="tool-card" onclick="showView('view-gen')">
+      <span class="tool-status active">Activo</span>
+      <div class="tool-icon">💡</div>
+      <h3>Generar Ideas de Contenido</h3>
+      <p>Estrategias basadas en los 5 Niveles de Conciencia para atraer más artistas al estudio.</p>
+      <span class="tool-arrow">Abrir herramienta →</span>
+    </div>
+
+    <div class="tool-card" onclick="showView('view-crm')">
+      <span class="tool-status active">Activo</span>
+      <div class="tool-icon">👥</div>
+      <h3>CRM de Leads</h3>
+      <p>Contactos organizados por semana con acceso directo a la conversación en cada plataforma.</p>
+      <span class="tool-arrow">Abrir herramienta →</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ CONTENT GENERATOR VIEW ══════════════════════════ -->
+<div class="view" id="view-gen">
+  <div class="page-wrap">
+    <button class="page-back" onclick="showView('view-home')">← Volver al inicio</button>
+
+    <div class="app-window">
+      <div class="app-titlebar">
+        <div class="tb-dot r"></div><div class="tb-dot y"></div><div class="tb-dot g"></div>
+        <span class="tb-name">Content Idea Generator — Tainy Loops</span>
+      </div>
+      <div class="app-body gen-body">
+        <div class="gen-header">
+          <h2>Generador de ideas de contenido</h2>
+          <p>Genera 5 ideas estratégicas, una por cada Nivel de Conciencia (Eugene Schwartz), orientadas a atraer artistas al estudio.</p>
+        </div>
+
+        <div class="context-box">
+          <h4>Contexto estratégico</h4>
+          <div class="context-levels">
+            <div class="level-row"><div class="level-dot l1"></div><span><strong>Nivel 1 · Inconsciente:</strong> No sabe que su grabación casera suena poco profesional.</span></div>
+            <div class="level-row"><div class="level-dot l2"></div><span><strong>Nivel 2 · Problema:</strong> Sabe que no suena bien, pero no conoce la solución.</span></div>
+            <div class="level-row"><div class="level-dot l3"></div><span><strong>Nivel 3 · Solución:</strong> Sabe que necesita un estudio, no conoce Tainy Loops.</span></div>
+            <div class="level-row"><div class="level-dot l4"></div><span><strong>Nivel 4 · Producto:</strong> Conoce Tainy Loops, duda del precio o el valor.</span></div>
+            <div class="level-row"><div class="level-dot l5"></div><span><strong>Nivel 5 · Listo:</strong> Está decidido, solo necesita un CTA claro.</span></div>
+          </div>
+        </div>
+
+        <button class="gen-btn" id="genBtn" onclick="generateIdeas()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Generar 5 ideas estratégicas
+        </button>
+
+        <div id="genResults" style="display:none;">
+          <div class="stats-bar">
+            <div class="stat-box"><div class="stat-num" id="statLiked">0</div><div class="stat-label">Guardadas</div></div>
+            <div class="stat-box"><div class="stat-num" id="statExpanded">0</div><div class="stat-label">Profundizadas</div></div>
+            <div class="stat-box"><div class="stat-num" id="statDisliked">0</div><div class="stat-label">Descartadas</div></div>
+          </div>
+          <div class="ideas-list" id="ideasList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ CRM VIEW ══════════════════════════ -->
+<div class="view" id="view-crm">
+  <div class="page-wrap" style="max-width:1000px;">
+    <button class="page-back" onclick="showView('view-home')">← Volver al inicio</button>
+
+    <div class="app-window">
+      <div class="app-titlebar">
+        <div class="tb-dot r"></div><div class="tb-dot y"></div><div class="tb-dot g"></div>
+        <span class="tb-name">CRM de Leads — Tainy Loops</span>
+      </div>
+      <div class="app-body crm-body">
+        <div class="crm-header">
+          <h2>Gestión de Leads</h2>
+          <p>Contactos organizados por semana. Filtrá y accedé a cada conversación de forma directa.</p>
+        </div>
+
+        <div class="week-tabs">
+          <button class="week-tab active" onclick="filterWeek('current', this)">Semana actual</button>
+          <button class="week-tab" onclick="filterWeek('last', this)">Semana pasada</button>
+          <button class="week-tab" onclick="filterWeek('two', this)">Hace 2 semanas</button>
+          <button class="week-tab" onclick="filterWeek('all', this)">Todas</button>
+        </div>
+
+        <div class="crm-stats">
+          <div class="crm-stat"><div class="crm-stat-num" id="stTotal">0</div><div class="crm-stat-label">Total leads</div></div>
+          <div class="crm-stat"><div class="crm-stat-num" id="stServicio">0</div><div class="crm-stat-label">Consultaron servicio</div></div>
+          <div class="crm-stat"><div class="crm-stat-num" id="stSaludos">0</div><div class="crm-stat-label">Saludos</div></div>
+          <div class="crm-stat"><div class="crm-stat-num" id="stOtros">0</div><div class="crm-stat-label">Otros</div></div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="crm-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Plataforma</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Mensaje</th>
+                <th style="text-align:center;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="crmBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">pluxow</span>
+  <span>Demo — Suite Tainy Loops</span>
+  <span>pluxow.com</span>
+</footer>
+
+<script>
+// ── NAVIGATION ──
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+// ── SIMULATED AI DATA ──
+const ideaBanks = [
+  [
+    { level: 'Nivel 1 · Inconsciente', cls: 'l1',
+      title: '¿Sabías que tu voz grabada en el celu suena diferente a cómo te escuchás a vos mismo?',
+      how: 'Grabá un Reel mostrando la diferencia entre grabar con el micrófono de un celular y un micrófono de condensador profesional. Sin texto explicativo: dejá que el audio hable solo. El gancho es la curiosidad — la mayoría nunca pensó en esto.',
+      expand: `1. "Grabé esta parte de mi canción en el celu vs en el estudio — escuchá la diferencia"\n   Subí ambos audios en paralelo, mismo fragmento, sin edición extra. El contraste lo dice todo.\n\n2. "¿Por qué sueno raro cuando me grabo?"\n   Explicación simple de 30 segundos sobre la diferencia entre cómo percibimos nuestra voz y cómo suena realmente grabada.\n\n3. "Lo que el micrófono capta que vos no escuchás"\n   Contenido educativo que abre la curiosidad sobre la producción de audio sin mencionar el estudio todavía.` },
+    { level: 'Nivel 2 · Consciente del Problema', cls: 'l2',
+      title: 'Por qué tu música no suena como la de los artistas que escuchás en Spotify',
+      how: 'Video educativo de 60 segundos explicando las 3 diferencias clave entre una grabación casera y una producción profesional: ambiente acústico, pre-amplificación y procesamiento de audio. No vendas el estudio — educá. El objetivo es que el artista entienda que el problema tiene nombre.',
+      expand: `1. "Las 3 cosas que le faltan a tu grabación casera (y cómo solucionarlas)"\n   Lista simple, visual, sin jerga técnica. El viewer se identifica con al menos una.\n\n2. "Esto es lo que escucha el oyente cuando grabás desde casa"\n   Mostrá un espectrograma simple o describí los problemas más comunes: ruido de fondo, reverb del cuarto, dinámica sin controlar.\n\n3. "Por qué subir tu demo casera a SoundCloud puede hacerte daño"\n   Un ángulo más disruptivo: el costo de reputación de publicar antes de estar listo.` },
+    { level: 'Nivel 3 · Consciente de la Solución', cls: 'l3',
+      title: 'Así se ve una sesión de grabación en Tainy Loops — de la primera nota al archivo final',
+      how: 'Tour visual del estudio mostrando el proceso completo: llegada, setup, grabación en cabina, escucha con el productor, primeras correcciones. Lo que el artista gana es claridad sobre qué va a pasar exactamente cuando reserve. La incertidumbre es una de las principales razones por las que no reservan.',
+      expand: `1. "Día de grabación en Tainy Loops: esto es lo que hacemos hora por hora"\n   Un día condensado en 90 segundos, mostrando el proceso sin edición fake.\n\n2. "¿Cómo es la primera sesión si nunca grabaste en estudio?"\n   Contenido pensado específicamente para artistas emergentes: qué preparar, cómo llegar, qué esperar.\n\n3. "El proceso de mezcla explicado para artistas (no para técnicos)"\n   Desmitificá la post-producción mostrando cómo evoluciona un tema entre la grabación en bruto y el archivo final.` },
+    { level: 'Nivel 4 · Consciente del Producto', cls: 'l4',
+      title: 'Testimonio real: Carlos grabó su primer EP acá y hoy tiene 40K streams',
+      how: 'Entrevista corta (2-3 min) con un artista que pasó por el estudio. Dejalo hablar de su experiencia, sus dudas previas y qué cambió después de grabar. El formato de testimonio auténtico desactiva las objeciones de precio porque humaniza el valor. Evitá el formato de "publicidad" — que parezca una charla real.',
+      expand: `1. "Le pregunté a 3 artistas que grabaron acá qué les sorprendió más"\n   Micro-testimonios editados en 60 segundos, uno por uno, con nombre y tema grabado.\n\n2. "¿Vale la pena pagar por grabar en estudio? La respuesta de alguien que dudó"\n   Un artista que tuvo la misma objeción que el viewer y tomó la decisión.\n\n3. "Antes y después: el tema de Lucía, desde la demo casera hasta el master final"\n   El formato de transformación es el más poderoso para demostrar valor concreto.` },
+    { level: 'Nivel 5 · Listo para Comprar', cls: 'l5',
+      title: 'Esta semana tenemos 2 slots disponibles — DM para reservar tu sesión',
+      how: 'Post simple, directo, con toda la fricción removida: qué incluye la sesión, cuánto dura, cómo reservar. Agregá escasez real (slots disponibles) y un CTA único. No expliques ni justifiques el precio — el artista de nivel 5 ya sabe lo que quiere, solo necesita el paso siguiente claro.',
+      expand: `1. "Reservá tu sesión en 3 pasos — sin vuelta"\n   CTA ultra simple: contacto, fecha, señal. Sin formularios complicados.\n\n2. "Esto incluye tu sesión del lunes (precio y detalles)"\n   Transparencia total sobre qué se lleva: horas de estudio, qué cubre la mezcla, formato de entrega.\n\n3. "Últimas 2 sesiones de marzo disponibles — primero en escribir, primero en grabar"\n   Urgencia real, sin artificios. Funciona especialmente bien en Stories con countdown.` }
+  ],
+  [
+    { level: 'Nivel 1 · Inconsciente', cls: 'l1',
+      title: 'El secreto detrás del sonido de los temas que dominan los rankings de reggaeton',
+      how: 'Contenido de entretenimiento que analiza la producción de un hit conocido (sin nombrar artistas si hay derechos). Mostrá capas de audio, percusión, efectos — hacé que el espectador descubra cuánto trabajo hay detrás de algo que suena "simple". El objetivo no es vender, es despertar curiosidad sobre el proceso.',
+      expand: `1. "Deconstructé la producción de un hit de reggaeton — esto tiene adentro"\n   Usá un tema sin copyright o uno propio del estudio como ejemplo. Capas de audio visualmente representadas.\n\n2. "¿Por qué la batería del reggaeton suena así? El secreto del dembow"\n   Educativo, sin vender nada. El artista emergente que todavía no graba lo encuentra fascinante.\n\n3. "Antes de ser hit, era esto"\n   Mostrá una demo cruda de un tema que el estudio produjo y su versión final. Sin nominarlo si no querés.` },
+    { level: 'Nivel 2 · Consciente del Problema', cls: 'l2',
+      title: '3 errores que destruyen el sonido de tu canción antes de que alguien la escuche',
+      how: 'Formato de lista educativa mostrando los errores más comunes en grabaciones caseras: grabar en cuartos sin tratamiento acústico, usar auriculares de monitoreo incorrectos para mezclar, y exportar en el formato o bitrate equivocado. Cada error se muestra con audio real si es posible. El artista del nivel 2 se reconoce en al menos uno.',
+      expand: `1. "Grabé en el baño porque 'tiene buena acústica' — ¿qué salió mal?"\n   Desmitificá el mito del baño o el placard. Mostrá qué le pasa realmente al audio.\n\n2. "Mezclé mi canción con auriculares de 30 dólares y esto pasó"\n   Error de monitoreo explicado de forma simple y con consecuencias audibles.\n\n3. "Exporté en MP3 y perdí la mitad del sonido — cómo evitarlo"\n   El error de formato/bitrate que nadie te cuenta y que arruina la escucha final.` },
+    { level: 'Nivel 3 · Consciente de la Solución', cls: 'l3',
+      title: 'Tour por el estudio: la cabina, los equipos y por qué cada cosa importa',
+      how: 'Video tipo "house tour" del estudio, explicando brevemente para qué sirve cada equipo sin tecnicismos. El artista que está evaluando dónde grabar necesita ver el entorno antes de comprometerse. La confianza se construye con transparencia — mostrá también los detalles que otros estudios esconden.',
+      expand: `1. "Este es el micrófono con el que grabamos — y por qué lo elegimos"\n   Un solo elemento del estudio explicado en profundidad. Genera autoridad sin ser pedante.\n\n2. "Por qué el tratamiento acústico de nuestra cabina cambia el resultado"\n   Educativo sobre acústica básica, usando el estudio propio como ejemplo.\n\n3. "Comparativo: grabar en sala A vs sala B del estudio (cuándo conviene cada una)"\n   Si el estudio tiene más de un espacio, esta comparación ayuda al artista a elegir mejor.` },
+    { level: 'Nivel 4 · Consciente del Producto', cls: 'l4',
+      title: 'Preguntas frecuentes sobre grabar en Tainy Loops — respondidas con honestidad',
+      how: 'FAQ en video o carrusel respondiendo las objeciones reales que recibís por DM: "¿Qué pasa si no me gusta cómo quedó?", "¿Puedo traer mi propio beat?", "¿Cuántas horas necesito?". La honestidad y la especificidad son lo que diferencia este contenido de la publicidad genérica. Responé como si hablaras con un amigo.',
+      expand: `1. "¿Qué incluye exactamente el precio de la sesión? (sin letra chica)"\n   Claridad total sobre qué cubre y qué no. Previene malentendidos y genera confianza.\n\n2. "'¿Y si no me gusta cómo quedó?' — cómo lo manejamos"\n   La objeción más común de artistas que nunca grabaron. Respondela antes de que la pregunten.\n\n3. "¿Cuántas horas necesito para grabar una canción? La respuesta honesta"\n   Sin inflar ni subestimar. El artista valora la transparencia sobre la promesa perfecta.` },
+    { level: 'Nivel 5 · Listo para Comprar', cls: 'l5',
+      title: 'Oferta de esta semana: sesión completa con mezcla incluida — últimos 2 cupos',
+      how: 'Post de oferta con fecha límite real. Incluí exactamente qué recibe el artista, el precio, y un único paso para reservar (DM o link de pago). La escasez tiene que ser verdadera — si decís 2 cupos, que sean 2. La confianza ganada en los niveles anteriores hace que este post convierta mucho más.',
+      expand: `1. "Esta semana: grabación + mezcla + master por un precio especial — mirá qué incluye"\n   Detalle claro del paquete. Foto del estudio + el precio sin rodeos.\n\n2. "Abrí agenda para la semana del [fecha] — así se reserva"\n   Proceso de reserva simplificado al máximo. Menos pasos = más conversiones.\n\n3. "El artista que reserve esta semana va primero en la agenda de marzo"\n   Beneficio exclusivo real para quienes actúan rápido, sin inventar urgencia.` }
+  ],
+  [
+    { level: 'Nivel 1 · Inconsciente', cls: 'l1',
+      title: '¿Cómo saben los productores si una voz tiene potencial desde la primera nota?',
+      how: 'Contenido educativo desde la perspectiva del productor: qué escucha, qué busca, qué marca la diferencia entre una voz "raw" con potencial y una que no. Esto engancha tanto a artistas que quieren saber si tienen lo necesario como a fans de la industria. El objetivo es crear una conversación sobre algo que nadie explica abiertamente.',
+      expand: `1. "Esto es lo primero que escucho cuando un artista nuevo me manda un audio"\n   Formato de "detrás de escena del productor" — qué evalúa, en qué orden, qué lo hace seguir escuchando.\n\n2. "¿Tu voz tiene lo que busca un estudio de grabación? Estos son los criterios reales"\n   Educativo y algo provocador. Genera comentarios porque cada uno quiere saber si aplica.\n\n3. "Le hice escuchar esta voz a 5 personas del estudio — sus reacciones"\n   Formato de reacción honesta. Si es auténtico, genera alto engagement.` },
+    { level: 'Nivel 2 · Consciente del Problema', cls: 'l2',
+      title: 'Tu mezcla casera vs. una mezcla profesional: la diferencia que nadie te muestra',
+      how: 'Comparación directa de audio: el mismo fragmento vocal mezclado casero vs. mezclado en Tainy Loops. Sin trucos — el audio hace el trabajo. Podés hacerlo con un artista que haya pasado por el estudio o con una grabación de demostración. El formato de A/B testing auditivo tiene altísima retención porque el oído queda enganchado.',
+      expand: `1. "Mismo artista, mismo día — antes de entrar al estudio y después de salir"\n   El contraste más poderoso: misma voz, mismo día, diferente procesamiento.\n\n2. "Le pasé la mezcla casera de un artista a nuestro ingeniero — reaccionó así"\n   Formato de reacción educativa: qué escuchó, qué corrigió, por qué importa.\n\n3. "Esto le pasa a tu voz cuando mezclan sin los compresores correctos"\n   Técnico pero accesible. Muestra un problema específico con audio real.` },
+    { level: 'Nivel 3 · Consciente de la Solución', cls: 'l3',
+      title: 'Paso a paso: qué pasa desde que llegás al estudio hasta que tenés tu canción lista',
+      how: 'Contenido de proceso completo en formato de guía visual. Cada etapa del flujo de trabajo — entrada, setup, grabación, escucha, correcciones, mezcla, entrega — explicada de forma simple. El artista que está evaluando dónde grabar necesita saber exactamente qué va a vivir. Reducir la incertidumbre es reducir la fricción de compra.',
+      expand: `1. "Llegaste al estudio sin saber qué hacer — esto es lo primero que pasa"\n   El primer contacto explicado: recibimiento, setup, cómo se prepara la sesión.\n\n2. "Así se escucha tu voz mientras grabás — lo que oís por los auriculares"\n   El punto de vista del artista durante la grabación. Muy pocas personas lo muestran.\n\n3. "¿Cuánto tarda en llegar tu canción terminada después de la sesión?"\n   Timeline realista de post-producción. La expectativa manejada evita fricciones después.` },
+    { level: 'Nivel 4 · Consciente del Producto', cls: 'l4',
+      title: '¿Por qué vale la pena invertir en grabar en Tainy Loops? La respuesta sin marketing',
+      how: 'Contenido directo sobre el valor real del servicio: qué diferencia concreta hace en el resultado, qué incluye que otros estudios no incluyen, qué garantías hay. Evitá el tono publicitario — usá el formato de "esto es lo que yo haría si fuera vos" para conectar con el artista que está comparando opciones.',
+      expand: `1. "Comparé los precios de 4 estudios de la zona — lo que no te dicen sobre lo que incluyen"\n   Comparativa honesta. No necesitás nombrar competidores — hablá de criterios.\n\n2. "Si tuviera que elegir dónde grabar mi primera canción, elegiría este estudio. Por esto."\n   Formato de recomendación honesta en primera persona desde un artista que pasó por ahí.\n\n3. "Lo que te lleva cuando terminás tu sesión en Tainy Loops (con y sin extras)"\n   Detalle claro de entregables según el paquete. Transparencia que genera confianza.` },
+    { level: 'Nivel 5 · Listo para Comprar', cls: 'l5',
+      title: 'Booking abierto para la semana que viene — 3 turnos disponibles, primero en escribir primero en grabar',
+      how: 'Post de disponibilidad real con fecha y horarios específicos. El artista de nivel 5 no necesita convencimiento — necesita el paso siguiente claro y fácil. Un único CTA (DM o link), el precio visible, y los turnos disponibles. Si usás Stories, agregá un botón de contacto directo. La simplicidad convierte.',
+      expand: `1. "Abrí 3 turnos para la semana del [fecha] — así se reserva en 2 minutos"\n   Proceso de reserva ultra simple. DM con una palabra clave o link directo.\n\n2. "Esta semana en Tainy Loops: los turnos disponibles y qué incluye cada uno"\n   Menú claro de opciones (sesión corta, EP, etc.) con precio visible y disponibilidad real.\n\n3. "El artista que grabe este viernes va a tener su tema antes del finde — ¿sos vos?"\n   CTA con resultado concreto y urgencia temporal. El "resultado antes del finde" es muy atractivo.` }
+  ]
+];
+
+const expandedCache = {};
+let bankIndex = 0;
+let currentIdeas = [];
+const ideaStates = {}; // { index: { liked, disliked, expanded } }
+
+function generateIdeas() {
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="gen-spinner"></div> Generando estrategia...';
+
+  setTimeout(() => {
+    currentIdeas = ideaBanks[bankIndex % ideaBanks.length];
+    bankIndex++;
+    Object.keys(ideaStates).forEach(k => delete ideaStates[k]);
+    renderIdeas();
+    document.getElementById('genResults').style.display = 'block';
+    updateStats();
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Generar nuevas ideas';
+  }, 1800);
+}
+
+function renderIdeas() {
+  const list = document.getElementById('ideasList');
+  list.innerHTML = '';
+  currentIdeas.forEach((idea, i) => {
+    const state = ideaStates[i] || { liked: false, disliked: false, expanded: false };
+    const card = document.createElement('div');
+    card.className = `idea-card ${idea.cls}`;
+    card.style.animationDelay = `${i * 80}ms`;
+    card.id = `idea-card-${i}`;
+    card.innerHTML = `
+      <div class="idea-level">${idea.level}</div>
+      <div class="idea-title">${idea.title}</div>
+      <div class="idea-how-label">Cómo desarrollarla</div>
+      <div class="idea-how">${idea.how}</div>
+      <div id="expand-box-${i}"></div>
+      <div class="idea-actions">
+        <button class="idea-btn ${state.liked ? 'liked' : ''}" id="btn-like-${i}" onclick="toggleLike(${i})">
+          ${state.liked ? '♥ Guardada' : '♡ Guardar'}
+        </button>
+        <button class="idea-btn ${state.expanded ? 'expanded-btn' : ''}" id="btn-expand-${i}" onclick="toggleExpand(${i})">
+          ${state.expanded ? '− Ocultar' : '+ Profundizar'}
+        </button>
+        <button class="idea-btn ${state.disliked ? 'disliked' : ''}" id="btn-dislike-${i}" onclick="toggleDislike(${i})">
+          ${state.disliked ? '✕ Descartada' : '✕ Descartar'}
+        </button>
+      </div>`;
+    list.appendChild(card);
+    if (state.expanded) showExpandBox(i);
+  });
+}
+
+function toggleLike(i) {
+  if (!ideaStates[i]) ideaStates[i] = {};
+  ideaStates[i].liked = !ideaStates[i].liked;
+  if (ideaStates[i].liked) ideaStates[i].disliked = false;
+  refreshCard(i);
+  updateStats();
+}
+
+function toggleDislike(i) {
+  if (!ideaStates[i]) ideaStates[i] = {};
+  ideaStates[i].disliked = !ideaStates[i].disliked;
+  if (ideaStates[i].disliked) ideaStates[i].liked = false;
+  refreshCard(i);
+  updateStats();
+}
+
+function toggleExpand(i) {
+  if (!ideaStates[i]) ideaStates[i] = {};
+  if (ideaStates[i].expanded) {
+    ideaStates[i].expanded = false;
+    document.getElementById(`expand-box-${i}`).innerHTML = '';
+    refreshCard(i);
+    updateStats();
+    return;
+  }
+  const btn = document.getElementById(`btn-expand-${i}`);
+  btn.disabled = true;
+  btn.textContent = '…';
+  setTimeout(() => {
+    ideaStates[i].expanded = true;
+    showExpandBox(i);
+    refreshCard(i);
+    updateStats();
+  }, 1200);
+}
+
+function showExpandBox(i) {
+  const box = document.getElementById(`expand-box-${i}`);
+  if (!box) return;
+  const idea = currentIdeas[i];
+  box.innerHTML = `<div class="expand-box"><strong>Ideas específicas derivadas</strong>${escHtml(idea.expand)}</div>`;
+}
+
+function refreshCard(i) {
+  const state = ideaStates[i] || {};
+  const btnLike = document.getElementById(`btn-like-${i}`);
+  const btnDislike = document.getElementById(`btn-dislike-${i}`);
+  const btnExpand = document.getElementById(`btn-expand-${i}`);
+  if (btnLike) { btnLike.className = `idea-btn ${state.liked ? 'liked' : ''}`; btnLike.textContent = state.liked ? '♥ Guardada' : '♡ Guardar'; }
+  if (btnDislike) { btnDislike.className = `idea-btn ${state.disliked ? 'disliked' : ''}`; btnDislike.textContent = state.disliked ? '✕ Descartada' : '✕ Descartar'; }
+  if (btnExpand) { btnExpand.disabled = false; btnExpand.className = `idea-btn ${state.expanded ? 'expanded-btn' : ''}`; btnExpand.textContent = state.expanded ? '− Ocultar' : '+ Profundizar'; }
+}
+
+function updateStats() {
+  const states = Object.values(ideaStates);
+  document.getElementById('statLiked').textContent = states.filter(s => s.liked).length;
+  document.getElementById('statExpanded').textContent = states.filter(s => s.expanded).length;
+  document.getElementById('statDisliked').textContent = states.filter(s => s.disliked).length;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── CRM DATA ──
+const allLeads = [
+  { id:1,  nombre:'Carlos Méndez',    plat:'WhatsApp', cat:'servicio', fecha:'2026-06-01', msg:'¿Cuánto cobran por grabar un EP?',                  href:'https://wa.me/541112345001' },
+  { id:2,  nombre:'Lucía Torres',     plat:'Instagram',cat:'servicio', fecha:'2026-06-02', msg:'Me interesa grabar mi primera canción',             href:'https://instagram.com/lucia_torres' },
+  { id:3,  nombre:'Diego Ramírez',    plat:'WhatsApp', cat:'saludos', fecha:'2026-06-02', msg:'Hola bro! Cómo va todo?',                           href:'https://wa.me/541112345003' },
+  { id:4,  nombre:'Valentina Cruz',   plat:'LinkedIn', cat:'otros',   fecha:'2026-06-03', msg:'Vi tu perfil, conectemos',                          href:'https://linkedin.com/in/valentina-cruz' },
+  { id:5,  nombre:'Mateo Silva',      plat:'WhatsApp', cat:'servicio', fecha:'2026-06-03', msg:'¿Tienen disponibilidad para la semana que viene?', href:'https://wa.me/541112345005' },
+  { id:6,  nombre:'Sofía Benítez',    plat:'Instagram',cat:'servicio', fecha:'2026-06-04', msg:'¿Cuánto sale producir un tema de reggaeton?',       href:'https://instagram.com/sofia_benitez' },
+  { id:7,  nombre:'Alejandro Vega',   plat:'WhatsApp', cat:'otros',   fecha:'2026-06-04', msg:'¿Tienen cursos de producción?',                     href:'https://wa.me/541112345007' },
+  { id:8,  nombre:'Camila Ortiz',     plat:'Instagram',cat:'servicio', fecha:'2026-05-26', msg:'Necesito info para grabar mi EP',                  href:'https://instagram.com/camila_ortiz' },
+  { id:9,  nombre:'Javier Morales',   plat:'WhatsApp', cat:'servicio', fecha:'2026-05-27', msg:'¿Cuánto cuesta un beat?',                          href:'https://wa.me/541112345009' },
+  { id:10, nombre:'Isabella Rojas',   plat:'LinkedIn', cat:'saludos', fecha:'2026-05-27', msg:'¡Felicitaciones por el estudio!',                   href:'https://linkedin.com/in/isabella-rojas' },
+  { id:11, nombre:'Sebastián Flores', plat:'WhatsApp', cat:'servicio', fecha:'2026-05-28', msg:'Quiero agendar una sesión',                        href:'https://wa.me/541112345011' },
+  { id:12, nombre:'Martina López',    plat:'Instagram',cat:'otros',   fecha:'2026-05-28', msg:'Hermoso el estudio! Algún día voy',                 href:'https://instagram.com/martina_lopez' },
+  { id:13, nombre:'Gabriel Castro',   plat:'WhatsApp', cat:'servicio', fecha:'2026-05-29', msg:'Necesito presupuesto urgente',                     href:'https://wa.me/541112345013' },
+  { id:14, nombre:'Catalina Ruiz',    plat:'Instagram',cat:'saludos', fecha:'2026-05-29', msg:'Qué onda hermano! Todo bien?',                      href:'https://instagram.com/catalina_ruiz' },
+  { id:15, nombre:'Tomás Herrera',    plat:'WhatsApp', cat:'servicio', fecha:'2026-05-19', msg:'Info sobre grabación profesional',                 href:'https://wa.me/541112345015' },
+  { id:16, nombre:'Renata Molina',    plat:'LinkedIn', cat:'otros',   fecha:'2026-05-20', msg:'Interesante tu trabajo en el estudio',              href:'https://linkedin.com/in/renata-molina' },
+  { id:17, nombre:'Franco Díaz',      plat:'Instagram',cat:'servicio', fecha:'2026-05-20', msg:'¿Trabajan con artistas nuevos?',                   href:'https://instagram.com/franco_diaz' },
+  { id:18, nombre:'Emilia Vargas',    plat:'WhatsApp', cat:'saludos', fecha:'2026-05-21', msg:'Loco! Cómo andás?',                                 href:'https://wa.me/541112345018' },
+  { id:19, nombre:'Nicolás Peña',     plat:'Instagram',cat:'servicio', fecha:'2026-05-21', msg:'¿Me pasás precios de grabación?',                  href:'https://instagram.com/nicolas_pena' },
+  { id:20, nombre:'Luna Cabrera',     plat:'WhatsApp', cat:'otros',   fecha:'2026-05-22', msg:'¿Hacen mezcla y master?',                           href:'https://wa.me/541112345020' },
+];
+
+function filterWeek(period, tabEl) {
+  document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+
+  const ref = new Date('2026-06-07'); // fecha simulada de "hoy"
+  const refDay = ref.getDay();
+  const weekStart = new Date(ref); weekStart.setDate(ref.getDate() - refDay);
+  const lastWeekStart = new Date(weekStart); lastWeekStart.setDate(weekStart.getDate() - 7);
+  const twoWeeksStart = new Date(weekStart); twoWeeksStart.setDate(weekStart.getDate() - 14);
+
+  const filtered = allLeads.filter(l => {
+    const d = new Date(l.fecha);
+    if (period === 'current') return d >= weekStart;
+    if (period === 'last')    return d >= lastWeekStart && d < weekStart;
+    if (period === 'two')     return d >= twoWeeksStart && d < lastWeekStart;
+    return true;
+  });
+
+  renderCRM(filtered);
+}
+
+function renderCRM(leads) {
+  document.getElementById('stTotal').textContent = leads.length;
+  document.getElementById('stServicio').textContent = leads.filter(l => l.cat === 'servicio').length;
+  document.getElementById('stSaludos').textContent = leads.filter(l => l.cat === 'saludos').length;
+  document.getElementById('stOtros').textContent = leads.filter(l => l.cat === 'otros').length;
+
+  const body = document.getElementById('crmBody');
+  if (!leads.length) {
+    body.innerHTML = '<tr><td colspan="6"><div class="no-leads">Sin leads en este período.</div></td></tr>';
+    return;
+  }
+
+  const platClass = { WhatsApp:'wa', Instagram:'ig', LinkedIn:'li' };
+  body.innerHTML = leads.map(l => `
+    <tr>
+      <td style="font-weight:500;">${l.nombre}</td>
+      <td><span class="plat-badge ${platClass[l.plat]||''}">${l.plat}</span></td>
+      <td><span class="cat-badge ${l.cat}">${l.cat === 'servicio' ? 'Servicio' : l.cat === 'saludos' ? 'Saludo' : 'Otro'}</span></td>
+      <td class="crm-date">${l.fecha}</td>
+      <td class="crm-msg">${l.msg}</td>
+      <td style="text-align:center;">
+        <a href="${l.href}" target="_blank" rel="noopener" class="crm-action-btn">Contactar →</a>
+      </td>
+    </tr>`).join('');
+}
+
+// Init CRM
+renderCRM(allLeads.filter(l => {
+  const ref = new Date('2026-06-07');
+  const refDay = ref.getDay();
+  const weekStart = new Date(ref); weekStart.setDate(ref.getDate() - refDay);
+  return new Date(l.fecha) >= weekStart;
+}));
+</script>
+</body>
+</html>
