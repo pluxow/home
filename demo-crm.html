@@ -128,46 +128,66 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 .wa-restart-btn:hover { background: var(--green-light); }
 
 /* ─────────────────────────────────────────────
-   SCENE 2: PROFESSIONAL
+   SCENE 2: CALENDAR
 ───────────────────────────────────────────── */
-.pro-shell { background: #f9fafb; min-height: 600px; }
-.pro-header { background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
-.pro-title { font-size: 1rem; font-weight: 700; color: #111827; }
-.pro-date { font-size: 0.8rem; color: #6b7280; }
-.pro-stats { display: flex; gap: 0; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
-.pro-stat { padding: 0.5rem 1.25rem; text-align: center; border-right: 1px solid #e5e7eb; }
-.pro-stat:last-child { border-right: none; }
-.pro-stat-num { font-size: 1.2rem; font-weight: 700; color: #111827; font-family: var(--serif); }
-.pro-stat-num.green { color: var(--green); }
-.pro-stat-label { font-size: 0.68rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
-.pro-body { padding: 1.25rem 1.5rem; }
-.pro-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.appt-row { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.85rem 1rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
-.appt-row.highlight { border-color: var(--green); background: #f0fdf4; }
-.appt-time { font-size: 0.88rem; font-weight: 700; color: #374151; width: 44px; flex-shrink: 0; }
-.appt-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.appt-dot.confirmado { background: #d1d5db; }
-.appt-dot.checkin { background: var(--green); }
-.appt-dot.en_consulta { background: var(--blue); }
-.appt-dot.atendido { background: #10b981; }
-.appt-info { flex: 1; }
-.appt-name { font-size: 0.88rem; font-weight: 600; color: #111827; }
-.appt-spec { font-size: 0.75rem; color: #6b7280; }
-.appt-amount { font-size: 0.82rem; font-weight: 500; color: #374151; }
-.appt-status-badge { font-size: 0.72rem; padding: 0.2rem 0.65rem; border-radius: 100px; font-weight: 500; white-space: nowrap; }
-.badge-confirmado { background: #f3f4f6; color: #6b7280; }
-.badge-checkin { background: var(--green-light); color: var(--green-dark); }
-.badge-en_consulta { background: var(--blue-light); color: #1d4ed8; }
-.badge-atendido { background: #d1fae5; color: #065f46; }
-.appt-action { font-size: 0.78rem; font-weight: 500; padding: 0.3rem 0.85rem; border-radius: 6px; cursor: default; white-space: nowrap; }
-.action-iniciar { background: var(--green); color: white; border: none; }
-.action-finalizar { background: var(--blue); color: white; border: none; }
-.action-done { background: #f3f4f6; color: #9ca3af; border: none; }
-.pro-toast { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: #111827; color: white; padding: 0.65rem 1.25rem; border-radius: 8px; font-size: 0.82rem; white-space: nowrap; opacity: 0; transition: opacity 0.3s; z-index: 10; }
-.pro-toast.show { opacity: 1; }
-.pro-body { position: relative; }
-.pro-moment-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-.pro-step-label { font-size: 0.8rem; color: var(--green-dark); font-weight: 500; background: var(--green-light); padding: 0.35rem 0.85rem; border-radius: 100px; }
+.cal-shell { background: #f9fafb; min-height: 600px; display: flex; flex-direction: column; }
+.cal-header { background: white; border-bottom: 1px solid #e5e7eb; padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+.cal-title { font-size: 1rem; font-weight: 700; color: #111827; }
+.cal-date { font-size: 0.8rem; color: #6b7280; margin-top: 0.15rem; }
+.cal-tabs { display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px; }
+.cal-tab { padding: 0.4rem 1.1rem; border-radius: 6px; font-size: 0.82rem; font-weight: 500; color: #6b7280; cursor: pointer; transition: all 0.15s; border: none; background: transparent; font-family: var(--sans); }
+.cal-tab.active { background: white; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.cal-nav { display: flex; align-items: center; gap: 0.4rem; }
+.cal-nav-btn { background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 0.3rem 0.7rem; cursor: pointer; font-size: 0.85rem; color: #374151; transition: background 0.15s; font-family: var(--sans); }
+.cal-nav-btn:hover { background: #f9fafb; }
+.cal-body { flex: 1; padding: 1.25rem 1.5rem; overflow-y: auto; }
+
+/* Day view */
+.day-list { display: flex; flex-direction: column; gap: 0.4rem; }
+.day-slot { display: flex; gap: 1rem; align-items: stretch; }
+.day-time { font-size: 0.75rem; color: #9ca3af; width: 44px; flex-shrink: 0; padding-top: 0.25rem; font-weight: 500; }
+.day-event { flex: 1; background: white; border: 1px solid #e5e7eb; border-left: 3px solid var(--green); border-radius: 8px; padding: 0.6rem 0.85rem; }
+.day-event.c-blue { border-left-color: #3b82f6; }
+.day-event.c-purple { border-left-color: #8b5cf6; }
+.day-event.c-amber { border-left-color: #f59e0b; }
+.day-event.c-red { border-left-color: #ef4444; }
+.day-event-name { font-size: 0.85rem; font-weight: 600; color: #111827; }
+.day-event-spec { font-size: 0.75rem; color: #6b7280; }
+.day-gap { height: 10px; }
+
+/* Week view */
+.week-grid { display: grid; grid-template-columns: 48px repeat(5, 1fr); border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; }
+.week-hdr { background: #f9fafb; padding: 0.5rem 0.4rem; text-align: center; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; }
+.week-hdr:last-child { border-right: none; }
+.week-day-name { font-size: 0.68rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.04em; }
+.week-day-num { font-size: 1rem; font-weight: 700; color: #374151; }
+.week-day-num.today { background: var(--green); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; margin: 0.1rem auto 0; font-size: 0.82rem; }
+.week-time-hdr { background: #f9fafb; border-right: 1px solid #e5e7eb; }
+.week-time-cell { height: 46px; border-bottom: 1px solid #f3f4f6; display: flex; align-items: flex-start; padding: 2px 4px; }
+.week-time-lbl { font-size: 0.65rem; color: #d1d5db; font-weight: 500; }
+.week-col { border-right: 1px solid #e5e7eb; }
+.week-col:last-child { border-right: none; }
+.week-cell { height: 46px; border-bottom: 1px solid #f3f4f6; padding: 2px 2px; }
+.week-evt { padding: 2px 5px; border-radius: 4px; font-size: 0.67rem; font-weight: 500; line-height: 1.35; overflow: hidden; }
+.week-evt.g { background: #d1fae5; color: #065f46; border-left: 2px solid var(--green); }
+.week-evt.b { background: #dbeafe; color: #1d4ed8; border-left: 2px solid #3b82f6; }
+.week-evt.p { background: #ede9fe; color: #5b21b6; border-left: 2px solid #8b5cf6; }
+.week-evt.a { background: #fef3c7; color: #92400e; border-left: 2px solid #f59e0b; }
+
+/* Month view */
+.month-grid { display: grid; grid-template-columns: repeat(7, 1fr); border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; background: white; }
+.month-wday { background: #f9fafb; text-align: center; padding: 0.45rem; font-size: 0.68rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #e5e7eb; border-right: 1px solid #f0f0f0; }
+.month-wday:last-child { border-right: none; }
+.month-cell { min-height: 62px; padding: 0.3rem; border-bottom: 1px solid #f3f4f6; border-right: 1px solid #f3f4f6; }
+.month-cell:nth-child(7n) { border-right: none; }
+.month-cell.other { background: #fafafa; }
+.month-num { font-size: 0.73rem; font-weight: 600; color: #9ca3af; margin-bottom: 0.2rem; }
+.month-num.cur { color: #374151; }
+.month-num.tod { background: var(--green); color: white; border-radius: 50%; width: 19px; height: 19px; display: flex; align-items: center; justify-content: center; font-size: 0.68rem; }
+.month-dot { font-size: 0.67rem; background: #d1fae5; color: #065f46; border-radius: 3px; padding: 0.1rem 0.3rem; margin-top: 0.15rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.month-dot.b { background: #dbeafe; color: #1d4ed8; }
+.month-dot.more { background: #f3f4f6; color: #9ca3af; }
+
 .btn-advance { background: var(--green); color: white; border: none; border-radius: 8px; padding: 0.5rem 1.1rem; font-family: var(--sans); font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
 .btn-advance:hover { background: var(--green-dark); }
 .btn-advance:disabled { background: #d1d5db; cursor: default; }
@@ -388,26 +408,25 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 
       <!-- ── SCENE 2: PROFESSIONAL ── -->
       <div class="scene" id="scene-pro">
-        <div class="pro-shell">
-          <div class="pro-header">
+        <div class="cal-shell">
+          <div class="cal-header">
             <div>
-              <div class="pro-title">Dr. Sebastián Torres</div>
-              <div class="pro-date">📅 Lunes 9 de junio · Turnos del día</div>
+              <div class="cal-title">Dr. Sebastián Torres</div>
+              <div class="cal-date" id="calDateLabel">Lunes, 9 de junio de 2026</div>
             </div>
-            <div class="pro-stats">
-              <div class="pro-stat"><div class="pro-stat-num green" id="statAtendidos">0</div><div class="pro-stat-label">Atendidos</div></div>
-              <div class="pro-stat"><div class="pro-stat-num" id="statPorVer">5</div><div class="pro-stat-label">Por ver</div></div>
-              <div class="pro-stat"><div class="pro-stat-num" id="statCobros">$0</div><div class="pro-stat-label">Cobros</div></div>
+            <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap">
+              <div class="cal-nav">
+                <button class="cal-nav-btn" onclick="calNav(-1)">‹</button>
+                <button class="cal-nav-btn" onclick="calNav(1)">›</button>
+              </div>
+              <div class="cal-tabs">
+                <button class="cal-tab active" id="tabDay" onclick="setCalView('day')">Día</button>
+                <button class="cal-tab" id="tabWeek" onclick="setCalView('week')">Semana</button>
+                <button class="cal-tab" id="tabMonth" onclick="setCalView('month')">Mes</button>
+              </div>
             </div>
           </div>
-          <div class="pro-body">
-            <div class="pro-moment-nav">
-              <span class="pro-step-label" id="proStepLabel">Momento 1 / 4 — Inicio del día</span>
-              <button class="btn-advance" id="btnAdvancePro" onclick="advancePro()">Avanzar →</button>
-            </div>
-            <div class="pro-list" id="proList"></div>
-            <div class="pro-toast" id="proToast">📲 ¡Ana Rodríguez llegó a sala de espera!</div>
-          </div>
+          <div class="cal-body" id="calBody"></div>
         </div>
       </div>
 
@@ -545,9 +564,9 @@ const modalData = {
   },
   pro: {
     badge: '🩺 Perspectiva Profesional',
-    title: 'Vista del profesional',
-    desc: 'Mirá cómo el Dr. Torres gestiona su jornada de trabajo desde su dashboard',
-    bullets: ['📲 Recibe notificaciones de check-in en tiempo real', '🔵 Inicia y cierra sesiones con un clic', '📊 Los stats de cobros se actualizan automáticamente']
+    title: 'Agenda del profesional',
+    desc: 'Explorá la agenda del Dr. Torres en tres vistas: diaria, semanal y mensual',
+    bullets: ['📅 Vista diaria con los turnos del día y especialidad de cada paciente', '🗓️ Vista semanal para ver la carga de trabajo de la semana completa', '📆 Vista mensual con el panorama del mes y días ocupados']
   },
   admin: {
     badge: '🖥️ Perspectiva Admin',
@@ -705,86 +724,109 @@ function getTime() {
   const now = new Date(); return now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
 }
 
-/* ── SCENE 2: PROFESSIONAL ── */
-let proMoment = 0;
-const appts = [
-  { time: '09:00', name: 'Ana Rodríguez', spec: 'Kinesiología', amount: 15000, status: 'confirmado' },
-  { time: '10:00', name: 'Carlos Méndez', spec: 'Traumatología', amount: 18000, status: 'confirmado' },
-  { time: '11:00', name: 'Laura Vega', spec: 'RPG', amount: 16000, status: 'confirmado' },
-  { time: '14:00', name: 'Martín Silva', spec: 'Osteopatía', amount: 20000, status: 'confirmado' },
-  { time: '15:30', name: 'Sofía Torres', spec: 'Nutrición', amount: 12000, status: 'confirmado' },
-];
-let apptStates = appts.map(a => ({ ...a }));
+/* ── SCENE 2: CALENDAR ── */
+let calView = 'day';
 
-const proMoments = [
-  { label: 'Momento 1 / 4 — Inicio del día', guide: 'El Dr. Torres abre su dashboard y ve los 5 turnos confirmados para el día' },
-  { label: 'Momento 2 / 4 — Check-in por QR', guide: 'Ana Rodríguez escaneó el código QR en la sala de espera. El doctor recibe la notificación instantánea', action: () => { apptStates[0].status = 'checkin'; showToast(); } },
-  { label: 'Momento 3 / 4 — Sesión en curso', guide: 'El doctor hace click en "Iniciar" y el turno pasa a estado "En consulta"', action: () => { apptStates[0].status = 'en_consulta'; } },
-  { label: 'Momento 4 / 4 — Sesión finalizada', guide: 'Al finalizar, el sistema actualiza el historial y los cobros del día automáticamente', action: () => { apptStates[0].status = 'atendido'; } },
+const calGuides = {
+  day: 'Vista diaria: todos los turnos del Dr. Torres para el día seleccionado, con especialidad y paciente',
+  week: 'Vista semanal: distribución de toda la semana de un vistazo para detectar huecos y picos de demanda',
+  month: 'Vista mensual: panorama completo del mes con los días ocupados y cantidad de turnos por día'
+};
+
+const dayAppts = [
+  { time: '09:00', name: 'Ana Rodríguez', spec: 'Kinesiología', c: '' },
+  { time: '10:00', name: 'Carlos Méndez', spec: 'Traumatología', c: 'c-blue' },
+  { time: '11:00', name: 'Laura Vega', spec: 'RPG', c: 'c-purple' },
+  { gap: true },
+  { time: '14:00', name: 'Martín Silva', spec: 'Osteopatía', c: 'c-amber' },
+  { time: '15:30', name: 'Sofía Torres', spec: 'Nutrición', c: '' },
 ];
+
+const weekData = {
+  0: [{ t:'09:00',n:'Ana Rodríguez',c:'g' },{ t:'10:00',n:'Carlos Méndez',c:'b' },{ t:'11:00',n:'Laura Vega',c:'p' },{ t:'14:00',n:'Martín Silva',c:'a' },{ t:'15:00',n:'Sofía Torres',c:'g' }],
+  1: [{ t:'09:00',n:'Diego Ponce',c:'b' },{ t:'11:00',n:'María Flores',c:'p' },{ t:'15:00',n:'Roberto C.',c:'g' }],
+  2: [{ t:'10:00',n:'Elena Morales',c:'a' },{ t:'14:00',n:'Pablo Ríos',c:'g' },{ t:'16:00',n:'Claudia V.',c:'b' }],
+  3: [{ t:'09:00',n:'Andrés López',c:'p' },{ t:'11:00',n:'Natalia B.',c:'g' },{ t:'14:00',n:'Tomás García',c:'a' },{ t:'15:00',n:'Valeria S.',c:'b' }],
+  4: [{ t:'10:00',n:'Lucas Herrera',c:'g' },{ t:'12:00',n:'Carmen Ortiz',c:'p' }],
+};
+
+const monthData = {
+  2:{n:'Ana R.',c:''}, 3:{n:'Carlos M.',c:'b'}, 4:{n:'Laura V.',c:''},
+  5:{n:'Martín S.',c:'a'}, 6:{n:'Sofía T.',c:''},
+  9:{n:'5 turnos',c:''}, 10:{n:'3 turnos',c:'b'}, 11:{n:'4 turnos',c:''},
+  12:{n:'4 turnos',c:'a'}, 13:{n:'2 turnos',c:'b'},
+  16:{n:'4 turnos',c:''}, 17:{n:'3 turnos',c:'b'}, 18:{n:'5 turnos',c:''},
+  19:{n:'4 turnos',c:'a'}, 20:{n:'2 turnos',c:''},
+  23:{n:'3 turnos',c:''}, 24:{n:'5 turnos',c:'b'}, 25:{n:'2 turnos',c:''},
+  26:{n:'4 turnos',c:'a'}, 27:{n:'3 turnos',c:''},
+  30:{n:'3 turnos',c:''},
+};
 
 function initPro() {
-  proMoment = 0;
-  apptStates = appts.map(a => ({ ...a }));
-  renderProList();
-  updateProStats();
-  document.getElementById('proStepLabel').textContent = proMoments[0].label;
-  document.getElementById('btnAdvancePro').disabled = false;
-  document.getElementById('btnAdvancePro').textContent = 'Avanzar →';
+  calView = 'day';
+  ['Day','Week','Month'].forEach(v => document.getElementById('tab'+v).classList.remove('active'));
+  document.getElementById('tabDay').classList.add('active');
+  document.getElementById('guideText').textContent = calGuides.day;
+  renderCalDay();
 }
 
-function advancePro() {
-  proMoment++;
-  if (proMoment >= proMoments.length) return;
-  const m = proMoments[proMoment];
-  if (m.action) m.action();
-  renderProList();
-  updateProStats();
-  document.getElementById('proStepLabel').textContent = m.label;
-  document.getElementById('guideText').textContent = m.guide;
-  if (proMoment === proMoments.length - 1) {
-    document.getElementById('btnAdvancePro').textContent = 'Reiniciar';
-    document.getElementById('btnAdvancePro').onclick = initPro;
-  }
+function setCalView(view) {
+  calView = view;
+  ['Day','Week','Month'].forEach(v => document.getElementById('tab'+v).classList.remove('active'));
+  document.getElementById('tab'+view.charAt(0).toUpperCase()+view.slice(1)).classList.add('active');
+  document.getElementById('guideText').textContent = calGuides[view];
+  if (view === 'day') renderCalDay();
+  else if (view === 'week') renderCalWeek();
+  else renderCalMonth();
 }
 
-function renderProList() {
-  const list = document.getElementById('proList');
-  list.innerHTML = '';
-  apptStates.forEach((a, i) => {
-    const row = document.createElement('div');
-    row.className = 'appt-row' + (i === 0 && a.status !== 'confirmado' ? ' highlight' : '');
-    const badgeClass = 'badge-' + a.status;
-    const badgeText = { confirmado: 'Confirmado', checkin: '✓ Llegó', en_consulta: '🔵 En consulta', atendido: '✓ Atendido' }[a.status];
-    let actionHtml = '';
-    if (a.status === 'checkin') actionHtml = '<button class="appt-action action-iniciar" style="cursor:default">Iniciar →</button>';
-    else if (a.status === 'en_consulta') actionHtml = '<button class="appt-action action-finalizar" style="cursor:default">Finalizar →</button>';
-    else if (a.status === 'atendido') actionHtml = '<button class="appt-action action-done">Listo ✓</button>';
-    row.innerHTML = `
-      <div class="appt-time">${a.time}</div>
-      <div class="appt-dot ${a.status}"></div>
-      <div class="appt-info"><div class="appt-name">${a.name}</div><div class="appt-spec">${a.spec}</div></div>
-      <div class="appt-amount">$${a.amount.toLocaleString('es-AR')}</div>
-      <span class="appt-status-badge ${badgeClass}">${badgeText}</span>
-      ${actionHtml}
-    `;
-    list.appendChild(row);
+function calNav(dir) { /* visual only */ }
+
+function renderCalDay() {
+  document.getElementById('calDateLabel').textContent = 'Lunes, 9 de junio de 2026';
+  let html = '<div class="day-list">';
+  dayAppts.forEach(a => {
+    if (a.gap) { html += '<div class="day-gap"></div>'; return; }
+    html += `<div class="day-slot"><div class="day-time">${a.time}</div><div class="day-event ${a.c}"><div class="day-event-name">${a.name}</div><div class="day-event-spec">${a.spec}</div></div></div>`;
   });
+  document.getElementById('calBody').innerHTML = html + '</div>';
 }
 
-function updateProStats() {
-  const atendidos = apptStates.filter(a => a.status === 'atendido').length;
-  const porVer = apptStates.filter(a => ['confirmado','checkin','en_consulta'].includes(a.status)).length;
-  const cobros = apptStates.filter(a => a.status === 'atendido').reduce((s, a) => s + a.amount, 0);
-  document.getElementById('statAtendidos').textContent = atendidos;
-  document.getElementById('statPorVer').textContent = porVer;
-  document.getElementById('statCobros').textContent = cobros > 0 ? '$' + cobros.toLocaleString('es-AR') : '$0';
+function renderCalWeek() {
+  document.getElementById('calDateLabel').textContent = 'Semana del 9 al 13 de junio de 2026';
+  const days = [['Lun',9],['Mar',10],['Mié',11],['Jue',12],['Vie',13]];
+  const times = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
+  let h = '<div class="week-grid">';
+  h += '<div class="week-hdr week-time-hdr"></div>';
+  days.forEach(([d,n],i) => h += `<div class="week-hdr"><div class="week-day-name">${d}</div><div class="week-day-num ${i===0?'today':''}">${n}</div></div>`);
+  times.forEach(t => {
+    h += `<div class="week-time-hdr"><div class="week-time-cell"><span class="week-time-lbl">${t}</span></div></div>`;
+    days.forEach((_,di) => {
+      const evt = (weekData[di]||[]).find(e => e.t === t);
+      h += `<div class="week-col"><div class="week-cell">${evt ? `<div class="week-evt ${evt.c}">${evt.n}</div>` : ''}</div></div>`;
+    });
+  });
+  document.getElementById('calBody').innerHTML = h + '</div>';
 }
 
-function showToast() {
-  const t = document.getElementById('proToast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+function renderCalMonth() {
+  document.getElementById('calDateLabel').textContent = 'Junio 2026';
+  const wdays = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  // June 2026 starts Monday, 30 days
+  const weekends = [6,7,13,14,20,21,27,28];
+  let h = '<div class="month-grid">';
+  wdays.forEach(d => h += `<div class="month-wday">${d}</div>`);
+  for (let day = 1; day <= 30; day++) {
+    const isWeekend = weekends.includes(day);
+    const isToday = day === 9;
+    const evt = monthData[day];
+    h += `<div class="month-cell ${isWeekend?'other':''}">
+      <div class="month-num ${isToday?'tod':isWeekend?'':'cur'}">${day}</div>
+      ${evt && !isWeekend ? `<div class="month-dot ${evt.c}">${evt.n}</div>` : ''}
+    </div>`;
+  }
+  for (let i = 1; i <= 5; i++) h += `<div class="month-cell other"><div class="month-num">${i}</div></div>`;
+  document.getElementById('calBody').innerHTML = h + '</div>';
 }
 
 /* ── SCENE 3: ADMIN ── */
