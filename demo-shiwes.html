@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Demo: Procesador de Partes Médicos</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ── PLUXOW BASE ── */
+:root {
+  --cream: #F4F0E8; --cream-dark: #E8E3D8;
+  --ink: #111111; --ink-mid: #3a3a3a; --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1); --white: #ffffff;
+  --sans: 'DM Sans', sans-serif; --serif: 'DM Serif Display', serif;
+  /* Shiwes app colors */
+  --purple: #7c3aed; --purple-dark: #5b21b6; --purple-light: #ede9fe;
+  --purple-mid: #a78bfa; --green: #059669; --red: #dc2626;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); }
+
+/* ── PLUXOW HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  padding: 0.9rem 2rem; display: flex; align-items: center; justify-content: space-between;
+}
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.header-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+.demo-badge { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; background: var(--ink); color: var(--cream); padding: 0.25rem 0.6rem; border-radius: 100px; }
+.header-back { font-size: 0.82rem; color: var(--ink-light); text-decoration: none; transition: color 0.2s; }
+.header-back:hover { color: var(--ink); }
+
+/* ── INTRO ── */
+.intro { padding: 3rem 2rem 2rem; max-width: 900px; margin: 0 auto; }
+.section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 0.6rem; }
+.intro h1 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 0.75rem; }
+.intro p { color: var(--ink-mid); font-size: 0.95rem; max-width: 560px; margin-bottom: 1.5rem; }
+.flow-chips { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.flow-chip { font-size: 0.78rem; background: var(--white); border: 1px solid var(--border); border-radius: 100px; padding: 0.3rem 0.85rem; color: var(--ink-mid); }
+.flow-chip.active { background: var(--purple-light); border-color: var(--purple-mid); color: var(--purple-dark); font-weight: 500; }
+.flow-arrow { color: var(--ink-light); font-size: 0.75rem; }
+
+/* ── APP WINDOW ── */
+.app-wrapper { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+.app-window {
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.08);
+}
+.app-titlebar {
+  background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 100%);
+  padding: 0.85rem 1.25rem; display: flex; align-items: center; gap: 0.6rem;
+}
+.titlebar-dot { width: 12px; height: 12px; border-radius: 50%; }
+.titlebar-dot.red { background: #ff5f57; }
+.titlebar-dot.yellow { background: #febc2e; }
+.titlebar-dot.green { background: #28c840; }
+.titlebar-name { margin-left: 0.5rem; color: rgba(255,255,255,0.9); font-size: 0.85rem; font-weight: 500; }
+.app-body { background: #f5f3ff; min-height: 480px; }
+
+/* ── STEPS ── */
+.step { display: none; animation: fadeIn 0.3s ease; }
+.step.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── STEP 0: LOGIN ── */
+.login-wrap { display: flex; align-items: center; justify-content: center; min-height: 480px; padding: 2rem; }
+.login-card { background: var(--white); border-radius: 16px; padding: 2.5rem 2rem; width: 100%; max-width: 360px; box-shadow: 0 2px 16px rgba(124,58,237,0.1); }
+.login-logo { font-size: 1.5rem; font-weight: 700; color: var(--purple); margin-bottom: 0.25rem; }
+.login-sub { font-size: 0.82rem; color: #6b7280; margin-bottom: 2rem; }
+.form-field { margin-bottom: 1rem; }
+.form-field label { display: block; font-size: 0.8rem; font-weight: 500; color: #374151; margin-bottom: 0.4rem; }
+.form-field input {
+  width: 100%; padding: 0.65rem 0.9rem; border: 1px solid #d1d5db; border-radius: 8px;
+  font-family: var(--sans); font-size: 0.9rem; background: #f9fafb; color: var(--ink);
+  transition: border-color 0.2s;
+}
+.form-field input:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+.btn-purple {
+  width: 100%; padding: 0.75rem; background: var(--purple); color: white;
+  border: none; border-radius: 8px; font-family: var(--sans); font-size: 0.95rem;
+  font-weight: 500; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem;
+}
+.btn-purple:hover { background: var(--purple-dark); }
+.demo-note { font-size: 0.75rem; color: #9ca3af; text-align: center; margin-top: 1rem; }
+
+/* ── STEP 1: FILE LIST ── */
+.file-screen { padding: 1.5rem; }
+.screen-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+.screen-title { font-size: 1rem; font-weight: 600; color: var(--purple-dark); }
+.screen-sub { font-size: 0.8rem; color: #6b7280; margin-top: 0.2rem; }
+.folder-path { font-size: 0.78rem; color: #6b7280; background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 0.4rem 0.8rem; }
+.file-list { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+.file-item { display: flex; align-items: center; padding: 0.85rem 1rem; border-bottom: 1px solid #f3f4f6; gap: 0.75rem; cursor: pointer; transition: background 0.15s; }
+.file-item:last-child { border-bottom: none; }
+.file-item:hover { background: #fafafa; }
+.file-item input[type=checkbox] { accent-color: var(--purple); width: 16px; height: 16px; cursor: pointer; flex-shrink: 0; }
+.file-icon { font-size: 1.3rem; flex-shrink: 0; }
+.file-info { flex: 1; }
+.file-name { font-size: 0.88rem; font-weight: 500; color: #111827; }
+.file-meta { font-size: 0.75rem; color: #9ca3af; margin-top: 0.15rem; }
+.file-tag { font-size: 0.7rem; background: var(--purple-light); color: var(--purple-dark); padding: 0.15rem 0.55rem; border-radius: 100px; font-weight: 500; }
+.actions-bar { margin-top: 1.25rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+.btn-outline { padding: 0.6rem 1.1rem; border: 1px solid #d1d5db; background: white; color: #374151; border-radius: 8px; font-family: var(--sans); font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+.btn-outline:hover { border-color: var(--purple); color: var(--purple); }
+.count-badge { font-size: 0.8rem; color: #6b7280; }
+
+/* ── STEP 2: PROCESSING ── */
+.processing-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; padding: 2rem; text-align: center; }
+.spinner-ring { width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--purple-light); border-top-color: var(--purple); animation: spin 0.9s linear infinite; margin-bottom: 1.5rem; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.processing-title { font-size: 1.05rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 0.5rem; }
+.processing-sub { font-size: 0.85rem; color: #6b7280; min-height: 1.4em; transition: opacity 0.3s; }
+.progress-bar-wrap { width: 240px; height: 6px; background: #e5e7eb; border-radius: 100px; margin-top: 1.5rem; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: var(--purple); border-radius: 100px; width: 0%; transition: width 0.4s ease; }
+.processing-file { font-size: 0.78rem; color: #9ca3af; margin-top: 0.75rem; }
+
+/* ── STEP 3: FORM ── */
+.form-screen { padding: 1.5rem; }
+.form-layout { display: grid; grid-template-columns: 260px 1fr; gap: 1.25rem; }
+.doc-preview { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; }
+.doc-preview-header { background: var(--purple); padding: 0.6rem 0.9rem; }
+.doc-preview-header span { font-size: 0.78rem; color: rgba(255,255,255,0.9); font-weight: 500; }
+.doc-preview-body { padding: 1rem; }
+.doc-preview svg { width: 100%; height: auto; }
+.doc-ai-badge { display: flex; align-items: center; gap: 0.4rem; background: var(--purple-light); border-radius: 8px; padding: 0.5rem 0.75rem; margin-top: 0.75rem; }
+.doc-ai-badge span { font-size: 0.75rem; color: var(--purple-dark); font-weight: 500; }
+.form-panel { background: white; border-radius: 12px; border: 1px solid #e5e7eb; padding: 1.25rem; }
+.field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+.field-group.full { grid-template-columns: 1fr; }
+.field-group.triple { grid-template-columns: 1fr 1fr 1fr; }
+.field { display: flex; flex-direction: column; }
+.field label { font-size: 0.73rem; font-weight: 500; color: #6b7280; margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.field input, .field select {
+  padding: 0.5rem 0.7rem; border: 1px solid #e5e7eb; border-radius: 6px;
+  font-family: var(--sans); font-size: 0.85rem; color: #111827; background: #fafafa;
+  transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus { outline: none; border-color: var(--purple); background: white; box-shadow: 0 0 0 2px rgba(124,58,237,0.08); }
+.urgencia-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; border: 1px solid #e5e7eb; border-radius: 6px; background: #fafafa; }
+.urgencia-row input[type=checkbox] { accent-color: var(--red); width: 15px; height: 15px; }
+.urgencia-row label { font-size: 0.85rem; color: #374151; cursor: pointer; }
+.form-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f3f4f6; flex-wrap: wrap; gap: 0.75rem; }
+.btn-save { padding: 0.65rem 1.5rem; background: var(--purple); color: white; border: none; border-radius: 8px; font-family: var(--sans); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+.btn-save:hover { background: var(--purple-dark); }
+.btn-cancel { padding: 0.65rem 1rem; background: transparent; color: #6b7280; border: none; font-family: var(--sans); font-size: 0.85rem; cursor: pointer; }
+.form-title { font-size: 0.95rem; font-weight: 600; color: var(--purple-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.tipo-badge { font-size: 0.7rem; background: var(--purple-light); color: var(--purple-dark); padding: 0.2rem 0.6rem; border-radius: 100px; font-weight: 500; }
+
+/* ── STEP 4: SUCCESS ── */
+.success-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; padding: 2rem; text-align: center; }
+.check-circle { width: 72px; height: 72px; border-radius: 50%; background: #d1fae5; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.check-circle svg { width: 36px; height: 36px; color: var(--green); }
+.success-title { font-size: 1.15rem; font-weight: 700; color: #065f46; margin-bottom: 0.5rem; }
+.success-sub { font-size: 0.85rem; color: #6b7280; margin-bottom: 1.75rem; }
+.success-items { text-align: left; width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
+.success-item { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: #374151; }
+.success-item-icon { color: var(--green); font-size: 0.9rem; flex-shrink: 0; margin-top: 0.1rem; }
+.btn-next { padding: 0.7rem 1.75rem; background: var(--purple); color: white; border: none; border-radius: 8px; font-family: var(--sans); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+.btn-next:hover { background: var(--purple-dark); }
+
+@media (max-width: 640px) {
+  .form-layout { grid-template-columns: 1fr; }
+  .doc-preview { display: none; }
+  .field-group { grid-template-columns: 1fr; }
+  .field-group.triple { grid-template-columns: 1fr 1fr; }
+  .intro, .app-wrapper { padding-left: 1rem; padding-right: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="/" class="header-logo">pluxow</a>
+    <span class="demo-badge">Demo</span>
+  </div>
+  <a href="/demos.html" class="header-back">← Volver a demos</a>
+</header>
+
+<div class="intro">
+  <div class="section-label">Salud · Procesamiento de documentos con IA</div>
+  <h1>Procesador de Partes Médicos</h1>
+  <p>Sistema que lee imágenes de partes quirúrgicos con IA, extrae automáticamente los datos clave y los guarda en Google Sheets. Integrá con Google Drive para gestionar el flujo completo de documentos.</p>
+  <div class="flow-chips" id="flowChips">
+    <span class="flow-chip active" data-step="0">Login</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-chip" data-step="1">Seleccionar archivos</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-chip" data-step="2">IA extrae datos</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-chip" data-step="3">Validar y guardar</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-chip" data-step="4">Confirmación</span>
+  </div>
+</div>
+
+<div class="app-wrapper">
+  <div class="app-window">
+    <div class="app-titlebar">
+      <div class="titlebar-dot red"></div>
+      <div class="titlebar-dot yellow"></div>
+      <div class="titlebar-dot green"></div>
+      <span class="titlebar-name">Procesador de Partes Quirúrgicos · Demo</span>
+    </div>
+    <div class="app-body">
+
+      <!-- STEP 0: LOGIN -->
+      <div class="step active" id="step-0">
+        <div class="login-wrap">
+          <div class="login-card">
+            <div class="login-logo">⚕ MediDoc</div>
+            <div class="login-sub">Sistema de procesamiento de partes</div>
+            <div class="form-field">
+              <label>Usuario</label>
+              <input type="text" value="demo" readonly>
+            </div>
+            <div class="form-field">
+              <label>Contraseña</label>
+              <input type="password" value="••••••••••" readonly>
+            </div>
+            <button class="btn-purple" onclick="goStep(1)">Ingresar al sistema →</button>
+            <div class="demo-note">Demo interactiva · Datos de ejemplo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: FILE LIST -->
+      <div class="step" id="step-1">
+        <div class="file-screen">
+          <div class="screen-header">
+            <div>
+              <div class="screen-title">Partes para procesar</div>
+              <div class="screen-sub">Seleccioná los documentos que querés analizar</div>
+            </div>
+            <div class="folder-path">📁 Nuevas / Mayo 2026</div>
+          </div>
+          <div class="file-list">
+            <div class="file-item" onclick="toggleCheck(0)">
+              <input type="checkbox" id="chk0" checked onchange="updateCount()">
+              <div class="file-icon">🖼</div>
+              <div class="file-info">
+                <div class="file-name">parte_001.jpg</div>
+                <div class="file-meta">15/05/2026 · 1.2 MB</div>
+              </div>
+              <span class="file-tag">Clínica de Ejemplo</span>
+            </div>
+            <div class="file-item" onclick="toggleCheck(1)">
+              <input type="checkbox" id="chk1" onchange="updateCount()">
+              <div class="file-icon">🖼</div>
+              <div class="file-info">
+                <div class="file-name">parte_002.jpg</div>
+                <div class="file-meta">15/05/2026 · 980 KB</div>
+              </div>
+              <span class="file-tag">Clínica de Ejemplo</span>
+            </div>
+            <div class="file-item" onclick="toggleCheck(2)">
+              <input type="checkbox" id="chk2" onchange="updateCount()">
+              <div class="file-icon">🖼</div>
+              <div class="file-info">
+                <div class="file-name">hoja_clinica_003.jpg</div>
+                <div class="file-meta">14/05/2026 · 1.5 MB</div>
+              </div>
+              <span class="file-tag">Hoja Clínica</span>
+            </div>
+            <div class="file-item" onclick="toggleCheck(3)">
+              <input type="checkbox" id="chk3" onchange="updateCount()">
+              <div class="file-icon">🖼</div>
+              <div class="file-info">
+                <div class="file-name">parte_004.jpg</div>
+                <div class="file-meta">14/05/2026 · 1.1 MB</div>
+              </div>
+              <span class="file-tag">Clínica de Ejemplo</span>
+            </div>
+          </div>
+          <div class="actions-bar">
+            <span class="count-badge" id="countBadge">1 archivo seleccionado</span>
+            <div style="display:flex;gap:0.75rem">
+              <button class="btn-outline" onclick="selectAll()">Seleccionar todos</button>
+              <button class="btn-purple" style="width:auto;margin-top:0" onclick="goStep(2)">Procesar seleccionados →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: PROCESSING -->
+      <div class="step" id="step-2">
+        <div class="processing-wrap">
+          <div class="spinner-ring"></div>
+          <div class="processing-title">Analizando con Claude AI...</div>
+          <div class="processing-sub" id="procSub">Identificando tipo de documento...</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progBar"></div>
+          </div>
+          <div class="processing-file" id="procFile">parte_001.jpg</div>
+        </div>
+      </div>
+
+      <!-- STEP 3: FORM -->
+      <div class="step" id="step-3">
+        <div class="form-screen">
+          <div class="form-layout">
+            <!-- Document preview -->
+            <div class="doc-preview">
+              <div class="doc-preview-header"><span>📄 parte_001.jpg</span></div>
+              <div class="doc-preview-body">
+                <!-- Generic medical form SVG -->
+                <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" style="border:1px solid #e5e7eb;border-radius:4px;">
+                  <rect width="200" height="260" fill="white"/>
+                  <rect x="0" y="0" width="200" height="28" fill="#7c3aed" rx="0"/>
+                  <text x="10" y="18" font-size="8" fill="white" font-family="sans-serif" font-weight="bold">PARTE QUIRÚRGICO</text>
+                  <text x="10" y="26" font-size="5.5" fill="rgba(255,255,255,0.8)" font-family="sans-serif">Clínica de Ejemplo · Formulario estándar</text>
+                  <!-- Fields rows -->
+                  <g font-size="5.5" font-family="sans-serif" fill="#6b7280">
+                    <text x="10" y="44">N° Credencial</text>
+                    <rect x="10" y="47" width="80" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="105" y="44">N° Historia Clínica</text>
+                    <rect x="105" y="47" width="85" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="10" y="66">Apellido y Nombre del Paciente</text>
+                    <rect x="10" y="69" width="180" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="10" y="88">Fecha de Intervención</text>
+                    <rect x="10" y="91" width="80" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="105" y="88">Sanatorio</text>
+                    <rect x="105" y="91" width="85" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="10" y="110">Cirujano Interviniente</text>
+                    <rect x="10" y="113" width="180" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="10" y="132">Diagnóstico / Operación Propuesta</text>
+                    <rect x="10" y="135" width="180" height="18" fill="#f3f4f6" rx="1"/>
+                    <text x="10" y="165">Código de prestación</text>
+                    <rect x="10" y="168" width="55" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="80" y="165">Cant.</text>
+                    <rect x="80" y="168" width="30" height="8" fill="#f3f4f6" rx="1"/>
+                    <text x="125" y="165">Honorarios</text>
+                    <rect x="125" y="168" width="65" height="8" fill="#f3f4f6" rx="1"/>
+                    <line x1="10" y1="190" x2="190" y2="190" stroke="#e5e7eb" stroke-width="0.5"/>
+                    <text x="10" y="205">Firma y sello del médico</text>
+                    <rect x="10" y="208" width="80" height="20" fill="#f9fafb" rx="1" stroke="#e5e7eb" stroke-width="0.5"/>
+                    <text x="105" y="205">Firma del paciente</text>
+                    <rect x="105" y="208" width="85" height="20" fill="#f9fafb" rx="1" stroke="#e5e7eb" stroke-width="0.5"/>
+                  </g>
+                  <!-- AI scan overlay -->
+                  <rect x="0" y="0" width="200" height="260" fill="rgba(124,58,237,0.04)" rx="0"/>
+                  <rect x="8" y="45" width="84" height="10" fill="none" stroke="#7c3aed" stroke-width="0.8" rx="1" stroke-dasharray="2,1" opacity="0.6"/>
+                  <rect x="103" y="45" width="89" height="10" fill="none" stroke="#7c3aed" stroke-width="0.8" rx="1" stroke-dasharray="2,1" opacity="0.6"/>
+                  <rect x="8" y="67" width="184" height="10" fill="none" stroke="#7c3aed" stroke-width="0.8" rx="1" stroke-dasharray="2,1" opacity="0.6"/>
+                </svg>
+                <div class="doc-ai-badge">
+                  <span>✦</span>
+                  <span>Datos extraídos por IA · 14 campos</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="form-panel">
+              <div class="form-title">
+                Validar datos extraídos
+                <span class="tipo-badge">Clínica de Ejemplo</span>
+              </div>
+
+              <div class="field-group">
+                <div class="field">
+                  <label>Nro. Credencial</label>
+                  <input type="text" value="45782/09">
+                </div>
+                <div class="field">
+                  <label>Número HC</label>
+                  <input type="text" value="125834">
+                </div>
+              </div>
+
+              <div class="field-group full">
+                <div class="field">
+                  <label>Apellido y Nombre</label>
+                  <input type="text" value="García, Juan Carlos">
+                </div>
+              </div>
+
+              <div class="field-group">
+                <div class="field">
+                  <label>Fecha</label>
+                  <input type="text" value="15/05/2026 09:30">
+                </div>
+                <div class="field">
+                  <label>Sanatorio</label>
+                  <input type="text" value="Sanatorio Güemes">
+                </div>
+              </div>
+
+              <div class="field-group full">
+                <div class="field">
+                  <label>Cirujano</label>
+                  <input type="text" value="Dr. Rodríguez, Marcos">
+                </div>
+              </div>
+
+              <div class="field-group full">
+                <div class="field">
+                  <label>Diagnóstico / Operación</label>
+                  <input type="text" value="Apendicectomía laparoscópica">
+                </div>
+              </div>
+
+              <div class="field-group triple">
+                <div class="field">
+                  <label>Código prestación</label>
+                  <input type="text" value="06-01-30-24">
+                </div>
+                <div class="field">
+                  <label>Cantidad</label>
+                  <input type="text" value="1">
+                </div>
+                <div class="field">
+                  <label>Honorarios</label>
+                  <input type="text" value="$48.500">
+                </div>
+              </div>
+
+              <div class="field-group full">
+                <div class="field">
+                  <label>Urgencia</label>
+                  <div class="urgencia-row">
+                    <input type="checkbox" id="urgCheck">
+                    <label for="urgCheck">Marcar como urgencia (fuera de horario)</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-cancel" onclick="goStep(1)">← Volver</button>
+                <button class="btn-save" onclick="goStep(4)">Guardar y continuar →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: SUCCESS -->
+      <div class="step" id="step-4">
+        <div class="success-wrap">
+          <div class="check-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="success-title">Parte guardado exitosamente</div>
+          <div class="success-sub">García, Juan Carlos · 15/05/2026</div>
+          <div class="success-items">
+            <div class="success-item">
+              <span class="success-item-icon">✓</span>
+              <span>Datos guardados en Google Sheets (fila 847)</span>
+            </div>
+            <div class="success-item">
+              <span class="success-item-icon">✓</span>
+              <span>Archivo movido a carpeta <strong>VERIFICADAS</strong></span>
+            </div>
+            <div class="success-item">
+              <span class="success-item-icon">✓</span>
+              <span>Renombrado: <code style="font-size:0.78rem;background:#f3f4f6;padding:0.1rem 0.3rem;border-radius:3px">2026-05-15_Garcia_JuanCarlos_45782-09.jpg</code></span>
+            </div>
+          </div>
+          <button class="btn-next" onclick="resetDemo()">Procesar siguiente documento →</button>
+        </div>
+      </div>
+
+    </div><!-- app-body -->
+  </div><!-- app-window -->
+</div><!-- app-wrapper -->
+
+<footer style="border-top:1px solid var(--border);padding:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;font-size:0.82rem;color:var(--ink-light);">
+  <span style="font-family:var(--serif);color:var(--ink)">pluxow</span>
+  <span>Demo interactiva · Datos de ejemplo</span>
+  <span>pluxow.com</span>
+</footer>
+
+<script>
+let currentStep = 0;
+
+function goStep(n) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step-' + n).classList.add('active');
+  updateChips();
+  if (n === 2) startProcessing();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateChips() {
+  document.querySelectorAll('.flow-chip').forEach(chip => {
+    const s = parseInt(chip.dataset.step);
+    chip.classList.toggle('active', s === currentStep);
+  });
+}
+
+function toggleCheck(i) {
+  const chk = document.getElementById('chk' + i);
+  chk.checked = !chk.checked;
+  updateCount();
+}
+
+function updateCount() {
+  const n = [...document.querySelectorAll('[id^=chk]')].filter(c => c.checked).length;
+  document.getElementById('countBadge').textContent =
+    n === 0 ? 'Ningún archivo seleccionado' :
+    n === 1 ? '1 archivo seleccionado' : n + ' archivos seleccionados';
+}
+
+function selectAll() {
+  document.querySelectorAll('[id^=chk]').forEach(c => c.checked = true);
+  updateCount();
+}
+
+function startProcessing() {
+  const msgs = [
+    'Identificando tipo de documento...',
+    'Extrayendo campos del formulario...',
+    'Verificando credencial en base de datos...',
+    'Aplicando reglas de validación...',
+    'Preparando formulario...'
+  ];
+  const bar = document.getElementById('progBar');
+  const sub = document.getElementById('procSub');
+  let i = 0;
+  bar.style.width = '0%';
+
+  const interval = setInterval(() => {
+    i++;
+    const pct = Math.min(i * 22, 95);
+    bar.style.width = pct + '%';
+    if (msgs[i - 1]) sub.textContent = msgs[i - 1];
+    if (i >= 5) {
+      clearInterval(interval);
+      bar.style.width = '100%';
+      setTimeout(() => goStep(3), 400);
+    }
+  }, 480);
+}
+
+function resetDemo() {
+  goStep(1);
+}
+</script>
+</body>
+</html>
