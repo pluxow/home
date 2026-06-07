@@ -193,8 +193,52 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
 .btn-advance:disabled { background: #d1d5db; cursor: default; }
 
 /* ─────────────────────────────────────────────
-   SCENE 3: ADMIN
+   SCENE 3: FINANCE
 ───────────────────────────────────────────── */
+.fin-shell { background: #f9fafb; }
+.fin-header { background: white; border-bottom: 1px solid #e5e7eb; padding: 0.85rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+.fin-title { font-size: 1rem; font-weight: 700; color: #111827; }
+.fin-period { font-size: 0.8rem; color: #6b7280; margin-top: 0.1rem; }
+.fin-period-tabs { display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px; }
+.fin-period-tab { padding: 0.35rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; color: #6b7280; cursor: pointer; border: none; background: transparent; font-family: var(--sans); transition: all 0.15s; }
+.fin-period-tab.active { background: white; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.fin-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.fin-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+.fin-kpi-card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 0.9rem 1rem; }
+.fin-kpi-label { font-size: 0.68rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; font-weight: 500; }
+.fin-kpi-value { font-family: var(--serif); font-size: 1.45rem; color: #111827; line-height: 1; }
+.fin-kpi-value.green { color: var(--green); }
+.fin-kpi-value.amber { color: #d97706; }
+.fin-kpi-sub { font-size: 0.7rem; color: #9ca3af; margin-top: 0.3rem; }
+.fin-charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.fin-chart-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.1rem; }
+.fin-chart-title { font-size: 0.8rem; font-weight: 600; color: #374151; margin-bottom: 1rem; }
+.fin-bars { display: flex; align-items: flex-end; gap: 0.6rem; height: 110px; }
+.fin-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; height: 100%; }
+.fin-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; }
+.fin-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; }
+.fin-bar.current { background: var(--green); }
+.fin-bar.past { background: #d1d5db; }
+.fin-bar-label { font-size: 0.65rem; color: #9ca3af; font-weight: 500; }
+.fin-bar-amount { font-size: 0.58rem; color: #9ca3af; text-align: center; }
+.fin-spec-list { display: flex; flex-direction: column; gap: 0.7rem; }
+.fin-spec-row { display: flex; flex-direction: column; gap: 0.25rem; }
+.fin-spec-hdr { display: flex; justify-content: space-between; align-items: baseline; }
+.fin-spec-name { font-size: 0.8rem; color: #374151; font-weight: 500; }
+.fin-spec-amount { font-size: 0.72rem; color: #9ca3af; }
+.fin-spec-bar-wrap { height: 7px; background: #f3f4f6; border-radius: 100px; overflow: hidden; }
+.fin-spec-fill { height: 100%; border-radius: 100px; transition: width 0.6s ease; }
+.fin-table-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+.fin-table-hdr { padding: 0.75rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.82rem; font-weight: 600; color: #374151; background: #fafafa; }
+.fin-table { width: 100%; border-collapse: collapse; }
+.fin-table th { text-align: left; font-size: 0.67rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.55rem 1rem; border-bottom: 1px solid #f3f4f6; }
+.fin-table td { padding: 0.55rem 1rem; font-size: 0.82rem; border-bottom: 1px solid #f9fafb; }
+.fin-table tr:last-child td { border-bottom: none; }
+.fin-pay-badge { font-size: 0.7rem; font-weight: 500; padding: 0.15rem 0.55rem; border-radius: 100px; white-space: nowrap; }
+.fin-pay-done { background: #d1fae5; color: #065f46; }
+.fin-pay-partial { background: #fef3c7; color: #92400e; }
+.fin-pay-pending { background: #f3f4f6; color: #6b7280; }
+
 .admin-shell { display: flex; height: 600px; }
 .admin-sidebar { width: 240px; background: #1f2937; color: white; display: flex; flex-direction: column; flex-shrink: 0; }
 .admin-brand { padding: 1rem; font-weight: 700; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 0.5rem; }
@@ -430,116 +474,163 @@ header { position: sticky; top: 0; z-index: 100; background: var(--cream); borde
         </div>
       </div>
 
-      <!-- ── SCENE 3: ADMIN ── -->
+      <!-- ── SCENE 3: FINANCE ── -->
       <div class="scene" id="scene-admin">
-        <div class="admin-shell">
-          <!-- Sidebar -->
-          <div class="admin-sidebar">
-            <div class="admin-brand">🏥 Ciudad Jardín</div>
-            <div class="admin-nav">
-              <div class="admin-nav-item active" id="navInbox" onclick="adminTab('inbox')">💬 Inbox WhatsApp <span id="inboxBadge" style="margin-left:auto;background:var(--wa-green);color:white;font-size:0.65rem;padding:0.1rem 0.4rem;border-radius:100px;font-weight:700">3</span></div>
-              <div class="admin-nav-item" id="navAgenda" onclick="adminTab('agenda')">📅 Agenda del día</div>
-              <div class="admin-nav-item" id="navPacientes" onclick="adminTab('pacientes')" style="opacity:0.5">👥 Pacientes</div>
+        <div class="fin-shell">
+          <div class="fin-header">
+            <div>
+              <div class="fin-title">Resumen Financiero</div>
+              <div class="fin-period">Policonsultorio Ciudad Jardín · Junio 2026</div>
+            </div>
+            <div class="fin-period-tabs">
+              <button class="fin-period-tab active" onclick="finTab(this,'jun')">Jun</button>
+              <button class="fin-period-tab" onclick="finTab(this,'may')">May</button>
+              <button class="fin-period-tab" onclick="finTab(this,'abr')">Abr</button>
             </div>
           </div>
+          <div class="fin-body">
 
-          <!-- Main area -->
-          <div class="admin-main">
-            <div class="admin-moment-nav">
-              <span class="moment-label" id="adminMomentLabel">Momento 1 / 5 — Revisando el inbox</span>
-              <button class="btn-advance" id="btnAdvanceAdmin" onclick="advanceAdmin()">Avanzar →</button>
-            </div>
-
-            <!-- Inbox panel -->
-            <div id="adminInboxPanel" style="display:flex;flex:1;overflow:hidden">
-              <div class="inbox-list">
-                <div class="inbox-header">Conversaciones · hoy</div>
-                <div class="inbox-item" id="inboxItemAna" onclick="openConv('ana')">
-                  <div class="inbox-avatar" style="background:var(--green)">AR</div>
-                  <div class="inbox-item-info"><div class="inbox-item-name">Ana Rodríguez</div><div class="inbox-item-last">Muchas gracias! Ahí pago 😊</div></div>
-                  <div class="inbox-item-meta"><span class="inbox-time">hace 2 min</span><span class="inbox-mode">🤖 Bot</span></div>
-                </div>
-                <div class="inbox-item active-inbox" id="inboxItemCarlos" onclick="openConv('carlos')">
-                  <div class="inbox-avatar" style="background:#3b82f6">CM</div>
-                  <div class="inbox-item-info"><div class="inbox-item-name">Carlos Méndez</div><div class="inbox-item-last">¿Tienen lugar el viernes?</div></div>
-                  <div class="inbox-item-meta"><span class="inbox-time">hace 15 min</span><span class="inbox-unread" id="carlosBadge">2</span><span class="inbox-mode">🤖 Bot</span></div>
-                </div>
-                <div class="inbox-item" onclick="openConv('laura')">
-                  <div class="inbox-avatar" style="background:#8b5cf6">LV</div>
-                  <div class="inbox-item-info"><div class="inbox-item-name">Laura Vega</div><div class="inbox-item-last">Ok perfecto, hasta mañana!</div></div>
-                  <div class="inbox-item-meta"><span class="inbox-time">hace 1h</span><span class="inbox-mode">🤖 Bot</span></div>
-                </div>
-                <div class="inbox-item" onclick="openConv('martin')">
-                  <div class="inbox-avatar" style="background:#ef4444">MS</div>
-                  <div class="inbox-item-info"><div class="inbox-item-name">Martín Silva</div><div class="inbox-item-last">Necesito cancelar mi turno</div></div>
-                  <div class="inbox-item-meta"><span class="inbox-time">hace 3h</span><span class="inbox-unread">1</span><span class="inbox-mode">🤖 Bot</span></div>
-                </div>
+            <!-- KPIs -->
+            <div class="fin-kpi-grid">
+              <div class="fin-kpi-card">
+                <div class="fin-kpi-label">Ingresos del mes</div>
+                <div class="fin-kpi-value green">$81.500</div>
+                <div class="fin-kpi-sub">↑ 7,9% vs mayo</div>
               </div>
-
-              <div class="chat-panel">
-                <div class="chat-panel-header">
-                  <div class="wa-chat-avatar" id="chatAvatar" style="background:#3b82f6">CM</div>
-                  <div class="chat-panel-info">
-                    <div class="chat-panel-name" id="chatName">Carlos Méndez</div>
-                    <div class="chat-panel-status" id="chatStatus">🤖 Bot activo</div>
-                  </div>
-                  <button class="mode-toggle bot-mode" id="modeToggle" onclick="toggleMode()">🤖 Bot</button>
-                </div>
-                <div class="chat-messages" id="chatMessages">
-                  <div class="wa-msg bot">¡Hola Carlos! Soy el asistente del Policonsultorio Ciudad Jardín. ¿En qué puedo ayudarte? 😊<div class="wa-msg-time">10:14</div></div>
-                  <div class="wa-msg patient">Quería saber si tienen turnos disponibles para traumatología<div class="wa-msg-time">10:15</div></div>
-                  <div class="wa-msg bot">¡Claro! Para traumatología tenés disponibles:<br>• Miércoles 10:00 hs<br>• Jueves 14:00 hs<br>• Viernes 9:00 hs<div class="wa-msg-time">10:15</div></div>
-                  <div class="wa-msg patient">¿Tienen lugar el viernes?<div class="wa-msg-time">10:16</div></div>
-                </div>
-                <div class="chat-input-bar">
-                  <input class="chat-input" id="adminChatInput" placeholder="El bot está respondiendo..." disabled>
-                  <button class="chat-send" id="adminSendBtn" onclick="sendAdminMsg()" disabled>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                  </button>
-                </div>
+              <div class="fin-kpi-card">
+                <div class="fin-kpi-label">Ya cobrado</div>
+                <div class="fin-kpi-value">$64.500</div>
+                <div class="fin-kpi-sub">79% del total</div>
+              </div>
+              <div class="fin-kpi-card">
+                <div class="fin-kpi-label">Pendiente de cobro</div>
+                <div class="fin-kpi-value amber">$17.000</div>
+                <div class="fin-kpi-sub">2 turnos sin cobrar</div>
+              </div>
+              <div class="fin-kpi-card">
+                <div class="fin-kpi-label">Sesiones realizadas</div>
+                <div class="fin-kpi-value">23</div>
+                <div class="fin-kpi-sub">↑ 3 vs mayo</div>
               </div>
             </div>
 
-            <!-- Agenda panel (hidden initially) -->
-            <div id="adminAgendaPanel" style="display:none;flex:1;overflow:hidden">
-              <div class="agenda-panel">
-                <div class="agenda-stats">
-                  <div class="agenda-stat-card"><div class="agenda-stat-n">5</div><div class="agenda-stat-l">Total</div></div>
-                  <div class="agenda-stat-card"><div class="agenda-stat-n green">2</div><div class="agenda-stat-l">Atendidos</div></div>
-                  <div class="agenda-stat-card"><div class="agenda-stat-n">3</div><div class="agenda-stat-l">Pendientes</div></div>
-                  <div class="agenda-stat-card"><div class="agenda-stat-n" style="color:var(--red)">0</div><div class="agenda-stat-l">No vinieron</div></div>
+            <!-- Charts row -->
+            <div class="fin-charts-row">
+
+              <!-- Monthly bar chart -->
+              <div class="fin-chart-card">
+                <div class="fin-chart-title">Ingresos mensuales · últimos 6 meses</div>
+                <div class="fin-bars">
+                  <div class="fin-bar-col">
+                    <div class="fin-bar-wrap"><div class="fin-bar past" style="height:76%"></div></div>
+                    <div class="fin-bar-label">Ene</div>
+                    <div class="fin-bar-amount">$62k</div>
+                  </div>
+                  <div class="fin-bar-col">
+                    <div class="fin-bar-wrap"><div class="fin-bar past" style="height:72%"></div></div>
+                    <div class="fin-bar-label">Feb</div>
+                    <div class="fin-bar-amount">$58,5k</div>
+                  </div>
+                  <div class="fin-bar-col">
+                    <div class="fin-bar-wrap"><div class="fin-bar past" style="height:87%"></div></div>
+                    <div class="fin-bar-label">Mar</div>
+                    <div class="fin-bar-amount">$71k</div>
+                  </div>
+                  <div class="fin-bar-col">
+                    <div class="fin-bar-wrap"><div class="fin-bar past" style="height:83%"></div></div>
+                    <div class="fin-bar-label">Abr</div>
+                    <div class="fin-bar-amount">$68k</div>
+                  </div>
+                  <div class="fin-bar-col">
+                    <div class="fin-bar-wrap"><div class="fin-bar past" style="height:93%"></div></div>
+                    <div class="fin-bar-label">May</div>
+                    <div class="fin-bar-amount">$75,5k</div>
+                  </div>
+                  <div class="fin-bar-col">
+                    <div class="fin-bar-wrap"><div class="fin-bar current" style="height:100%"></div></div>
+                    <div class="fin-bar-label" style="color:var(--green);font-weight:600">Jun</div>
+                    <div class="fin-bar-amount" style="color:var(--green);font-weight:500">$81,5k</div>
+                  </div>
                 </div>
-                <div class="agenda-list" id="agendaList"></div>
               </div>
-              <div class="patient-drawer" id="patientDrawer">
-                <div class="drawer-header">
-                  <span class="drawer-name" id="drawerName">Ana Rodríguez</span>
-                  <button class="drawer-close" onclick="closeDrawer()">✕</button>
-                </div>
-                <div class="drawer-body">
-                  <div class="drawer-section">
-                    <div class="drawer-section-label">Datos del paciente</div>
-                    <div class="drawer-field"><span class="drawer-field-label">DNI</span><span class="drawer-field-value">32.456.789</span></div>
-                    <div class="drawer-field"><span class="drawer-field-label">Teléfono</span><span class="drawer-field-value">+54 9 11 4521-8874</span></div>
-                    <div class="drawer-field"><span class="drawer-field-label">Especialidad</span><span class="drawer-field-value">Kinesiología</span></div>
-                    <div class="drawer-field"><span class="drawer-field-label">Última sesión</span><span class="drawer-field-value">02/06/2026</span></div>
+
+              <!-- Specialty breakdown -->
+              <div class="fin-chart-card">
+                <div class="fin-chart-title">Ingresos por especialidad · junio</div>
+                <div class="fin-spec-list">
+                  <div class="fin-spec-row">
+                    <div class="fin-spec-hdr"><span class="fin-spec-name">Kinesiología</span><span class="fin-spec-amount">$28.500 · 35%</span></div>
+                    <div class="fin-spec-bar-wrap"><div class="fin-spec-fill" style="width:35%;background:var(--green)"></div></div>
                   </div>
-                  <div class="drawer-section">
-                    <div class="drawer-section-label">Progreso de sesiones</div>
-                    <div style="font-size:0.82rem;color:#374151">8 de 12 sesiones</div>
-                    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div></div>
+                  <div class="fin-spec-row">
+                    <div class="fin-spec-hdr"><span class="fin-spec-name">Traumatología</span><span class="fin-spec-amount">$18.000 · 22%</span></div>
+                    <div class="fin-spec-bar-wrap"><div class="fin-spec-fill" style="width:22%;background:#3b82f6"></div></div>
                   </div>
-                  <div class="drawer-section">
-                    <div class="drawer-section-label">Últimas sesiones</div>
-                    <div class="session-row"><span style="display:flex;align-items:center"><span class="session-dot"></span>02/06 — Asistió</span><span style="font-size:0.75rem;color:#6b7280">$15.000 ✓</span></div>
-                    <div class="session-row"><span style="display:flex;align-items:center"><span class="session-dot"></span>26/05 — Asistió</span><span style="font-size:0.75rem;color:#6b7280">$15.000 ✓</span></div>
-                    <div class="session-row"><span style="display:flex;align-items:center"><span class="session-dot" style="background:#ef4444"></span>19/05 — No vino</span><span style="font-size:0.75rem;color:#6b7280">—</span></div>
+                  <div class="fin-spec-row">
+                    <div class="fin-spec-hdr"><span class="fin-spec-name">Osteopatía</span><span class="fin-spec-amount">$16.000 · 20%</span></div>
+                    <div class="fin-spec-bar-wrap"><div class="fin-spec-fill" style="width:20%;background:#f59e0b"></div></div>
+                  </div>
+                  <div class="fin-spec-row">
+                    <div class="fin-spec-hdr"><span class="fin-spec-name">RPG</span><span class="fin-spec-amount">$12.000 · 15%</span></div>
+                    <div class="fin-spec-bar-wrap"><div class="fin-spec-fill" style="width:15%;background:#8b5cf6"></div></div>
+                  </div>
+                  <div class="fin-spec-row">
+                    <div class="fin-spec-hdr"><span class="fin-spec-name">Nutrición</span><span class="fin-spec-amount">$7.000 · 8%</span></div>
+                    <div class="fin-spec-bar-wrap"><div class="fin-spec-fill" style="width:8%;background:#ef4444"></div></div>
                   </div>
                 </div>
               </div>
             </div>
 
-          </div><!-- admin-main -->
+            <!-- Recent transactions -->
+            <div class="fin-table-card">
+              <div class="fin-table-hdr">Cobros recientes</div>
+              <table class="fin-table">
+                <thead>
+                  <tr>
+                    <th>Paciente</th>
+                    <th>Especialidad</th>
+                    <th>Método</th>
+                    <th style="text-align:right">Monto</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Ana Rodríguez</td><td style="color:#6b7280">Kinesiología</td>
+                    <td style="color:#6b7280;font-size:0.78rem">Mercado Pago</td>
+                    <td style="text-align:right;font-weight:600">$15.000</td>
+                    <td><span class="fin-pay-badge fin-pay-done">Cobrado ✓</span></td>
+                  </tr>
+                  <tr>
+                    <td>Carlos Méndez</td><td style="color:#6b7280">Traumatología</td>
+                    <td style="color:#6b7280;font-size:0.78rem">Transferencia</td>
+                    <td style="text-align:right;font-weight:600">$18.000</td>
+                    <td><span class="fin-pay-badge fin-pay-done">Cobrado ✓</span></td>
+                  </tr>
+                  <tr>
+                    <td>Laura Vega</td><td style="color:#6b7280">RPG</td>
+                    <td style="color:#6b7280;font-size:0.78rem">Mercado Pago</td>
+                    <td style="text-align:right;font-weight:600">$16.000</td>
+                    <td><span class="fin-pay-badge fin-pay-partial">Seña $5.000</span></td>
+                  </tr>
+                  <tr>
+                    <td>Martín Silva</td><td style="color:#6b7280">Osteopatía</td>
+                    <td style="color:#6b7280;font-size:0.78rem">—</td>
+                    <td style="text-align:right;font-weight:600">$20.000</td>
+                    <td><span class="fin-pay-badge fin-pay-pending">Pendiente</span></td>
+                  </tr>
+                  <tr>
+                    <td>Sofía Torres</td><td style="color:#6b7280">Nutrición</td>
+                    <td style="color:#6b7280;font-size:0.78rem">Efectivo</td>
+                    <td style="text-align:right;font-weight:600">$12.000</td>
+                    <td><span class="fin-pay-badge fin-pay-done">Cobrado ✓</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
         </div>
       </div>
 
@@ -569,10 +660,10 @@ const modalData = {
     bullets: ['📅 Vista diaria con los turnos del día y especialidad de cada paciente', '🗓️ Vista semanal para ver la carga de trabajo de la semana completa', '📆 Vista mensual con el panorama del mes y días ocupados']
   },
   admin: {
-    badge: '🖥️ Perspectiva Admin',
-    title: 'Vista de la administrativa',
-    desc: 'Seguí a Valentina gestionando el consultorio desde el panel de administración',
-    bullets: ['💬 Monitorea todas las conversaciones activas del bot', '👩 Toma el control manualmente cuando es necesario', '📅 Revisa la agenda del día y la ficha de cada paciente']
+    badge: '💰 Perspectiva Admin',
+    title: 'Panel de finanzas',
+    desc: 'Resumen de ingresos del consultorio: por mes, por especialidad y cobros recientes',
+    bullets: ['📊 KPIs del mes: total, cobrado y pendiente de cobro', '📈 Evolución mensual de ingresos de los últimos 6 meses', '🏷️ Desglose por especialidad y tabla de cobros recientes']
   }
 };
 let pendingScene = 'patient';
@@ -829,139 +920,15 @@ function renderCalMonth() {
   document.getElementById('calBody').innerHTML = h + '</div>';
 }
 
-/* ── SCENE 3: ADMIN ── */
-let adminMoment = 0;
-let isManualMode = false;
-
-const adminMoments = [
-  { label: 'Momento 1 / 5 — Inbox del día', guide: 'La administrativa ve el inbox. Carlos Méndez tiene 2 mensajes sin leer' },
-  { label: 'Momento 2 / 5 — Tomar control', guide: 'Hace clic en "Tomar control" para responder ella directamente, pausando el bot', action: toggleMode },
-  { label: 'Momento 3 / 5 — Respuesta manual', guide: 'Escribe y envía el mensaje. El paciente recibe una respuesta personalizada', action: sendAdminMsgAuto },
-  { label: 'Momento 4 / 5 — Ver la agenda', guide: 'Cambia al tab de Agenda para ver el estado del día del doctor', action: () => adminTab('agenda') },
-  { label: 'Momento 5 / 5 — Ficha del paciente', guide: 'Hace clic en un turno para ver la historia clínica y el progreso de sesiones del paciente', action: () => openAgendaDrawer(0) },
-];
+/* ── SCENE 3: FINANCE ── */
 
 function initAdmin() {
-  adminMoment = 0;
-  isManualMode = false;
-  document.getElementById('adminMomentLabel').textContent = adminMoments[0].label;
-  document.getElementById('guideText').textContent = adminMoments[0].guide;
-  document.getElementById('modeToggle').className = 'mode-toggle bot-mode';
-  document.getElementById('modeToggle').textContent = '🤖 Bot';
-  document.getElementById('chatStatus').textContent = '🤖 Bot activo';
-  document.getElementById('adminChatInput').disabled = true;
-  document.getElementById('adminChatInput').placeholder = 'El bot está respondiendo...';
-  document.getElementById('adminSendBtn').disabled = true;
-  document.getElementById('btnAdvanceAdmin').disabled = false;
-  document.getElementById('btnAdvanceAdmin').textContent = 'Avanzar →';
-  adminTab('inbox');
+  document.getElementById('guideText').textContent = 'Resumen de ingresos del mes, evolución histórica y desglose por especialidad y cobros';
 }
 
-function advanceAdmin() {
-  adminMoment++;
-  if (adminMoment >= adminMoments.length) { initAdmin(); return; }
-  const m = adminMoments[adminMoment];
-  if (m.action) m.action();
-  document.getElementById('adminMomentLabel').textContent = m.label;
-  document.getElementById('guideText').textContent = m.guide;
-  if (adminMoment === adminMoments.length - 1) {
-    document.getElementById('btnAdvanceAdmin').textContent = 'Reiniciar →';
-  }
-}
-
-function adminTab(tab) {
-  document.getElementById('navInbox').classList.remove('active');
-  document.getElementById('navAgenda').classList.remove('active');
-  document.getElementById('adminInboxPanel').style.display = 'none';
-  document.getElementById('adminAgendaPanel').style.display = 'none';
-  if (tab === 'inbox') {
-    document.getElementById('navInbox').classList.add('active');
-    document.getElementById('adminInboxPanel').style.display = 'flex';
-  } else if (tab === 'agenda') {
-    document.getElementById('navAgenda').classList.add('active');
-    document.getElementById('adminAgendaPanel').style.display = 'flex';
-    renderAgendaList();
-  }
-}
-
-function toggleMode() {
-  isManualMode = !isManualMode;
-  const btn = document.getElementById('modeToggle');
-  const input = document.getElementById('adminChatInput');
-  const sendBtn = document.getElementById('adminSendBtn');
-  if (isManualMode) {
-    btn.className = 'mode-toggle manual-mode'; btn.textContent = '👩 Vos';
-    document.getElementById('chatStatus').textContent = '👩 Modo manual activo';
-    input.disabled = false; input.placeholder = 'Escribí tu mensaje...';
-    sendBtn.disabled = false;
-    document.getElementById('carlosBadge').remove();
-    document.getElementById('inboxBadge').textContent = '2';
-  } else {
-    btn.className = 'mode-toggle bot-mode'; btn.textContent = '🤖 Bot';
-    document.getElementById('chatStatus').textContent = '🤖 Bot activo';
-    input.disabled = true; input.placeholder = 'El bot está respondiendo...';
-    sendBtn.disabled = true;
-  }
-}
-
-function sendAdminMsgAuto() {
-  const input = document.getElementById('adminChatInput');
-  input.value = '¡Hola Carlos! Sí tenemos lugar el viernes a las 9:00 hs. ¿Te lo reservo? 😊';
-  setTimeout(() => { sendAdminMsg(); }, 400);
-}
-
-function sendAdminMsg() {
-  const input = document.getElementById('adminChatInput');
-  const text = input.value.trim();
-  if (!text || !isManualMode) return;
-  const msgs = document.getElementById('chatMessages');
-  const el = document.createElement('div');
-  el.className = 'wa-msg admin-msg';
-  el.innerHTML = text + '<div class="wa-msg-time">' + getTime() + '</div>';
-  msgs.appendChild(el);
-  msgs.scrollTop = msgs.scrollHeight;
-  input.value = '';
-}
-
-function openConv(who) {
-  // visual only
-}
-
-const agendaAppts = [
-  { time: '09:00', name: 'Ana Rodríguez', spec: 'Kinesiología', pay: 'paid', status: 'atendido' },
-  { time: '10:00', name: 'Carlos Méndez', spec: 'Traumatología', pay: 'paid', status: 'atendido' },
-  { time: '11:00', name: 'Laura Vega', spec: 'RPG', pay: 'paid', status: 'confirmado' },
-  { time: '14:00', name: 'Martín Silva', spec: 'Osteopatía', pay: 'pending', status: 'confirmado' },
-  { time: '15:30', name: 'Sofía Torres', spec: 'Nutrición', pay: 'paid', status: 'confirmado' },
-];
-
-function renderAgendaList() {
-  const list = document.getElementById('agendaList');
-  list.innerHTML = '';
-  agendaAppts.forEach((a, i) => {
-    const row = document.createElement('div');
-    row.className = 'agenda-row';
-    row.id = 'agRow' + i;
-    row.onclick = () => openAgendaDrawer(i);
-    row.innerHTML = `
-      <div class="agenda-time">${a.time}</div>
-      <div style="flex:1"><div class="agenda-name">${a.name}</div><div class="agenda-spec">${a.spec}</div></div>
-      <span class="agenda-pay ${a.pay === 'paid' ? 'pay-paid' : 'pay-pending'}">${a.pay === 'paid' ? 'Seña ✓' : 'Pendiente'}</span>
-    `;
-    list.appendChild(row);
-  });
-}
-
-function openAgendaDrawer(i) {
-  document.querySelectorAll('.agenda-row').forEach(r => r.classList.remove('open'));
-  document.getElementById('agRow' + i)?.classList.add('open');
-  document.getElementById('patientDrawer').classList.add('open');
-  document.getElementById('drawerName').textContent = agendaAppts[i].name;
-}
-
-function closeDrawer() {
-  document.getElementById('patientDrawer').classList.remove('open');
-  document.querySelectorAll('.agenda-row').forEach(r => r.classList.remove('open'));
+function finTab(btn, period) {
+  document.querySelectorAll('.fin-period-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 }
 
 // Init on load
