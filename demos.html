@@ -205,71 +205,6 @@ footer {
 }
 .footer-logo { font-family: var(--serif); color: var(--ink); }
 
-/* ── SECURITY ── */
-.security-section {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 2rem 5rem;
-}
-.security-inner {
-  border-top: 1px solid var(--border);
-  padding-top: 3rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1.5rem;
-}
-.security-item {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1.5rem 1.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.security-eyebrow {
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-light);
-}
-.security-item h3 {
-  font-family: var(--serif);
-  font-size: 1rem;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.security-item p {
-  font-size: 0.82rem;
-  color: var(--ink-mid);
-  line-height: 1.65;
-}
-.security-header {
-  text-align: center;
-  padding: 2.5rem 0 2rem;
-  border-top: 1px solid var(--border);
-}
-.security-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-light);
-  margin-bottom: 0.75rem;
-}
-.security-header h2 {
-  font-family: var(--serif);
-  font-size: clamp(1.4rem, 3vw, 1.9rem);
-  line-height: 1.2;
-  margin-bottom: 0.65rem;
-}
-.security-header h2 em { font-style: italic; color: var(--ink-mid); }
-.security-header p { font-size: 0.9rem; color: var(--ink-mid); max-width: 480px; margin: 0 auto; }
-@media (max-width: 700px) {
-  .security-inner { grid-template-columns: 1fr; }
-}
-
 /* ── PRICING ── */
 .pricing-section {
   max-width: 1100px;
@@ -551,32 +486,6 @@ footer {
   </div>
 
 </div>
-
-<!-- ══════════════════ SECURITY ══════════════════ -->
-<section class="security-section">
-  <div class="security-header">
-    <div class="security-label">Seguridad & Privacidad</div>
-    <h2>Infraestructura auditada,<br><em>datos bajo tu control.</em></h2>
-    <p>Cada solución que construimos opera sobre plataformas con certificaciones internacionales y cumple la normativa ecuatoriana vigente.</p>
-  </div>
-  <div class="security-inner">
-    <div class="security-item">
-      <span class="security-eyebrow">Infraestructura · SOC 2 Type II</span>
-      <h3>Plataformas auditadas anualmente</h3>
-      <p>Vercel y Supabase cuentan con certificación SOC 2 Type II e ISO 27001 — el mismo estándar que usan empresas Fortune 500. Una auditoría externa independiente verifica sus controles de seguridad de forma continua.</p>
-    </div>
-    <div class="security-item">
-      <span class="security-eyebrow">Cifrado · AES-256 + TLS</span>
-      <h3>Datos cifrados en reposo y en tránsito</h3>
-      <p>Toda la información almacenada usa cifrado AES-256 (el estándar bancario). Cada comunicación entre la app y la base de datos viaja por TLS — el mismo protocolo detrás del candado HTTPS del navegador.</p>
-    </div>
-    <div class="security-item">
-      <span class="security-eyebrow">Normativa · LOPDP Ecuador</span>
-      <h3>Alineado a la ley ecuatoriana de datos</h3>
-      <p>Diseñamos los accesos por rol: cada usuario ve únicamente lo que le corresponde. Los datos de salud — categoría especial bajo la LOPDP — tienen controles reforzados y consentimiento explícito del titular.</p>
-    </div>
-  </div>
-</section>
 
 <!-- ══════════════════ PRICING ══════════════════ -->
 <section class="pricing-section">
