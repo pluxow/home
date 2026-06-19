@@ -28,7 +28,7 @@
   "description": "Inteligencia operativa para empresas que quieren crecer. Diseñamos procesos más eficientes que liberan tiempo y mejoran el rendimiento de tu negocio.",
   "slogan": "Inteligencia operativa para empresas que quieren crecer",
   "areaServed": ["AR", "ES", "MX", "BR", "CO", "CL", "UY"],
-  "availableLanguage": ["Spanish", "English", "Portuguese"],
+  "availableLanguage": ["Spanish", "English", "Portuguese", "Italian"],
   "serviceType": [
     "Automatización de procesos",
     "Chatbots con IA",
@@ -752,6 +752,8 @@
     <button class="lang-btn" onclick="setLanguage('en')">EN</button>
     <span class="lang-sep">|</span>
     <button class="lang-btn" onclick="setLanguage('pt')">PT</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLanguage('it')">IT</button>
   </div>
 </nav>
 
@@ -1668,7 +1670,7 @@ async function handleSubmit() {
 (function() {
   const WEBHOOK = 'https://leacouretot.app.n8n.cloud/webhook/chat-pluxow-web';
   const LANG_GREETING = '👋 Hello! In which language would you like to chat?';
-  const LANG_OPTIONS = ['🇪🇸 Español', '🇬🇧 English', '🇧🇷 Português'];
+  const LANG_OPTIONS = ['🇪🇸 Español', '🇬🇧 English', '🇧🇷 Português', '🇮🇹 Italiano'];
 
   let messages = [];
   let isOpen = false;
