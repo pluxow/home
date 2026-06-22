@@ -120,7 +120,11 @@ header {
 .novedades-table td { padding: 1rem; font-size: 0.88rem; vertical-align: top; border-bottom: 1px solid var(--border); }
 .novedades-table tr:last-child td { border-bottom: none; }
 .novedades-table tr:nth-child(odd) td { background: var(--white); }
-.novedades-table tr:nth-child(even) td { background: var(--cream-dark); }
+.novedades-table tr:nth-child(even) td { background: #f0ece2; }
+.novedades-scroll { max-height: 320px; overflow-y: auto; }
+.novedades-scroll::-webkit-scrollbar { width: 4px; }
+.novedades-scroll::-webkit-scrollbar-track { background: transparent; }
+.novedades-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 .nov-cat { display: inline-block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; background: var(--cream-dark); color: var(--ink-light); padding: 0.2rem 0.6rem; border-radius: 100px; white-space: nowrap; }
 .nov-link { font-size: 0.8rem; color: var(--ink-light); word-break: break-all; }
 .nov-link a { color: var(--ink-mid); text-decoration: underline; text-underline-offset: 2px; }
@@ -203,7 +207,6 @@ footer {
     <a href="#kpis">KPIs</a>
     <a href="#macro">Macro</a>
     <a href="#historico">Histórico</a>
-    <a href="#proyectado">Proyectado</a>
     <a href="#tendencia">Tendencia</a>
     <a href="#yoy">Comparativo</a>
     <a href="#categorias">Categorías</a>
@@ -307,9 +310,12 @@ footer {
 <section id="macro" class="section-wrapper alt">
   <div class="section-inner">
     <div class="section-label">Contexto económico · Actualización automática</div>
-    <h2>Inflación y tipos de cambio</h2>
-    <p class="section-intro">Datos actualizados automáticamente desde fuentes oficiales.</p>
-    <div class="macro-grid">
+    <h2>Contexto macro y novedades del sector</h2>
+    <p class="section-intro">Indicadores actualizados automáticamente desde fuentes oficiales, junto con las últimas novedades relevantes del sector.</p>
+
+    <div style="display:grid; grid-template-columns: 280px 1fr; gap: 1.5rem; align-items: start;">
+
+      <!-- Card única: inflación + TC mayorista -->
       <div class="macro-card">
         <div class="macro-card-label">Inflación · INDEC</div>
         <div class="macro-row">
@@ -324,9 +330,8 @@ footer {
           <span class="macro-row-label">Acumulada 2026</span>
           <span class="macro-row-value">12,3%</span>
         </div>
-        <div class="macro-source">Fuente: <a href="#">indec.gob.ar</a></div>
-      </div>
-      <div class="macro-card">
+        <div class="macro-source" style="margin-bottom:1.25rem;">Fuente: <a href="#">indec.gob.ar</a></div>
+
         <div class="macro-card-label">Dólar mayorista · BCRA</div>
         <div class="macro-row">
           <span class="macro-row-label">TC Mayorista (may 2026)</span>
@@ -334,45 +339,69 @@ footer {
         </div>
         <div class="macro-source">Fuente: <a href="#">bcra.gob.ar</a></div>
       </div>
-      <div class="macro-card">
-        <div class="macro-card-label">Tipos de cambio sectoriales</div>
-        <div class="macro-row">
-          <span class="macro-row-label">Doméstico (feb 2026)</span>
-          <span class="macro-row-value">$1.500</span>
-        </div>
-        <div class="macro-row">
-          <span class="macro-row-label">Industrial (feb 2026)</span>
-          <span class="macro-row-value">$1.473</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- Novedades -->
-    <div id="novedades" style="padding-top:1rem;">
-      <div class="section-label" style="margin-bottom:1rem;">Novedades del mes</div>
-      <div class="table-wrapper">
-        <table class="novedades-table">
-          <thead>
-            <tr>
-              <th style="width:130px">Categoría</th>
-              <th>Novedad</th>
-              <th style="width:220px">Fuente</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="nov-cat">Laboral</span></td>
-              <td>Actualización del Convenio Colectivo de Trabajo del sector. Nuevas escalas salariales vigentes a partir del 1° de mayo.</td>
-              <td class="nov-link"><a href="#">Ver detalle →</a></td>
-            </tr>
-            <tr>
-              <td><span class="nov-cat">Comex</span></td>
-              <td>Reducción arancelaria del 20% al 2% para importaciones de línea doméstica bajo dictamen CCM 184/25. Línea bordadora exceptuada.</td>
-              <td class="nov-link"><a href="#">Ver dictamen →</a></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Novedades -->
+      <div id="novedades">
+        <div class="macro-card-label" style="margin-bottom:0.75rem;">Novedades del mes</div>
+        <div class="table-wrapper" style="margin-top:0;">
+          <table class="novedades-table" style="table-layout:fixed; width:100%;">
+            <thead>
+              <tr>
+                <th style="width:110px">Categoría</th>
+                <th>Novedad</th>
+                <th style="width:110px">Fuente</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="novedades-scroll">
+            <table class="novedades-table" style="table-layout:fixed; width:100%;">
+              <colgroup>
+                <col style="width:110px">
+                <col>
+                <col style="width:110px">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td><span class="nov-cat">Laboral</span></td>
+                  <td>Actualización del Convenio Colectivo de Trabajo del sector. Nuevas escalas salariales vigentes a partir del 1° de mayo.</td>
+                  <td class="nov-link"><a href="#">Ver detalle →</a></td>
+                </tr>
+                <tr>
+                  <td><span class="nov-cat">Comex</span></td>
+                  <td>Reducción arancelaria del 20% al 2% para importaciones de línea doméstica bajo dictamen CCM 184/25. Línea bordadora exceptuada.</td>
+                  <td class="nov-link"><a href="#">Ver dictamen →</a></td>
+                </tr>
+                <tr>
+                  <td><span class="nov-cat">Fiscal</span></td>
+                  <td>Prórroga de 60 días para la presentación de DDJJ de Ganancias de personas jurídicas con cierre en diciembre 2025. Resolución AFIP 5589/26.</td>
+                  <td class="nov-link"><a href="#">Ver resolución →</a></td>
+                </tr>
+                <tr>
+                  <td><span class="nov-cat">Financiero</span></td>
+                  <td>La tasa de política monetaria del BCRA se mantiene en 29% TNA. El dólar mayorista registra una depreciación del 1,2% mensual acumulada en lo que va del año.</td>
+                  <td class="nov-link"><a href="#">Ver informe →</a></td>
+                </tr>
+                <tr>
+                  <td><span class="nov-cat">Sectorial</span></td>
+                  <td>El sector de máquinas de coser domésticas registró un crecimiento del 18% interanual en ventas unitarias según datos de la Cámara Industrial del rubro (CAFIM).</td>
+                  <td class="nov-link"><a href="#">Ver informe →</a></td>
+                </tr>
+                <tr>
+                  <td><span class="nov-cat">Logística</span></td>
+                  <td>Demoras de hasta 15 días hábiles en el puerto de Buenos Aires por conflicto gremial en el sector de estibadores. Impacto estimado en importaciones del rubro.</td>
+                  <td class="nov-link"><a href="#">Ver alerta →</a></td>
+                </tr>
+                <tr>
+                  <td><span class="nov-cat">Normativa</span></td>
+                  <td>Nuevo etiquetado obligatorio para equipos eléctricos importados a partir del 1° de julio 2026. Requiere certificación ante el INTI para ingreso al mercado.</td>
+                  <td class="nov-link"><a href="#">Ver normativa →</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -382,93 +411,15 @@ footer {
   <div class="section-inner">
     <div class="section-label">Evolución histórica</div>
     <h2>Facturación neta anual</h2>
-    <p class="section-intro">Evolución de la facturación neta desde 2015 con variación interanual.</p>
+    <p class="section-intro">Evolución de la facturación neta desde 2015 comparada contra el presupuesto aprobado cada año. Las barras verdes indican años donde se superó el objetivo; las rojas, años con desvío negativo.</p>
     <div class="chart-card">
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="legend-dot" style="background:#2a5c3f"></div> Efectivo — sobre presupuesto</div>
+        <div class="chart-legend-item"><div class="legend-dot" style="background:#8b2020"></div> Efectivo — bajo presupuesto</div>
+        <div class="chart-legend-item"><div class="legend-dashed"></div> Presupuesto</div>
+      </div>
       <div class="chart-container chart-h-lg">
         <canvas id="chartHistorico"></canvas>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROYECTADO VS EFECTIVO -->
-<section id="proyectado" class="section-wrapper alt">
-  <div class="section-inner">
-    <div class="section-label">Control presupuestario · 2026</div>
-    <h2>Proyectado vs Efectivo</h2>
-    <p class="section-intro">Seguimiento mensual y trimestral del presupuesto frente a la ejecución real.</p>
-    <div class="chart-card">
-      <div class="chart-container chart-h-lg">
-        <canvas id="chartProyectado"></canvas>
-      </div>
-    </div>
-
-    <div class="two-col" style="margin-top:2rem;">
-      <div>
-        <div class="table-wrapper">
-          <div class="table-title">Detalle mensual</div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Mes</th>
-                <th class="num">Efectivo</th>
-                <th class="num">Proyectado</th>
-                <th class="num">Variación</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>Enero</td><td class="num">$536.766</td><td class="num">$511.098</td><td class="num pos">+5,0%</td></tr>
-              <tr><td>Febrero</td><td class="num">$460.470</td><td class="num">$784.403</td><td class="num neg">-41,3%</td></tr>
-              <tr><td>Marzo</td><td class="num">$752.415</td><td class="num">$739.857</td><td class="num pos">+1,7%</td></tr>
-              <tr><td>Abril</td><td class="num">$739.563</td><td class="num">$938.765</td><td class="num neg">-21,2%</td></tr>
-              <tr><td>Mayo</td><td class="num zero">—</td><td class="num">$1.100.442</td><td class="num zero">-100%</td></tr>
-              <tr><td>Junio</td><td class="num zero">—</td><td class="num">$798.014</td><td class="num zero">-100%</td></tr>
-              <tr><td>Julio</td><td class="num zero">—</td><td class="num">$1.197.668</td><td class="num zero">-100%</td></tr>
-              <tr><td>Agosto</td><td class="num zero">—</td><td class="num">$669.674</td><td class="num zero">-100%</td></tr>
-              <tr><td>Septiembre</td><td class="num zero">—</td><td class="num">$912.650</td><td class="num zero">-100%</td></tr>
-              <tr><td>Octubre</td><td class="num zero">—</td><td class="num">$863.442</td><td class="num zero">-100%</td></tr>
-              <tr><td>Noviembre</td><td class="num zero">—</td><td class="num">$472.467</td><td class="num zero">-100%</td></tr>
-              <tr><td>Diciembre</td><td class="num zero">—</td><td class="num">$461.523</td><td class="num zero">-100%</td></tr>
-              <tr><td>Total</td><td class="num">$2.489.214</td><td class="num">$9.450.006</td><td class="num neg">-73,7%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <div class="table-wrapper">
-          <div class="table-title">Resumen trimestral</div>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Trimestre</th>
-                <th class="num">Efectivo</th>
-                <th class="num">Proyectado</th>
-                <th class="num">Variación</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>T1 (ene–mar)</td><td class="num">$1.749.651</td><td class="num">$2.035.358</td><td class="num neg">-14,0%</td></tr>
-              <tr><td>T2 (abr–jun)</td><td class="num">$739.563</td><td class="num">$2.837.221</td><td class="num neg">-73,9%</td></tr>
-              <tr><td>T3 (jul–sep)</td><td class="num zero">—</td><td class="num">$2.779.992</td><td class="num zero">-100%</td></tr>
-              <tr><td>T4 (oct–dic)</td><td class="num zero">—</td><td class="num">$1.797.432</td><td class="num zero">-100%</td></tr>
-              <tr><td>Total 2026</td><td class="num">$2.489.214</td><td class="num">$9.450.003</td><td class="num neg">-73,7%</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPARATIVO YOY -->
-<section id="yoy" class="section-wrapper">
-  <div class="section-inner">
-    <div class="section-label">Análisis comparativo</div>
-    <h2>Facturación mensual vs año anterior</h2>
-    <p class="section-intro">Comparación mes a mes de 2025 vs 2026 para identificar tendencias estacionales.</p>
-    <div class="chart-card">
-      <div class="chart-container chart-h-lg">
-        <canvas id="chartYoY"></canvas>
       </div>
     </div>
   </div>
@@ -488,6 +439,24 @@ footer {
       </div>
       <div class="chart-container chart-h-lg">
         <canvas id="chartTendencia"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARATIVO YOY -->
+<section id="yoy" class="section-wrapper">
+  <div class="section-inner">
+    <div class="section-label">Análisis comparativo</div>
+    <h2>Facturación mensual vs año anterior</h2>
+    <p class="section-intro">Comparación mes a mes de 2025 vs 2026 para identificar tendencias estacionales.</p>
+    <div class="chart-card">
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="legend-dot" style="background:#c8c2b4"></div> 2025</div>
+        <div class="chart-legend-item"><div class="legend-dot" style="background:#111111"></div> 2026</div>
+      </div>
+      <div class="chart-container chart-h-lg">
+        <canvas id="chartYoY"></canvas>
       </div>
     </div>
   </div>
@@ -593,29 +562,56 @@ const fmt = v => v === 0 || v == null ? '' : '$' + v.toLocaleString('es-AR');
 const fmtM = v => v >= 1000000 ? '$' + (v/1000000).toFixed(1) + 'M' : '$' + (v/1000).toFixed(0) + 'k';
 
 // ── HISTÓRICO ANUAL ──
+const historicoActual =    [15516369,14640168,14208425,7723406,4673450,9255156,11196155,12808815,9104837,7116987,8622392,2591375];
+const historicoPpto =      [14500000,16000000,15000000,12000000,7000000,4500000,10000000,14000000,8000000,9500000,9000000,9450000];
+const historicoColors = historicoActual.map((v, i) => v >= historicoPpto[i] ? '#2a5c3f' : '#8b2020');
+
 new Chart(document.getElementById('chartHistorico'), {
   type: 'bar',
   data: {
     labels: ['2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'],
-    datasets: [{
-      label: 'Facturación neta',
-      data: [15516369,14640168,14208425,7723406,4673450,9255156,11196155,12808815,9104837,7116987,8622392,2591375],
-      backgroundColor: '#111111',
-      borderRadius: 4,
-    }]
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Efectivo',
+        data: historicoActual,
+        backgroundColor: historicoColors,
+        borderRadius: 4,
+        order: 2,
+      },
+      {
+        type: 'line',
+        label: 'Presupuesto',
+        data: historicoPpto,
+        borderColor: '#6b6b6b',
+        borderWidth: 1.5,
+        borderDash: [5, 4],
+        pointRadius: 0,
+        tension: 0,
+        fill: false,
+        order: 1,
+      }
+    ]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ' ' + fmt(ctx.raw) } }
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            if (ctx.dataset.type === 'line') return ' Presupuesto: ' + fmt(ctx.raw);
+            const ppto = historicoPpto[ctx.dataIndex];
+            const variacion = ((ctx.raw - ppto) / ppto * 100).toFixed(1);
+            const signo = variacion > 0 ? '+' : '';
+            return [' Efectivo: ' + fmt(ctx.raw), ' Presupuesto: ' + fmt(ppto), ' Desvío: ' + signo + variacion + '%'];
+          }
+        }
+      }
     },
     scales: {
       x: { grid: { display: false }, ticks: { color: tickColor } },
-      y: {
-        grid: { color: gridColor },
-        ticks: { color: tickColor, callback: v => fmtM(v) }
-      }
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => fmtM(v) } }
     }
   }
 });
@@ -645,7 +641,7 @@ new Chart(document.getElementById('chartProyectado'), {
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top', align: 'end', labels: { boxWidth: 12, padding: 16 } },
+      legend: { display: false },
       tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) } }
     },
     scales: {
@@ -678,7 +674,7 @@ new Chart(document.getElementById('chartYoY'), {
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'top', align: 'end', labels: { boxWidth: 12, padding: 16 } },
+      legend: { display: false },
       tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) } }
     },
     scales: {
