@@ -155,6 +155,23 @@ header {
 .table-title { font-size: 0.8rem; font-weight: 500; color: var(--ink-mid); padding: 1rem 1rem 0; letter-spacing: 0.02em; }
 
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.three-col { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+.chart-h-xs { height: 220px; }
+
+/* ── KPI PROGRESS ── */
+.kpi-progress-wrap { margin-top: 2rem; }
+.kpi-progress-item { margin-bottom: 1rem; }
+.kpi-progress-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(244,240,232,0.6); margin-bottom: 0.4rem; }
+.kpi-progress-header span:last-child { color: var(--cream); font-weight: 500; }
+.kpi-progress-bar { height: 6px; background: rgba(255,255,255,0.12); border-radius: 100px; overflow: hidden; }
+.kpi-progress-fill { height: 100%; border-radius: 100px; background: var(--cream); transition: width 1s ease; }
+
+/* ── LEGEND ── */
+.chart-legend { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chart-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--ink-mid); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-line { width: 20px; height: 2px; flex-shrink: 0; }
+.legend-dashed { width: 20px; height: 2px; flex-shrink: 0; background: repeating-linear-gradient(90deg, var(--ink-light) 0, var(--ink-light) 4px, transparent 4px, transparent 8px); }
 
 /* ── FOOTER ── */
 footer {
@@ -168,7 +185,7 @@ footer {
   header { padding: 0.75rem 1rem; }
   .header-nav { display: none; }
   .section-wrapper { padding: 3rem 1rem; }
-  .two-col { grid-template-columns: 1fr; }
+  .two-col, .three-col { grid-template-columns: 1fr; }
   .chart-h-lg { height: 280px; }
 }
 </style>
@@ -187,6 +204,7 @@ footer {
     <a href="#macro">Macro</a>
     <a href="#historico">Histórico</a>
     <a href="#proyectado">Proyectado</a>
+    <a href="#tendencia">Tendencia</a>
     <a href="#yoy">Comparativo</a>
     <a href="#categorias">Categorías</a>
     <a href="#marcas">Por marca</a>
@@ -245,6 +263,41 @@ footer {
         <div class="kpi-label">vs Mes anterior</div>
         <div class="kpi-value kpi-down">-1,7%</div>
         <div class="kpi-sub kpi-neutral">Marzo: $752.415</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Ticket promedio</div>
+        <div class="kpi-value">$28.740</div>
+        <div class="kpi-sub kpi-neutral">Abril 2026</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Unidades vendidas</div>
+        <div class="kpi-value">2.105</div>
+        <div class="kpi-sub kpi-up">+33,7% vs marzo</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Margen bruto est.</div>
+        <div class="kpi-value">34,2%</div>
+        <div class="kpi-sub kpi-neutral">Sobre facturación neta</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Acumulado 2026</div>
+        <div class="kpi-value">$2.489.214</div>
+        <div class="kpi-sub kpi-neutral">26,3% del objetivo</div>
+      </div>
+    </div>
+
+    <div class="kpi-progress-wrap">
+      <div class="kpi-progress-item">
+        <div class="kpi-progress-header"><span>Avance anual vs objetivo ($9.450.000)</span><span>26,3%</span></div>
+        <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width:26.3%"></div></div>
+      </div>
+      <div class="kpi-progress-item">
+        <div class="kpi-progress-header"><span>Ejecución presupuestaria acumulada T1+T2</span><span>50,6%</span></div>
+        <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width:50.6%"></div></div>
+      </div>
+      <div class="kpi-progress-item">
+        <div class="kpi-progress-header"><span>Mix doméstico sobre total de categorías</span><span>65,6%</span></div>
+        <div class="kpi-progress-bar"><div class="kpi-progress-fill" style="width:65.6%"></div></div>
       </div>
     </div>
   </div>
@@ -421,15 +474,43 @@ footer {
   </div>
 </section>
 
+<!-- TENDENCIA & PROYECCIÓN -->
+<section id="tendencia" class="section-wrapper alt">
+  <div class="section-inner">
+    <div class="section-label">Proyección · Modelo de tendencia 2026</div>
+    <h2>Tendencia y proyección anual</h2>
+    <p class="section-intro">Evolución real enero–abril 2026 (línea sólida) y proyección mayo–diciembre basada en la tendencia histórica (línea punteada). El presupuesto aprobado se muestra como referencia.</p>
+    <div class="chart-card">
+      <div class="chart-legend">
+        <div class="chart-legend-item"><div class="legend-line" style="background:#111111"></div> Real 2026</div>
+        <div class="chart-legend-item"><div class="legend-dashed"></div> Proyección tendencial</div>
+        <div class="chart-legend-item"><div class="legend-line" style="background:#c8c2b4"></div> Presupuesto</div>
+      </div>
+      <div class="chart-container chart-h-lg">
+        <canvas id="chartTendencia"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- VENTAS POR CATEGORÍA -->
 <section id="categorias" class="section-wrapper alt">
   <div class="section-inner">
     <div class="section-label">Mix de productos · Últimos 2 meses</div>
     <h2>Ventas por categoría de producto</h2>
-    <p class="section-intro">Comparativo de facturación por línea de producto entre los últimos dos períodos.</p>
-    <div class="chart-card">
-      <div class="chart-container chart-h-md">
-        <canvas id="chartCategorias"></canvas>
+    <p class="section-intro">Comparativo de facturación por línea de producto. El mix de abril muestra la dominancia del segmento doméstico.</p>
+    <div class="three-col">
+      <div class="chart-card">
+        <div class="chart-label">Facturación por categoría — Mar vs Abr 2026</div>
+        <div class="chart-container chart-h-md">
+          <canvas id="chartCategorias"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-label">Mix de categorías — Abril 2026</div>
+        <div class="chart-container chart-h-md">
+          <canvas id="chartDonut"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -603,6 +684,87 @@ new Chart(document.getElementById('chartYoY'), {
     scales: {
       x: { grid: { display: false }, ticks: { color: tickColor } },
       y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => fmtM(v) } }
+    }
+  }
+});
+
+// ── TENDENCIA & PROYECCIÓN ──
+const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const real2026 = [536766, 460470, 752415, 739563, null, null, null, null, null, null, null, null];
+const proyeccion = [null, null, null, 739563, 920200, 679900, 1065800, 569000, 771000, 726400, 399100, 394200];
+const presupuesto = [511098, 784403, 739857, 938765, 1100442, 798014, 1197668, 669674, 912650, 863442, 472467, 461523];
+
+new Chart(document.getElementById('chartTendencia'), {
+  type: 'line',
+  data: {
+    labels: meses,
+    datasets: [
+      {
+        label: 'Real 2026',
+        data: real2026,
+        borderColor: '#111111',
+        backgroundColor: 'rgba(17,17,17,0.08)',
+        borderWidth: 2.5,
+        pointRadius: 4,
+        pointBackgroundColor: '#111111',
+        tension: 0.3,
+        fill: false,
+        spanGaps: false,
+      },
+      {
+        label: 'Proyección',
+        data: proyeccion,
+        borderColor: '#3a3a3a',
+        borderWidth: 2,
+        borderDash: [6, 4],
+        pointRadius: 3,
+        pointBackgroundColor: '#3a3a3a',
+        tension: 0.3,
+        fill: false,
+        spanGaps: false,
+      },
+      {
+        label: 'Presupuesto',
+        data: presupuesto,
+        borderColor: '#c8c2b4',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        tension: 0.3,
+        fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + fmt(ctx.raw) } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, callback: v => fmtM(v) } }
+    }
+  }
+});
+
+// ── DONUT ──
+new Chart(document.getElementById('chartDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Doméstica', 'Bordadoras', 'Industriales'],
+    datasets: [{
+      data: [558428, 149654, 143567],
+      backgroundColor: ['#111111', '#6b6b6b', '#c8c2b4'],
+      borderWidth: 0,
+      hoverOffset: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14, font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + fmt(ctx.raw) + ' (' + ((ctx.raw / 851649) * 100).toFixed(1) + '%)' } }
     }
   }
 });
