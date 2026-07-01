@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NBPBGE2YT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6NBPBGE2YT');
+  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Convenio AESST</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F4F0E8;
+  --cream-dark: #E8E3D8;
+  --ink: #111111;
+  --ink-mid: #3a3a3a;
+  --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1);
+  --white: #ffffff;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.6; font-size: 16px; min-height: 100vh; }
+
+/* HEADER */
+header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--cream); position: sticky; top: 0; z-index: 10;
+}
+.header-left { display: flex; align-items: center; gap: 1.5rem; }
+.header-logo { font-family: var(--serif); font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+.header-back { font-size: 0.85rem; color: var(--ink-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+.header-back:hover { color: var(--ink); }
+
+/* LANG SWITCHER */
+.lang-switcher { display: flex; align-items: center; gap: 0.25rem; }
+.lang-btn {
+  background: none; border: none; font-family: var(--sans); font-size: 0.75rem;
+  font-weight: 500; letter-spacing: 0.06em; color: var(--ink-light);
+  cursor: pointer; padding: 0.2rem 0.35rem; border-radius: 4px; transition: color 0.2s;
+}
+.lang-btn.active { color: var(--ink); font-weight: 600; }
+.lang-btn:hover:not(.active) { color: var(--ink); }
+.lang-sep { color: var(--border); font-size: 0.75rem; user-select: none; }
+
+/* HERO */
+.hero { padding: 5rem 2rem 4rem; max-width: 760px; margin: 0 auto; text-align: center; }
+.hero-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.25rem; color: var(--ink); }
+.hero h1 em { font-style: italic; color: var(--ink-mid); }
+.hero p { font-size: 1.05rem; color: var(--ink-mid); max-width: 520px; margin: 0 auto; }
+
+/* GRID */
+.demos-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem; max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem;
+}
+
+/* CARD */
+.demo-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 20px;
+  padding: 2rem; display: flex; flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.demo-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-2px); }
+.demo-sector {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-light); background: var(--cream-dark);
+  padding: 0.3rem 0.75rem; border-radius: 100px;
+  display: inline-block; align-self: flex-start; margin-bottom: 1.25rem;
+}
+.demo-icon { font-size: 2rem; margin-bottom: 1rem; line-height: 1; }
+.demo-card h2 { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); margin-bottom: 0.75rem; line-height: 1.3; }
+.demo-card p { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.65; flex: 1; margin-bottom: 1.75rem; }
+.demo-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.75rem; }
+.demo-tag { font-size: 0.7rem; color: var(--ink-light); border: 1px solid var(--border); border-radius: 100px; padding: 0.2rem 0.65rem; }
+.demo-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: var(--ink); color: var(--cream); font-family: var(--sans);
+  font-size: 0.9rem; font-weight: 500; padding: 0.85rem 1.5rem;
+  border-radius: 12px; text-decoration: none; transition: opacity 0.2s;
+  align-self: stretch; text-align: center;
+}
+.demo-btn:hover { opacity: 0.85; }
+.demo-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* PRICING */
+.pricing-section { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+.pricing-header { text-align: center; padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+.pricing-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+.pricing-header p { font-size: 0.95rem; color: var(--ink-mid); max-width: 500px; margin: 0 auto; }
+.pricing-table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+.pricing-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.pricing-table thead tr { background: var(--ink); color: var(--cream); }
+.pricing-table th { padding: 0.9rem 1.25rem; text-align: left; font-weight: 500; font-size: 0.78rem; letter-spacing: 0.04em; white-space: nowrap; }
+.pricing-table th:last-child, .pricing-table td:last-child { text-align: right; }
+.pricing-table td { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.pricing-table tbody tr:last-child td { border-bottom: none; }
+.pricing-table tbody tr { background: var(--white); transition: background 0.15s; }
+.pricing-table tbody tr:hover { background: var(--cream); }
+.pack-name { font-weight: 500; color: var(--ink); }
+.pack-focus { color: var(--ink-mid); font-size: 0.82rem; line-height: 1.5; }
+.price-regular { color: var(--ink-light); text-decoration: line-through; font-size: 0.82rem; }
+.price-deal { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
+.deal-badge { font-family: var(--sans); font-size: 0.65rem; font-weight: 600; background: var(--ink); color: var(--cream); padding: 0.2rem 0.5rem; border-radius: 100px; letter-spacing: 0.04em; }
+.pricing-note { font-size: 0.8rem; color: var(--ink-light); line-height: 1.65; padding: 1rem 1.25rem; background: var(--cream); border-radius: 10px; margin-bottom: 3rem; border: 1px solid var(--border); }
+.pricing-note strong { color: var(--ink-mid); }
+
+/* ACCORDION */
+.packs-detail-title { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 1rem; }
+.accordion { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--white); }
+.acc-row { border-bottom: 1px solid var(--border); }
+.acc-row:last-child { border-bottom: none; }
+.acc-trigger { width: 100%; display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.5rem; background: none; border: none; cursor: pointer; font-family: var(--sans); text-align: left; transition: background 0.15s; }
+.acc-trigger:hover { background: var(--cream); }
+.acc-num { font-family: var(--serif); font-size: 1.1rem; color: var(--ink-light); width: 1.5rem; flex-shrink: 0; }
+.acc-trigger-text { flex: 1; }
+.acc-title { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+.acc-subtitle { font-size: 0.76rem; color: var(--ink-light); margin-top: 0.1rem; }
+.acc-chevron { width: 16px; height: 16px; color: var(--ink-light); flex-shrink: 0; transition: transform 0.25s; }
+.acc-row.open .acc-chevron { transform: rotate(180deg); }
+.acc-body { display: none; padding: 0 1.5rem 1.25rem 4rem; }
+.acc-row.open .acc-body { display: flex; flex-direction: column; gap: 1rem; }
+.acc-row.open .acc-body.acc-body-grid { display: grid; }
+.pack-item-title { font-size: 0.83rem; font-weight: 500; color: var(--ink); margin-bottom: 0.25rem; }
+.pack-item-desc { font-size: 0.8rem; color: var(--ink-mid); line-height: 1.65; }
+.acc-body-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+
+/* FOOTER */
+footer { border-top: 1px solid var(--border); padding: 2rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: var(--ink-light); flex-wrap: wrap; gap: 0.5rem; }
+.footer-logo { font-family: var(--serif); color: var(--ink); }
+
+@media (max-width: 600px) {
+  header { padding: 1rem 1.25rem; }
+  .hero { padding: 3rem 1.5rem 2.5rem; }
+  .demos-grid { padding: 0 1.5rem 4rem; grid-template-columns: 1fr; }
+  .pricing-section { padding: 0 1.5rem 4rem; }
+  .pricing-table th:nth-child(2), .pricing-table td:nth-child(2) { display: none; }
+  .acc-body { padding-left: 1.5rem; }
+  .acc-body-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="/" class="header-logo">pluxow</a>
+    <a href="/demos.html" class="header-back" data-i18n="nav.back">← Ver demos</a>
+  </div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('es')">ES</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('pt')">PT</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('it')">IT</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-label" data-i18n="hero.label">Convenio AESST · Precios preferenciales</div>
+  <h1 data-i18n-html="hero.title">Soluciones reales,<br><em>con precio preferencial.</em></h1>
+  <p data-i18n="hero.subtitle">Cada demo es un producto funcional que ya está siendo utilizado. El convenio AESST incluye un 15% de descuento sobre todos los paquetes.</p>
+</section>
+
+<div class="demos-grid">
+
+  <!-- 1. Policonsultorio -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c1.sector">Salud · Policonsultorio</span>
+    <div class="demo-icon">🏥</div>
+    <h2 data-i18n="c1.title">Gestión Clínica 360°: Bot de Turnos, Historial Médico y Control Financiero</h2>
+    <p data-i18n="c1.desc">Sistema integral para clínicas y consultorios: un bot conversacional toma turnos automáticamente y construye el historial clínico del paciente en tiempo real. Panel de administración para gestionar citas, ver historias clínicas y hacer seguimiento de tratamientos desde un solo lugar.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">CRM</span><span class="demo-tag">Chatbot IA</span>
+      <span class="demo-tag">Historia Clínica</span><span class="demo-tag">Agenda Digital</span>
+    </div>
+    <a href="/demo-crm.html" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 2. CRM Tainy Loops -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c2.sector">Música · Estudio de Grabación</span>
+    <div class="demo-icon">🎙️</div>
+    <h2 data-i18n="c2.title">CRM de Leads + Generador de Contenido con IA</h2>
+    <p data-i18n="c2.desc">Plataforma interna para un estudio de grabación urbano: generador de ideas de contenido con IA basado en los 5 Niveles de Conciencia y CRM de leads organizado por semana.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">IA Generativa</span><span class="demo-tag">CRM</span>
+      <span class="demo-tag">Contenido Estratégico</span><span class="demo-tag">Música Urbana</span>
+    </div>
+    <a href="/demo-tainy.html" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 3. App Mobile -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c3.sector">App Mobile · Deportes</span>
+    <div class="demo-icon">🏆</div>
+    <h2 data-i18n="c3.title">App Mobile para Gestión de Torneos Deportivos</h2>
+    <p data-i18n="c3.desc">Aplicación mobile desarrollada a medida para la organización y seguimiento de torneos. Gestión de equipos, generación de fixtures, carga de resultados y tabla de posiciones en tiempo real.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">App Mobile</span><span class="demo-tag">Tiempo Real</span>
+      <span class="demo-tag">Desarrollo a Medida</span><span class="demo-tag">Gestión Deportiva</span>
+    </div>
+    <a href="https://basketapp.pluxow.com/" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 4. Dashboard BI -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c4.sector">Industrial · Business Intelligence</span>
+    <div class="demo-icon">📈</div>
+    <h2 data-i18n="c4.title">Dashboard BI — Ventas, presupuesto y contexto macro</h2>
+    <p data-i18n="c4.desc">Dashboard integral que centraliza facturación, seguimiento de presupuesto, comparativos YoY, ventas por categoría y datos macroeconómicos actualizados automáticamente desde APIs oficiales.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Business Intelligence</span><span class="demo-tag">Dashboards</span>
+      <span class="demo-tag">ETL Automatizado</span><span class="demo-tag">Datos Macro</span>
+    </div>
+    <a href="/dashboard-demo.html" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 5. Partes Médicos -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c5.sector">Salud · Procesamiento de documentos</span>
+    <div class="demo-icon">⚕️</div>
+    <h2 data-i18n="c5.title">Procesador de Partes Médicos con IA</h2>
+    <p data-i18n="c5.desc">Sistema que lee imágenes de partes quirúrgicos, extrae automáticamente más de 14 campos con IA y los guarda en Google Sheets. Incluye gestión de archivos en Drive, detección de urgencias por horario y reglas de validación dinámicas.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Claude IA</span><span class="demo-tag">Google Sheets</span>
+      <span class="demo-tag">Google Drive</span><span class="demo-tag">Automatización</span>
+    </div>
+    <a href="/demo-shiwes.html" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 6. Meta Ads -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c6.sector">Marketing · Publicidad Digital</span>
+    <div class="demo-icon">📊</div>
+    <h2 data-i18n="c6.title">Análisis de Campañas Meta Ads</h2>
+    <p data-i18n="c6.desc">Integración directa con Meta Ads que centraliza el rendimiento de tus campañas publicitarias en un dashboard inteligente. Visualizá métricas clave, detectá oportunidades de optimización y tomá decisiones basadas en datos reales.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Meta Ads</span><span class="demo-tag">Dashboards</span>
+      <span class="demo-tag">Automatización</span><span class="demo-tag">Analytics</span>
+    </div>
+    <a href="https://script.google.com/a/macros/titofree.com/s/AKfycbwgARXLjPQah9i_1tdkEDx0VV13riZtTIgv08Xb-SDlzMERUWOjsY-NHqFC-2MCtpQD/exec" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+  <!-- 7. Analizador de Prospectos -->
+  <div class="demo-card">
+    <span class="demo-sector" data-i18n="c7.sector">Uso Interno · Pluxow</span>
+    <div class="demo-icon">🤖</div>
+    <h2 data-i18n="c7.title">Analizador de Prospectos y Propuestas</h2>
+    <p data-i18n="c7.desc">Agente de IA que investiga en internet, analiza el perfil público de un prospecto y genera automáticamente una propuesta comercial personalizada. Reduce el tiempo de investigación y redacción de propuestas de horas a minutos.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">IA Generativa</span><span class="demo-tag">Web Research</span>
+      <span class="demo-tag">Propuestas Comerciales</span><span class="demo-tag">Automatización</span>
+    </div>
+    <a href="/propuesta.html" target="_blank" rel="noopener" class="demo-btn">
+      <span data-i18n="btn.demo">Ver demo</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<!-- PRICING -->
+<section class="pricing-section">
+  <div class="pricing-header">
+    <div class="pricing-label">Tabla de precios · Convenio AESST</div>
+    <p>El convenio AESST incluye un 15% de descuento sobre todos los paquetes. Precios válidos hasta diciembre 2026.</p>
+  </div>
+
+  <div class="pricing-table-wrap">
+    <table class="pricing-table">
+      <thead>
+        <tr>
+          <th>Paquete</th>
+          <th>Enfoque principal</th>
+          <th>Precio USD</th>
+          <th>Convenio AESST (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="pack-name">Pack 1</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Digital Presence & Marketing</div></td>
+          <td class="pack-focus">Web + Agente IA · Agenda Digital · Contenido para Redes</td>
+          <td><span class="price-regular">$2.300<span style="font-size:0.72rem;font-weight:400;">/mes</span></span></td>
+          <td><span class="price-deal">$1.955<span style="font-size:0.78rem;font-weight:400;">/mes</span> <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Pack 2</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Intelligent Operations</div></td>
+          <td class="pack-focus">Dashboards · Facturación Electrónica · Captura de Datos · Reconciliaciones</td>
+          <td><span class="price-regular">$3.800<span style="font-size:0.72rem;font-weight:400;">/mes</span></span></td>
+          <td><span class="price-deal">$3.230<span style="font-size:0.78rem;font-weight:400;">/mes</span> <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Pack 3</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Core AI & Automation</div></td>
+          <td class="pack-focus">Agentes Conversacionales · CRM End-to-End · RPA & Flujos de Trabajo</td>
+          <td><span class="price-regular">$7.000<span style="font-size:0.72rem;font-weight:400;">/mes</span></span></td>
+          <td><span class="price-deal">$5.950<span style="font-size:0.78rem;font-weight:400;">/mes</span> <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Pack 4</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Enterprise Transformation</div></td>
+          <td class="pack-focus">Coaching Ejecutivo · Modelado de Procesos · Transformación Digital</td>
+          <td><span class="price-regular">$3.000<span style="font-size:0.72rem;font-weight:400;">/mes</span></span></td>
+          <td><span class="price-deal">$2.550<span style="font-size:0.78rem;font-weight:400;">/mes</span> <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+        <tr>
+          <td><div class="pack-name">Soporte & Mantenimiento</div><div class="pack-focus" style="font-size:0.75rem;color:var(--ink-light);">Fee mensual</div></td>
+          <td class="pack-focus">Monitoreo proactivo · Ajustes · Ticketera · Alertas de límites</td>
+          <td><span class="price-regular">$1.000<span style="font-size:0.72rem;font-weight:400;">/mes</span></span></td>
+          <td><span class="price-deal">$850<span style="font-size:0.78rem;font-weight:400;">/mes</span> <span class="deal-badge">15% OFF</span></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="pricing-note">
+    <strong>* Modelo de facturación.</strong> Los precios indicados son tarifas mensuales durante el período de desarrollo de cada paquete. La facturación comienza al inicio de cada fase y se extiende mientras dure su implementación. Una vez entregado el proyecto, el costo mensual pasa al Pack de Soporte & Mantenimiento.<br><br>
+    <strong>* Costos de licencias no incluidos.</strong> Los costos de licencias de herramientas de terceros (hosting, base de datos, automatizaciones, pasarela de pago, etc.) no están incluidos en este presupuesto y son abonados directamente por el cliente según el proveedor elegido.
+  </p>
+
+  <div class="packs-detail-title">Detalle de cada paquete</div>
+
+  <div class="accordion">
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">1</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Digital Presence & Marketing</span>
+          <span class="acc-subtitle">Web + Agente IA · Agenda Digital · Contenido para Redes</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item"><div class="pack-item-title">Sitio Web completo con Agente de IA integrado</div><div class="pack-item-desc">Plataforma web profesional, responsiva y optimizada para SEO. El núcleo incluye un Agente de IA a medida entrenado para interactuar con visitantes y responder preguntas frecuentes.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Integración de Agenda Digital (Gmail o Outlook)</div><div class="pack-item-desc">Sincronización automatizada de 1 cuenta operativa. El Agente de IA o los usuarios web pueden agendar reuniones directamente en el calendario, sin fricción.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Creación de Contenido Avanzado — 3 plantillas para carruseles</div><div class="pack-item-desc">3 plantillas exclusivas alineadas con la identidad visual de la marca, con sistema de posteo automático para distribuir contenido de forma consistente sin esfuerzo manual diario.</div></div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">2</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Intelligent Operations</span>
+          <span class="acc-subtitle">Dashboards · Facturación Electrónica · Captura de Datos · Reconciliaciones</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item"><div class="pack-item-title">5 Dashboards Automatizados a Medida</div><div class="pack-item-desc">5 paneles de control dinámicos e interactivos que centralizan métricas clave en tiempo real para tomar decisiones estratégicas de forma ágil.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Facturación Electrónica hasta 1.000/mes con integración API</div><div class="pack-item-desc">Automatización de hasta 1.000 facturas en PDF por mes. Extrae información y la conecta con ERP, CRM o software contable vía API, eliminando el registro manual.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Captura Inteligente de Datos con 8 reglas de negocio custom</div><div class="pack-item-desc">Motor inteligente de extracción y validación documental con hasta 8 reglas personalizadas. Los datos capturados son auditados, clasificados y aprobados automáticamente.</div></div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">3</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Core AI & Automation</span>
+          <span class="acc-subtitle">Agentes Conversacionales · CRM End-to-End · RPA & Flujos de Trabajo</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item"><div class="pack-item-title">Estrategia e implementación de CRM completo (punta a punta)</div><div class="pack-item-desc">Despliegue integral de CRM adaptado al negocio, integrando canales de mayor impacto: WhatsApp, Instagram, TikTok y LinkedIn.</div></div>
+        <div class="pack-item"><div class="pack-item-title">1 Agente Conversacional principal interconectado</div><div class="pack-item-desc">Agente de IA que opera de forma unificada en todos los canales. Responde consultas, califica oportunidades y actualiza el CRM en tiempo real.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Automatización RPA y Flujos de Trabajo End-to-End</div><div class="pack-item-desc">Flujos automatizados que conectan el front-office con la operación interna. Los datos del Agente de IA desencadenan acciones consecutivas: actualización de bases, asignación de tareas, generación de alertas.</div></div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">4</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Enterprise Transformation</span>
+          <span class="acc-subtitle">Coaching Ejecutivo · Modelado de Procesos · Transformación Digital</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body">
+        <div class="pack-item"><div class="pack-item-title">10 sesiones de Coaching personalizado y gestión de proyectos</div><div class="pack-item-desc">Acompañamiento ejecutivo uno a uno enfocado en transferencia de best practices metodológicas, gestión del cambio y adopción de marcos ágiles.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Análisis y modelado de procesos actuales (Workflows y Diagramas)</div><div class="pack-item-desc">Auditoría profunda de la operación vigente: diagramas de flujo, mapas de procesos y flujos de trabajo visuales para identificar cuellos de botella y redundancias.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Sugerencias de Best Practices para la Transformación Digital</div><div class="pack-item-desc">Plan de recomendaciones estratégicas para modernizar la arquitectura de procesos: qué áreas automatizar, qué tecnologías incorporar y cómo medir el impacto.</div></div>
+      </div>
+    </div>
+
+    <div class="acc-row">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num" style="font-size:0.9rem;">☁</span>
+        <span class="acc-trigger-text">
+          <span class="acc-title">Soporte & Mantenimiento</span>
+          <span class="acc-subtitle">Monitoreo proactivo · Ticketera · Alertas · Actualizaciones</span>
+        </span>
+        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="acc-body acc-body-grid">
+        <div class="pack-item"><div class="pack-item-title">Ticketera de reporte y seguimiento</div><div class="pack-item-desc">Sistema de tickets para reportar y hacer seguimiento de issues con tiempo de respuesta de 72 hs hábiles.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Monitoreo proactivo de infraestructura</div><div class="pack-item-desc">Monitoreo continuo de la infraestructura y herramientas de terceros para detectar problemas antes de que impacten la operación.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Alertas anticipadas de límites de uso</div><div class="pack-item-desc">Notificaciones preventivas cuando el consumo se acerca al límite del plan, con recomendación de upgrade antes de que afecte la operación.</div></div>
+        <div class="pack-item"><div class="pack-item-title">Actualizaciones periódicas de la solución</div><div class="pack-item-desc">Mantenimiento continuo para conservar compatibilidad, seguridad y rendimiento a lo largo del tiempo.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">pluxow</span>
+  <span data-i18n="footer.tagline">Business Strategy & Technology</span>
+  <span>pluxow.com</span>
+</footer>
+
+<script>
+const i18n = {
+  es: {
+    'nav.back': '← Ver demos',
+    'hero.label': 'Convenio AESST · Precios preferenciales',
+    'hero.title': 'Soluciones reales,<br><em>con precio preferencial.</em>',
+    'hero.subtitle': 'Cada demo es un producto funcional que ya está siendo utilizado. El convenio AESST incluye un 15% de descuento sobre todos los paquetes.',
+    'btn.demo': 'Ver demo',
+    'c1.sector': 'Salud · Policonsultorio',
+    'c1.title': 'Gestión Clínica 360°: Bot de Turnos, Historial Médico y Control Financiero',
+    'c1.desc': 'Sistema integral para clínicas y consultorios: un bot conversacional toma turnos automáticamente y construye el historial clínico del paciente en tiempo real. Panel de administración para gestionar citas, ver historias clínicas y hacer seguimiento de tratamientos desde un solo lugar.',
+    'c2.sector': 'Música · Estudio de Grabación',
+    'c2.title': 'CRM de Leads + Generador de Contenido con IA',
+    'c2.desc': 'Plataforma interna para un estudio de grabación urbano: generador de ideas de contenido con IA basado en los 5 Niveles de Conciencia y CRM de leads organizado por semana.',
+    'c3.sector': 'App Mobile · Deportes',
+    'c3.title': 'App Mobile para Gestión de Torneos Deportivos',
+    'c3.desc': 'Aplicación mobile desarrollada a medida para la organización y seguimiento de torneos. Gestión de equipos, generación de fixtures, carga de resultados y tabla de posiciones en tiempo real.',
+    'c4.sector': 'Industrial · Business Intelligence',
+    'c4.title': 'Dashboard BI — Ventas, presupuesto y contexto macro',
+    'c4.desc': 'Dashboard integral que centraliza facturación, seguimiento de presupuesto, comparativos YoY, ventas por categoría y datos macroeconómicos actualizados automáticamente desde APIs oficiales.',
+    'c5.sector': 'Salud · Procesamiento de documentos',
+    'c5.title': 'Procesador de Partes Médicos con IA',
+    'c5.desc': 'Sistema que lee imágenes de partes quirúrgicos, extrae automáticamente más de 14 campos con IA y los guarda en Google Sheets. Incluye gestión de archivos en Drive, detección de urgencias por horario y reglas de validación dinámicas.',
+    'c6.sector': 'Marketing · Publicidad Digital',
+    'c6.title': 'Análisis de Campañas Meta Ads',
+    'c6.desc': 'Integración directa con Meta Ads que centraliza el rendimiento de tus campañas publicitarias en un dashboard inteligente. Visualizá métricas clave, detectá oportunidades de optimización y tomá decisiones basadas en datos reales.',
+    'c7.sector': 'Uso Interno · Pluxow',
+    'c7.title': 'Analizador de Prospectos y Propuestas',
+    'c7.desc': 'Agente de IA que investiga en internet, analiza el perfil público de un prospecto y genera automáticamente una propuesta comercial personalizada. Reduce el tiempo de investigación y redacción de propuestas de horas a minutos.',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  en: {
+    'nav.back': '← View demos',
+    'hero.label': 'AESST Agreement · Preferential pricing',
+    'hero.title': 'Real solutions,<br><em>at a preferential price.</em>',
+    'hero.subtitle': 'Every demo is a functional product already in use. The AESST agreement includes a 15% discount on all packages.',
+    'btn.demo': 'View demo',
+    'c1.sector': 'Healthcare · Clinic',
+    'c1.title': 'Clinical Management 360°: Appointment Bot, Medical Records & Financial Control',
+    'c1.desc': 'Comprehensive system for clinics and medical offices: a conversational bot automatically books appointments and builds the patient\'s clinical history in real time. Admin panel to manage appointments, view medical records and track treatments from one place.',
+    'c2.sector': 'Music · Recording Studio',
+    'c2.title': 'Lead CRM + AI Content Generator',
+    'c2.desc': 'Internal platform for an urban recording studio: AI-powered content idea generator based on the 5 Levels of Awareness and a weekly-organized lead CRM.',
+    'c3.sector': 'Mobile App · Sports',
+    'c3.title': 'Mobile App for Sports Tournament Management',
+    'c3.desc': 'Custom-built mobile application for tournament organization and tracking. Team management, fixture generation, result entry and real-time standings accessible from any device.',
+    'c4.sector': 'Industrial · Business Intelligence',
+    'c4.title': 'BI Dashboard — Sales, budget and macro context',
+    'c4.desc': 'Comprehensive dashboard centralizing billing, budget tracking, YoY comparisons, sales by category and macroeconomic data automatically updated from official APIs.',
+    'c5.sector': 'Healthcare · Document Processing',
+    'c5.title': 'AI-Powered Medical Report Processor',
+    'c5.desc': 'System that reads surgical report images, automatically extracts 14+ fields with AI and saves them to Google Sheets. Includes Drive file management, time-based urgency detection and dynamic validation rules.',
+    'c6.sector': 'Marketing · Digital Advertising',
+    'c6.title': 'Meta Ads Campaign Analytics',
+    'c6.desc': 'Direct Meta Ads integration that centralizes your advertising campaign performance in an intelligent dashboard. View key metrics, spot optimization opportunities and make data-driven decisions from a single screen.',
+    'c7.sector': 'Internal · Pluxow',
+    'c7.title': 'Prospect & Proposal Analyzer',
+    'c7.desc': 'AI agent that researches the web, analyzes a prospect\'s public profile and automatically generates a personalized commercial proposal. Reduces research and writing time from hours to minutes.',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  pt: {
+    'nav.back': '← Ver demos',
+    'hero.label': 'Convênio AESST · Preços preferenciais',
+    'hero.title': 'Soluções reais,<br><em>com preço preferencial.</em>',
+    'hero.subtitle': 'Cada demo é um produto funcional já em uso. O convênio AESST inclui 15% de desconto em todos os pacotes.',
+    'btn.demo': 'Ver demo',
+    'c1.sector': 'Saúde · Policonsultório',
+    'c1.title': 'Gestão Clínica 360°: Bot de Agendamentos, Histórico Médico e Controle Financeiro',
+    'c1.desc': 'Sistema integral para clínicas e consultórios: um bot conversacional agenda consultas automaticamente e constrói o histórico clínico do paciente em tempo real. Painel de administração para gerenciar consultas, ver históricos e acompanhar tratamentos em um só lugar.',
+    'c2.sector': 'Música · Estúdio de Gravação',
+    'c2.title': 'CRM de Leads + Gerador de Conteúdo com IA',
+    'c2.desc': 'Plataforma interna para um estúdio de gravação urbano: gerador de ideias de conteúdo com IA baseado nos 5 Níveis de Consciência e CRM de leads organizado por semana.',
+    'c3.sector': 'App Mobile · Esportes',
+    'c3.title': 'App Mobile para Gestão de Torneios Esportivos',
+    'c3.desc': 'Aplicativo mobile desenvolvido sob medida para organização e acompanhamento de torneios. Gestão de equipes, geração de tabelas, registro de resultados e classificação em tempo real.',
+    'c4.sector': 'Industrial · Business Intelligence',
+    'c4.title': 'Dashboard BI — Vendas, orçamento e contexto macro',
+    'c4.desc': 'Dashboard integral que centraliza faturamento, acompanhamento de orçamento, comparativos YoY, vendas por categoria e dados macroeconômicos atualizados automaticamente via APIs oficiais.',
+    'c5.sector': 'Saúde · Processamento de documentos',
+    'c5.title': 'Processador de Relatórios Médicos com IA',
+    'c5.desc': 'Sistema que lê imagens de relatórios cirúrgicos, extrai automaticamente mais de 14 campos com IA e os salva no Google Sheets. Inclui gestão de arquivos no Drive, detecção de urgências por horário e regras de validação dinâmicas.',
+    'c6.sector': 'Marketing · Publicidade Digital',
+    'c6.title': 'Análise de Campanhas Meta Ads',
+    'c6.desc': 'Integração direta com Meta Ads que centraliza o desempenho das suas campanhas em um dashboard inteligente. Visualize métricas-chave, detecte oportunidades de otimização e tome decisões baseadas em dados reais.',
+    'c7.sector': 'Uso Interno · Pluxow',
+    'c7.title': 'Analisador de Prospects e Propostas',
+    'c7.desc': 'Agente de IA que pesquisa na internet, analisa o perfil público de um prospect e gera automaticamente uma proposta comercial personalizada. Reduz o tempo de pesquisa e redação de propostas de horas para minutos.',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  it: {
+    'nav.back': '← Vedi demo',
+    'hero.label': 'Convenzione AESST · Prezzi preferenziali',
+    'hero.title': 'Soluzioni reali,<br><em>a prezzo preferenziale.</em>',
+    'hero.subtitle': 'Ogni demo è un prodotto funzionale già in uso. La convenzione AESST include il 15% di sconto su tutti i pacchetti.',
+    'btn.demo': 'Vedi demo',
+    'c1.sector': 'Salute · Poliambulatorio',
+    'c1.title': 'Gestione Clinica 360°: Bot Prenotazioni, Cartella Clinica e Controllo Finanziario',
+    'c1.desc': 'Sistema integrale per cliniche e studi medici: un bot conversazionale prenota appuntamenti automaticamente e costruisce la cartella clinica del paziente in tempo reale. Pannello di amministrazione per gestire appuntamenti, visualizzare cartelle e monitorare i trattamenti da un unico posto.',
+    'c2.sector': 'Musica · Studio di Registrazione',
+    'c2.title': 'CRM Lead + Generatore di Contenuti con IA',
+    'c2.desc': 'Piattaforma interna per uno studio di registrazione urbano: generatore di idee di contenuto con IA basato sui 5 Livelli di Consapevolezza e CRM dei lead organizzato per settimana.',
+    'c3.sector': 'App Mobile · Sport',
+    'c3.title': 'App Mobile per la Gestione di Tornei Sportivi',
+    'c3.desc': 'Applicazione mobile sviluppata su misura per l\'organizzazione e il monitoraggio di tornei. Gestione squadre, generazione calendari, inserimento risultati e classifica in tempo reale.',
+    'c4.sector': 'Industriale · Business Intelligence',
+    'c4.title': 'Dashboard BI — Vendite, budget e contesto macro',
+    'c4.desc': 'Dashboard integrale che centralizza fatturazione, monitoraggio del budget, comparativi YoY, vendite per categoria e dati macroeconomici aggiornati automaticamente da API ufficiali.',
+    'c5.sector': 'Salute · Elaborazione documenti',
+    'c5.title': 'Elaboratore di Referti Medici con IA',
+    'c5.desc': 'Sistema che legge immagini di referti chirurgici, estrae automaticamente oltre 14 campi con IA e li salva su Google Sheets. Include gestione file su Drive, rilevamento urgenze per orario e regole di validazione dinamiche.',
+    'c6.sector': 'Marketing · Pubblicità Digitale',
+    'c6.title': 'Analisi Campagne Meta Ads',
+    'c6.desc': 'Integrazione diretta con Meta Ads che centralizza le performance delle tue campagne in una dashboard intelligente. Visualizza metriche chiave, individua opportunità di ottimizzazione e prendi decisioni basate su dati reali.',
+    'c7.sector': 'Uso Interno · Pluxow',
+    'c7.title': 'Analizzatore di Prospect e Proposte',
+    'c7.desc': 'Agente IA che ricerca su internet, analizza il profilo pubblico di un prospect e genera automaticamente una proposta commerciale personalizzata. Riduce il tempo di ricerca e redazione delle proposte da ore a minuti.',
+    'footer.tagline': 'Business Strategy & Technology',
+  }
+};
+
+function setLang(lang) {
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.textContent = i18n[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
+  });
+}
+
+function toggleAcc(trigger) {
+  const row = trigger.closest('.acc-row');
+  row.classList.toggle('open', !row.classList.contains('open'));
+}
+</script>
+
+</body>
+</html>

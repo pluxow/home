@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6NBPBGE2YT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6NBPBGE2YT');
+  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Catálogo de Servicios</title>
+<meta name="description" content="Catálogo de soluciones de automatización e inteligencia operativa de Pluxow.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F4F0E8;
+  --cream-dark: #E8E3D8;
+  --ink: #111111;
+  --ink-mid: #3a3a3a;
+  --ink-light: #6b6b6b;
+  --border: rgba(0,0,0,0.1);
+  --white: #ffffff;
+  --sans: 'DM Sans', sans-serif;
+  --serif: 'DM Serif Display', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.6; font-size: 16px; min-height: 100vh; }
+
+/* HEADER */
+header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cream);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-left { display: flex; align-items: center; gap: 1.5rem; }
+.header-logo { font-family: var(--serif); font-size: 1.25rem; color: var(--ink); text-decoration: none; }
+.header-back { font-size: 0.85rem; color: var(--ink-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+.header-back:hover { color: var(--ink); }
+
+/* LANG SWITCHER */
+.lang-switcher { display: flex; align-items: center; gap: 0.25rem; }
+.lang-btn {
+  background: none; border: none; font-family: var(--sans); font-size: 0.75rem;
+  font-weight: 500; letter-spacing: 0.06em; color: var(--ink-light);
+  cursor: pointer; padding: 0.2rem 0.35rem; border-radius: 4px; transition: color 0.2s;
+}
+.lang-btn.active { color: var(--ink); font-weight: 600; }
+.lang-btn:hover:not(.active) { color: var(--ink); }
+.lang-sep { color: var(--border); font-size: 0.75rem; user-select: none; }
+
+/* HERO */
+.hero { padding: 5rem 2rem 4rem; max-width: 760px; margin: 0 auto; text-align: center; }
+.hero-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin-bottom: 1.25rem; color: var(--ink); }
+.hero h1 em { font-style: italic; color: var(--ink-mid); }
+.hero p { font-size: 1.05rem; color: var(--ink-mid); max-width: 520px; margin: 0 auto; }
+
+/* GRID */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* CARD */
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.demo-sector {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-light); background: var(--cream-dark);
+  padding: 0.3rem 0.75rem; border-radius: 100px;
+  display: inline-block; align-self: flex-start; margin-bottom: 1.25rem;
+}
+.demo-icon { font-size: 2rem; margin-bottom: 1rem; line-height: 1; }
+.service-card h2 { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); margin-bottom: 0.75rem; line-height: 1.3; }
+.service-card p { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.65; flex: 1; }
+.demo-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+.demo-tag { font-size: 0.7rem; color: var(--ink-light); border: 1px solid var(--border); border-radius: 100px; padding: 0.2rem 0.65rem; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border); padding: 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.82rem; color: var(--ink-light); flex-wrap: wrap; gap: 0.5rem;
+}
+.footer-logo { font-family: var(--serif); color: var(--ink); }
+
+@media (max-width: 600px) {
+  header { padding: 1rem 1.25rem; }
+  .hero { padding: 3rem 1.5rem 2.5rem; }
+  .services-grid { padding: 0 1.5rem 4rem; grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <a href="/" class="header-logo">pluxow</a>
+    <a href="/" class="header-back" data-i18n="nav.back">← Volver al inicio</a>
+  </div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('es')">ES</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('pt')">PT</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('it')">IT</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-label" data-i18n="hero.label">Catálogo de servicios</div>
+  <h1 data-i18n-html="hero.title">Lo que construimos,<br><em>a tu medida.</em></h1>
+  <p data-i18n="hero.subtitle">Soluciones reales de automatización e inteligencia operativa, adaptadas a cada sector e industria.</p>
+</section>
+
+<div class="services-grid">
+
+  <!-- 1. Policonsultorio -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c1.sector">Salud · Policonsultorio</span>
+    <div class="demo-icon">🏥</div>
+    <h2 data-i18n="c1.title">Gestión Clínica 360°: Bot de Turnos, Historial Médico y Control Financiero</h2>
+    <p data-i18n="c1.desc">Sistema integral para clínicas y consultorios: un bot conversacional toma turnos automáticamente y construye el historial clínico del paciente en tiempo real. Panel de administración para gestionar citas, ver historias clínicas y hacer seguimiento de tratamientos desde un solo lugar.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">CRM</span>
+      <span class="demo-tag">Chatbot IA</span>
+      <span class="demo-tag">Historia Clínica</span>
+      <span class="demo-tag">Agenda Digital</span>
+    </div>
+  </div>
+
+  <!-- 2. CRM Tainy Loops -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c2.sector">Música · Estudio de Grabación</span>
+    <div class="demo-icon">🎙️</div>
+    <h2 data-i18n="c2.title">CRM de Leads + Generador de Contenido con IA</h2>
+    <p data-i18n="c2.desc">Plataforma interna para un estudio de grabación urbano: generador de ideas de contenido con IA basado en los 5 Niveles de Conciencia y CRM de leads organizado por semana.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">IA Generativa</span>
+      <span class="demo-tag">CRM</span>
+      <span class="demo-tag">Contenido Estratégico</span>
+      <span class="demo-tag">Música Urbana</span>
+    </div>
+  </div>
+
+  <!-- 3. App Mobile -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c3.sector">App Mobile · Deportes</span>
+    <div class="demo-icon">🏆</div>
+    <h2 data-i18n="c3.title">App Mobile para Gestión de Torneos Deportivos</h2>
+    <p data-i18n="c3.desc">Aplicación mobile desarrollada a medida para la organización y seguimiento de torneos. Gestión de equipos, generación de fixtures, carga de resultados y tabla de posiciones en tiempo real.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">App Mobile</span>
+      <span class="demo-tag">Tiempo Real</span>
+      <span class="demo-tag">Desarrollo a Medida</span>
+      <span class="demo-tag">Gestión Deportiva</span>
+    </div>
+  </div>
+
+  <!-- 4. Dashboard BI -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c4.sector">Industrial · Business Intelligence</span>
+    <div class="demo-icon">📈</div>
+    <h2 data-i18n="c4.title">Dashboard BI — Ventas, presupuesto y contexto macro</h2>
+    <p data-i18n="c4.desc">Dashboard integral que centraliza facturación, seguimiento de presupuesto, comparativos YoY, ventas por categoría y datos macroeconómicos actualizados automáticamente desde APIs oficiales.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Business Intelligence</span>
+      <span class="demo-tag">Dashboards</span>
+      <span class="demo-tag">ETL Automatizado</span>
+      <span class="demo-tag">Datos Macro</span>
+    </div>
+  </div>
+
+  <!-- 5. Partes Médicos -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c5.sector">Salud · Procesamiento de documentos</span>
+    <div class="demo-icon">⚕️</div>
+    <h2 data-i18n="c5.title">Procesador de Partes Médicos con IA</h2>
+    <p data-i18n="c5.desc">Sistema que lee imágenes de partes quirúrgicos, extrae automáticamente más de 14 campos con IA y los guarda en Google Sheets. Incluye gestión de archivos en Drive, detección de urgencias por horario y reglas de validación dinámicas.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Claude IA</span>
+      <span class="demo-tag">Google Sheets</span>
+      <span class="demo-tag">Google Drive</span>
+      <span class="demo-tag">Automatización</span>
+    </div>
+  </div>
+
+  <!-- 6. Meta Ads -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c6.sector">Marketing · Publicidad Digital</span>
+    <div class="demo-icon">📊</div>
+    <h2 data-i18n="c6.title">Análisis de Campañas Meta Ads</h2>
+    <p data-i18n="c6.desc">Integración directa con Meta Ads que centraliza el rendimiento de tus campañas publicitarias en un dashboard inteligente. Visualizá métricas clave, detectá oportunidades de optimización y tomá decisiones basadas en datos reales.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">Meta Ads</span>
+      <span class="demo-tag">Dashboards</span>
+      <span class="demo-tag">Automatización</span>
+      <span class="demo-tag">Analytics</span>
+    </div>
+  </div>
+
+  <!-- 7. Analizador de Prospectos -->
+  <div class="service-card">
+    <span class="demo-sector" data-i18n="c7.sector">Uso Interno · Pluxow</span>
+    <div class="demo-icon">🤖</div>
+    <h2 data-i18n="c7.title">Analizador de Prospectos y Propuestas</h2>
+    <p data-i18n="c7.desc">Agente de IA que investiga en internet, analiza el perfil público de un prospecto y genera automáticamente una propuesta comercial personalizada. Reduce el tiempo de investigación y redacción de propuestas de horas a minutos.</p>
+    <div class="demo-tags">
+      <span class="demo-tag">IA Generativa</span>
+      <span class="demo-tag">Web Research</span>
+      <span class="demo-tag">Propuestas Comerciales</span>
+      <span class="demo-tag">Automatización</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-logo">pluxow</span>
+  <span data-i18n="footer.tagline">Business Strategy & Technology</span>
+  <span>pluxow.com</span>
+</footer>
+
+<script>
+const i18n = {
+  es: {
+    'nav.back': '← Volver al inicio',
+    'hero.label': 'Catálogo de servicios',
+    'hero.title': 'Lo que construimos,<br><em>a tu medida.</em>',
+    'hero.subtitle': 'Soluciones reales de automatización e inteligencia operativa, adaptadas a cada sector e industria.',
+    'c1.sector': 'Salud · Policonsultorio',
+    'c1.title': 'Gestión Clínica 360°: Bot de Turnos, Historial Médico y Control Financiero',
+    'c1.desc': 'Sistema integral para clínicas y consultorios: un bot conversacional toma turnos automáticamente y construye el historial clínico del paciente en tiempo real. Panel de administración para gestionar citas, ver historias clínicas y hacer seguimiento de tratamientos desde un solo lugar.',
+    'c2.sector': 'Música · Estudio de Grabación',
+    'c2.title': 'CRM de Leads + Generador de Contenido con IA',
+    'c2.desc': 'Plataforma interna para un estudio de grabación urbano: generador de ideas de contenido con IA basado en los 5 Niveles de Conciencia y CRM de leads organizado por semana.',
+    'c3.sector': 'App Mobile · Deportes',
+    'c3.title': 'App Mobile para Gestión de Torneos Deportivos',
+    'c3.desc': 'Aplicación mobile desarrollada a medida para la organización y seguimiento de torneos. Gestión de equipos, generación de fixtures, carga de resultados y tabla de posiciones en tiempo real.',
+    'c4.sector': 'Industrial · Business Intelligence',
+    'c4.title': 'Dashboard BI — Ventas, presupuesto y contexto macro',
+    'c4.desc': 'Dashboard integral que centraliza facturación, seguimiento de presupuesto, comparativos YoY, ventas por categoría y datos macroeconómicos actualizados automáticamente desde APIs oficiales.',
+    'c5.sector': 'Salud · Procesamiento de documentos',
+    'c5.title': 'Procesador de Partes Médicos con IA',
+    'c5.desc': 'Sistema que lee imágenes de partes quirúrgicos, extrae automáticamente más de 14 campos con IA y los guarda en Google Sheets. Incluye gestión de archivos en Drive, detección de urgencias por horario y reglas de validación dinámicas.',
+    'c6.sector': 'Marketing · Publicidad Digital',
+    'c6.title': 'Análisis de Campañas Meta Ads',
+    'c6.desc': 'Integración directa con Meta Ads que centraliza el rendimiento de tus campañas publicitarias en un dashboard inteligente. Visualizá métricas clave, detectá oportunidades de optimización y tomá decisiones basadas en datos reales.',
+    'c7.sector': 'Uso Interno · Pluxow',
+    'c7.title': 'Analizador de Prospectos y Propuestas',
+    'c7.desc': 'Agente de IA que investiga en internet, analiza el perfil público de un prospecto y genera automáticamente una propuesta comercial personalizada. Reduce el tiempo de investigación y redacción de propuestas de horas a minutos.',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  en: {
+    'nav.back': '← Back to home',
+    'hero.label': 'Services catalog',
+    'hero.title': 'What we build,<br><em>tailored to you.</em>',
+    'hero.subtitle': 'Real automation and operational intelligence solutions, adapted to each sector and industry.',
+    'c1.sector': 'Healthcare · Clinic',
+    'c1.title': 'Clinical Management 360°: Appointment Bot, Medical Records & Financial Control',
+    'c1.desc': 'Comprehensive system for clinics and medical offices: a conversational bot automatically books appointments and builds the patient\'s clinical history in real time. Admin panel to manage appointments, view medical records and track treatments from one place.',
+    'c2.sector': 'Music · Recording Studio',
+    'c2.title': 'Lead CRM + AI Content Generator',
+    'c2.desc': 'Internal platform for an urban recording studio: AI-powered content idea generator based on the 5 Levels of Awareness and a weekly-organized lead CRM.',
+    'c3.sector': 'Mobile App · Sports',
+    'c3.title': 'Mobile App for Sports Tournament Management',
+    'c3.desc': 'Custom-built mobile application for tournament organization and tracking. Team management, fixture generation, result entry and real-time standings — accessible from any device.',
+    'c4.sector': 'Industrial · Business Intelligence',
+    'c4.title': 'BI Dashboard — Sales, budget and macro context',
+    'c4.desc': 'Comprehensive dashboard centralizing billing, budget tracking, YoY comparisons, sales by category and macroeconomic data automatically updated from official APIs.',
+    'c5.sector': 'Healthcare · Document Processing',
+    'c5.title': 'AI-Powered Medical Report Processor',
+    'c5.desc': 'System that reads surgical report images, automatically extracts 14+ fields with AI and saves them to Google Sheets. Includes Drive file management, time-based urgency detection and dynamic validation rules.',
+    'c6.sector': 'Marketing · Digital Advertising',
+    'c6.title': 'Meta Ads Campaign Analytics',
+    'c6.desc': 'Direct Meta Ads integration that centralizes your advertising campaign performance in an intelligent dashboard. View key metrics, spot optimization opportunities and make data-driven decisions from a single screen.',
+    'c7.sector': 'Internal · Pluxow',
+    'c7.title': 'Prospect & Proposal Analyzer',
+    'c7.desc': 'AI agent that researches the web, analyzes a prospect\'s public profile and automatically generates a personalized commercial proposal. Reduces research and proposal writing time from hours to minutes.',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  pt: {
+    'nav.back': '← Voltar ao início',
+    'hero.label': 'Catálogo de serviços',
+    'hero.title': 'O que construímos,<br><em>feito para você.</em>',
+    'hero.subtitle': 'Soluções reais de automação e inteligência operacional, adaptadas a cada setor e indústria.',
+    'c1.sector': 'Saúde · Policonsultório',
+    'c1.title': 'Gestão Clínica 360°: Bot de Agendamentos, Histórico Médico e Controle Financeiro',
+    'c1.desc': 'Sistema integral para clínicas e consultórios: um bot conversacional agenda consultas automaticamente e constrói o histórico clínico do paciente em tempo real. Painel de administração para gerenciar consultas, ver históricos clínicos e acompanhar tratamentos em um só lugar.',
+    'c2.sector': 'Música · Estúdio de Gravação',
+    'c2.title': 'CRM de Leads + Gerador de Conteúdo com IA',
+    'c2.desc': 'Plataforma interna para um estúdio de gravação urbano: gerador de ideias de conteúdo com IA baseado nos 5 Níveis de Consciência e CRM de leads organizado por semana.',
+    'c3.sector': 'App Mobile · Esportes',
+    'c3.title': 'App Mobile para Gestão de Torneios Esportivos',
+    'c3.desc': 'Aplicativo mobile desenvolvido sob medida para organização e acompanhamento de torneios. Gestão de equipes, geração de tabelas, registro de resultados e classificação em tempo real.',
+    'c4.sector': 'Industrial · Business Intelligence',
+    'c4.title': 'Dashboard BI — Vendas, orçamento e contexto macro',
+    'c4.desc': 'Dashboard integral que centraliza faturamento, acompanhamento de orçamento, comparativos YoY, vendas por categoria e dados macroeconômicos atualizados automaticamente via APIs oficiais.',
+    'c5.sector': 'Saúde · Processamento de documentos',
+    'c5.title': 'Processador de Relatórios Médicos com IA',
+    'c5.desc': 'Sistema que lê imagens de relatórios cirúrgicos, extrai automaticamente mais de 14 campos com IA e os salva no Google Sheets. Inclui gestão de arquivos no Drive, detecção de urgências por horário e regras de validação dinâmicas.',
+    'c6.sector': 'Marketing · Publicidade Digital',
+    'c6.title': 'Análise de Campanhas Meta Ads',
+    'c6.desc': 'Integração direta com Meta Ads que centraliza o desempenho das suas campanhas publicitárias em um dashboard inteligente. Visualize métricas-chave, detecte oportunidades de otimização e tome decisões baseadas em dados reais.',
+    'c7.sector': 'Uso Interno · Pluxow',
+    'c7.title': 'Analisador de Prospects e Propostas',
+    'c7.desc': 'Agente de IA que pesquisa na internet, analisa o perfil público de um prospect e gera automaticamente uma proposta comercial personalizada. Reduz o tempo de pesquisa e redação de propostas de horas para minutos.',
+    'footer.tagline': 'Business Strategy & Technology',
+  },
+  it: {
+    'nav.back': '← Torna alla home',
+    'hero.label': 'Catalogo servizi',
+    'hero.title': 'Quello che costruiamo,<br><em>su misura per te.</em>',
+    'hero.subtitle': 'Soluzioni reali di automazione e intelligenza operativa, adattate a ogni settore e industria.',
+    'c1.sector': 'Salute · Poliambulatorio',
+    'c1.title': 'Gestione Clinica 360°: Bot Prenotazioni, Cartella Clinica e Controllo Finanziario',
+    'c1.desc': 'Sistema integrale per cliniche e studi medici: un bot conversazionale prenota appuntamenti automaticamente e costruisce la cartella clinica del paziente in tempo reale. Pannello di amministrazione per gestire appuntamenti, visualizzare cartelle cliniche e monitorare i trattamenti da un unico posto.',
+    'c2.sector': 'Musica · Studio di Registrazione',
+    'c2.title': 'CRM Lead + Generatore di Contenuti con IA',
+    'c2.desc': 'Piattaforma interna per uno studio di registrazione urbano: generatore di idee di contenuto con IA basato sui 5 Livelli di Consapevolezza e CRM dei lead organizzato per settimana.',
+    'c3.sector': 'App Mobile · Sport',
+    'c3.title': 'App Mobile per la Gestione di Tornei Sportivi',
+    'c3.desc': 'Applicazione mobile sviluppata su misura per l\'organizzazione e il monitoraggio di tornei. Gestione squadre, generazione calendari, inserimento risultati e classifica in tempo reale.',
+    'c4.sector': 'Industriale · Business Intelligence',
+    'c4.title': 'Dashboard BI — Vendite, budget e contesto macro',
+    'c4.desc': 'Dashboard integrale che centralizza fatturazione, monitoraggio del budget, comparativi YoY, vendite per categoria e dati macroeconomici aggiornati automaticamente da API ufficiali.',
+    'c5.sector': 'Salute · Elaborazione documenti',
+    'c5.title': 'Elaboratore di Referti Medici con IA',
+    'c5.desc': 'Sistema che legge immagini di referti chirurgici, estrae automaticamente oltre 14 campi con IA e li salva su Google Sheets. Include gestione file su Drive, rilevamento urgenze per orario e regole di validazione dinamiche.',
+    'c6.sector': 'Marketing · Pubblicità Digitale',
+    'c6.title': 'Analisi Campagne Meta Ads',
+    'c6.desc': 'Integrazione diretta con Meta Ads che centralizza le performance delle tue campagne pubblicitarie in una dashboard intelligente. Visualizza metriche chiave, individua opportunità di ottimizzazione e prendi decisioni basate su dati reali.',
+    'c7.sector': 'Uso Interno · Pluxow',
+    'c7.title': 'Analizzatore di Prospect e Proposte',
+    'c7.desc': 'Agente IA che ricerca su internet, analizza il profilo pubblico di un prospect e genera automaticamente una proposta commerciale personalizzata. Riduce il tempo di ricerca e redazione delle proposte da ore a minuti.',
+    'footer.tagline': 'Business Strategy & Technology',
+  }
+};
+
+function setLang(lang) {
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key] !== undefined) el.textContent = i18n[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (i18n[lang][key] !== undefined) el.innerHTML = i18n[lang][key];
+  });
+}
+</script>
+
+</body>
+</html>

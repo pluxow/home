@@ -2,6 +2,7 @@
   "es": {
     "nav.services": "Servicios",
     "nav.how": "Cómo trabajamos",
+    "nav.demos": "Demos",
     "nav.cta": "Hablemos",
     "hero.tag": "Business Strategy & Technology",
     "hero.h1": "Inteligencia operativa para empresas que<br><em>quieren crecer.</em>",
@@ -122,6 +123,7 @@
   "en": {
     "nav.services": "Services",
     "nav.how": "How we work",
+    "nav.demos": "Demos",
     "nav.cta": "Let's talk",
     "hero.tag": "Business Strategy & Technology",
     "hero.h1": "Operational intelligence for companies that<br><em>want to grow.</em>",
@@ -242,6 +244,7 @@
   "pt": {
     "nav.services": "Serviços",
     "nav.how": "Como trabalhamos",
+    "nav.demos": "Demos",
     "nav.cta": "Vamos conversar",
     "hero.tag": "Business Strategy & Technology",
     "hero.h1": "Inteligência operacional para empresas que<br><em>querem crescer.</em>",
@@ -362,6 +365,7 @@
   "it": {
     "nav.services": "Servizi",
     "nav.how": "Come lavoriamo",
+    "nav.demos": "Demo",
     "nav.cta": "Parliamoci",
     "hero.tag": "Business Strategy & Technology",
     "hero.h1": "Intelligenza operativa per le aziende che<br><em>vogliono crescere.</em>",
