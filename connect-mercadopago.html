@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conectar Mercado Pago — Pluxow</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F4F0E8;
+    --cream-dark: #E8E3D8;
+    --ink: #111111;
+    --ink-mid: #3a3a3a;
+    --ink-light: #6b6b6b;
+    --border: rgba(0,0,0,0.1);
+    --white: #ffffff;
+    --sans: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+    --mp: #009EE3;
+    --mp-dark: #0082bd;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--cream); color: var(--ink); line-height: 1.6; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.5rem;
+    letter-spacing: -0.02em; color: var(--ink);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .logo-icon { height: 40px; width: auto; border-radius: 8px; }
+  .nav-back { font-size: 0.85rem; color: var(--ink-light); text-decoration: none; transition: color 0.2s; }
+  .nav-back:hover { color: var(--ink); }
+
+  .hero {
+    padding: 5rem 2rem 4rem;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--cream-dark); border-radius: 100px;
+    padding: 0.3rem 0.9rem; font-size: 0.8rem;
+    color: var(--ink-mid); margin-bottom: 1.5rem;
+  }
+  .mp-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--mp); flex-shrink: 0;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: 2.8rem;
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+  .hero p {
+    font-size: 1.05rem; color: var(--ink-mid);
+    max-width: 520px; margin: 0 auto 2.5rem;
+  }
+
+  .client-tag {
+    display: inline-block;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.4rem 0.9rem;
+    font-size: 0.85rem; color: var(--ink-mid);
+    margin-bottom: 2rem;
+  }
+  .client-tag strong { color: var(--ink); }
+
+  .btn-connect {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--mp); color: var(--white);
+    border: none; border-radius: 100px;
+    padding: 0.85rem 2rem; font-size: 1rem;
+    font-family: var(--sans); font-weight: 500;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+  }
+  .btn-connect:hover  { background: var(--mp-dark); }
+  .btn-connect:active { transform: scale(0.97); }
+
+  .mp-logo-btn { width: 22px; height: 22px; flex-shrink: 0; }
+
+  .legal {
+    font-size: 0.78rem; color: var(--ink-light);
+    margin-top: 0.85rem;
+  }
+  .legal a { color: var(--ink-mid); }
+
+  .steps {
+    max-width: 680px; margin: 0 auto 5rem;
+    padding: 0 2rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+  .step {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem 1.25rem;
+  }
+  .step-num {
+    width: 28px; height: 28px;
+    background: var(--ink); color: var(--cream);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  .step h3 { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.4rem; }
+  .step p  { font-size: 0.82rem; color: var(--ink-light); line-height: 1.5; }
+
+  .note {
+    max-width: 680px; margin: 0 auto 5rem; padding: 0 2rem;
+    font-size: 0.82rem; color: var(--ink-light); text-align: center;
+  }
+
+  footer {
+    background: var(--ink); color: rgba(244,240,232,0.5);
+    padding: 2rem; display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap;
+    gap: 1rem; font-size: 0.82rem;
+  }
+  .footer-logo { font-family: var(--serif); font-size: 1.2rem; color: var(--cream); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { color: rgba(244,240,232,0.5); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <img class="logo-icon" src="image copy.png" alt="Pluxow">
+    pluxow
+  </a>
+  <a class="nav-back" href="/">← Volver</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">
+    <span class="mp-dot"></span>
+    Mercado Pago OAuth
+  </div>
+
+  <h1>Conecta tu cuenta de Mercado Pago</h1>
+  <p>Autorizá a Pluxow para acceder a tus reportes de ventas. Solo toma un minuto y podés revocar el acceso en cualquier momento.</p>
+
+  <div class="client-tag" id="clientTag" style="display:none">
+    Solicitud para: <strong id="clientName"></strong>
+  </div>
+
+  <a class="btn-connect" id="btnConnect" href="#">
+    <svg class="mp-logo-btn" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" fill="white" opacity="0.2"/>
+      <path d="M7 12.5l3 3 7-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Conectar con Mercado Pago
+  </a>
+
+  <p class="legal">
+    Al conectar, aceptas nuestros
+    <a href="/terms.html">Terminos de Servicio</a> y
+    <a href="/privacy-policy.html">Politica de Privacidad</a>.
+  </p>
+</div>
+
+<div class="steps">
+  <div class="step">
+    <div class="step-num">1</div>
+    <h3>Inicia sesion</h3>
+    <p>Hacé click en el boton y te redirigimos al sitio oficial de Mercado Pago para que inicies sesion.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <h3>Autorizá el acceso</h3>
+    <p>Mercado Pago te pedirá que confirmes qué permisos le das a Pluxow. Solo accedemos a tus reportes.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <h3>Listo</h3>
+    <p>Te avisamos que la conexión fue exitosa. Tus datos se procesan automáticamente desde ese momento.</p>
+  </div>
+</div>
+
+<p class="note">
+  Pluxow accede únicamente a los datos necesarios para generar tus reportes.
+  Tus credenciales se almacenan de forma segura y nunca se comparten con terceros.
+  Podés revocar el acceso desde tu cuenta de Mercado Pago en cualquier momento.
+</p>
+
+<footer>
+  <span class="footer-logo">pluxow</span>
+  <div class="footer-links">
+    <a href="/privacy-policy.html">Politica de Privacidad</a>
+    <a href="/terms.html">Terminos de Servicio</a>
+  </div>
+</footer>
+
+<script>
+  const MP_CLIENT_ID   = '2314795627971150';
+  const REDIRECT_URI   = 'https://leacouretot.app.n8n.cloud/webhook/63fda0b8-2f91-404a-9089-811e283b6eeb';
+
+  const params = new URLSearchParams(window.location.search);
+  const client = params.get('client') || '';
+
+  if (client) {
+    document.getElementById('clientTag').style.display = 'inline-block';
+    document.getElementById('clientName').textContent = client;
+  }
+
+  // state = client identifier, used by n8n to know who is connecting
+  const state = client || 'unknown';
+
+  const oauthUrl = 'https://auth.mercadopago.com.ar/authorization'
+    + '?client_id='     + encodeURIComponent(MP_CLIENT_ID)
+    + '&response_type=code'
+    + '&platform_id=mp'
+    + '&redirect_uri='  + encodeURIComponent(REDIRECT_URI)
+    + '&state='         + encodeURIComponent(state);
+
+  document.getElementById('btnConnect').href = oauthUrl;
+</script>
+
+</body>
+</html>
