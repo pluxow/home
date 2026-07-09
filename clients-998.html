@@ -216,7 +216,7 @@ async function checkPwd(e) {
   const error = document.getElementById('gate-error');
   const hash = await sha256(input.value);
   if (hash === HASH) {
-    sessionStorage.setItem(SESSION_KEY, '1');
+    localStorage.setItem(SESSION_KEY, '1');
     if (window.PasswordCredential) {
       const cred = new PasswordCredential(document.getElementById('gate-form'));
       await navigator.credentials.store(cred);
@@ -236,7 +236,7 @@ function showMain() {
 }
 
 function logout() {
-  sessionStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(SESSION_KEY);
   document.getElementById('main').classList.remove('visible');
   document.getElementById('gate').classList.add('visible');
   document.getElementById('pwd-input').value = '';
@@ -249,7 +249,7 @@ document.getElementById('pwd-input').addEventListener('keydown', e => {
   document.getElementById('gate-error').style.display = 'none';
 });
 
-if (sessionStorage.getItem(SESSION_KEY) === '1') showMain();
+if (localStorage.getItem(SESSION_KEY) === '1') showMain();
 </script>
 
 </body>
