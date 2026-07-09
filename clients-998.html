@@ -126,8 +126,11 @@
   <div class="gate-box">
     <div class="gate-logo">pluxow</div>
     <div class="gate-label">Acceso restringido</div>
-    <input id="pwd-input" class="gate-input" type="password" placeholder="Contraseña" autocomplete="current-password">
-    <button class="gate-btn" onclick="checkPwd()">Ingresar</button>
+    <form id="gate-form" onsubmit="checkPwd(event)">
+      <input name="username" type="text" value="pluxow" autocomplete="username" style="display:none;">
+      <input id="pwd-input" name="password" class="gate-input" type="password" placeholder="Contraseña" autocomplete="current-password">
+      <button type="submit" class="gate-btn">Ingresar</button>
+    </form>
     <div class="gate-error" id="gate-error">Contraseña incorrecta</div>
   </div>
 </div>
@@ -207,7 +210,8 @@ async function sha256(str) {
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function checkPwd() {
+async function checkPwd(e) {
+  e.preventDefault();
   const input = document.getElementById('pwd-input');
   const error = document.getElementById('gate-error');
   const hash = await sha256(input.value);
@@ -237,7 +241,6 @@ function logout() {
 }
 
 document.getElementById('pwd-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkPwd();
   document.getElementById('pwd-input').classList.remove('error');
   document.getElementById('gate-error').style.display = 'none';
 });
