@@ -217,6 +217,10 @@ async function checkPwd(e) {
   const hash = await sha256(input.value);
   if (hash === HASH) {
     sessionStorage.setItem(SESSION_KEY, '1');
+    if (window.PasswordCredential) {
+      const cred = new PasswordCredential(document.getElementById('gate-form'));
+      await navigator.credentials.store(cred);
+    }
     showMain();
   } else {
     input.classList.add('error');
