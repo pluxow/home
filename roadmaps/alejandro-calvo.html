@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roadmap — Alejandro Calvo x Pluxow</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #F4F0E8;
+      color: #111111;
+      padding: 60px 72px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 56px;
+      padding-bottom: 32px;
+      border-bottom: 1.5px solid #111111;
+    }
+
+    .header-left h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .header-left p {
+      font-size: 14px;
+      font-weight: 300;
+      color: #555;
+      letter-spacing: 0.02em;
+    }
+
+    .header-right { text-align: right; }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: #111111;
+      margin-bottom: 4px;
+    }
+
+    .logo-tagline {
+      font-size: 11px;
+      font-weight: 300;
+      color: #777;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .objetivo {
+      background: #111111;
+      color: #F4F0E8;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+
+    .objetivo-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .objetivo p {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .fases { margin-bottom: 48px; }
+
+    .fase {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+      margin-bottom: 2px;
+    }
+
+    .fase-header {
+      background: #111111;
+      color: #F4F0E8;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .fase-numero {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 4px;
+    }
+
+    .fase-semana {
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .fase-body {
+      background: #FFFFFF;
+      padding: 20px 24px;
+    }
+
+    .fase-titulo {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: 0.01em;
+    }
+
+    .fase-items { list-style: none; padding: 0; }
+
+    .fase-items li {
+      font-size: 13px;
+      font-weight: 300;
+      color: #333;
+      line-height: 1.5;
+      padding: 3px 0 3px 14px;
+      position: relative;
+    }
+
+    .fase-items li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 5px;
+      height: 1px;
+      background: #111;
+    }
+
+    .stack-section { margin-bottom: 48px; }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .stack-item {
+      background: #FFFFFF;
+      padding: 20px;
+    }
+
+    .stack-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .stack-value {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .stack-sub {
+      font-size: 12px;
+      font-weight: 300;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .entregables-section { margin-bottom: 48px; }
+
+    .entregables-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .entregable-item {
+      background: #FFFFFF;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .entregable-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: #ddd;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .entregable-text {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      padding-top: 4px;
+    }
+
+    /* FLOWCHART */
+    .flow-section { margin-bottom: 48px; }
+
+    .flow-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-node {
+      background: #FFFFFF;
+      border: 1.5px solid #e0ddd6;
+      padding: 12px 24px;
+      text-align: center;
+      width: 260px;
+      position: relative;
+    }
+
+    .flow-node.dark {
+      background: #111111;
+      border-color: #111111;
+      color: #F4F0E8;
+    }
+
+    .flow-node.decision {
+      background: #F4F0E8;
+      border: 1.5px solid #111111;
+      transform: rotate(0deg);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      width: 200px;
+      height: 90px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flow-node.lead {
+      background: #111111;
+      border-color: #111111;
+      color: #F4F0E8;
+      width: 260px;
+    }
+
+    .flow-node-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 3px;
+    }
+
+    .flow-node.dark .flow-node-label,
+    .flow-node.lead .flow-node-label { color: #666; }
+
+    .flow-node-text {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .flow-node.decision .flow-node-text {
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .flow-arrow-down {
+      width: 1.5px;
+      height: 20px;
+      background: #999;
+      position: relative;
+    }
+
+    .flow-arrow-down::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #999;
+    }
+
+    .flow-branch {
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      position: relative;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .flow-branch-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 1.5px;
+      background: #999;
+    }
+
+    .flow-branch-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .flow-branch-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    .flow-merge-row {
+      display: flex;
+      gap: 2px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .flow-merge-item {
+      flex: 1;
+      max-width: 240px;
+      background: #111;
+      color: #F4F0E8;
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .flow-merge-item .flow-node-label { color: #666; }
+
+    .cuenta-section { margin-bottom: 48px; }
+
+    .cuenta-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 2px;
+    }
+
+    .cuenta-table th {
+      background: #111111;
+      color: #F4F0E8;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    .cuenta-table td {
+      background: #FFFFFF;
+      font-size: 13px;
+      font-weight: 300;
+      padding: 12px 16px;
+      color: #333;
+    }
+
+    .cuenta-table tr.total td {
+      background: #111111;
+      color: #F4F0E8;
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+    }
+
+    .badge-pendiente { background: #F4F0E8; color: #888; }
+    .badge-pagado    { background: #d4edda; color: #2d6a3f; }
+
+    .footer {
+      border-top: 1.5px solid #111;
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left, .footer-right {
+      font-size: 12px;
+      font-weight: 300;
+      color: #555;
+    }
+
+    @media print {
+      /* @page top/bottom se aplica en TODAS las paginas (incluyendo pag 2+).
+         body padding left/right es consistente en todas las paginas por ser un atributo de ancho.
+         Usar Chrome margen "None" para que no se sumen los margenes del browser. */
+      @page { margin: 12mm 0; size: A4; }
+
+      body {
+        padding: 0 16mm;
+        font-size: 13px;
+      }
+
+      .header { margin-bottom: 24px; padding-bottom: 16px; }
+      .header-left h1 { font-size: 24px; }
+      .objetivo { padding: 18px 22px; margin-bottom: 24px; }
+      .objetivo p { font-size: 13px; }
+
+      .fases { margin-bottom: 24px; }
+      .fase { margin-bottom: 2px; }
+      .fase-header { padding: 12px 16px; }
+      .fase-semana { font-size: 13px; }
+      .fase-body { padding: 12px 16px; }
+      .fase-titulo { font-size: 13px; margin-bottom: 6px; }
+      .fase-items li { font-size: 12px; }
+
+      .section-title { font-size: 16px; margin-bottom: 14px; }
+
+      .stack-grid { grid-template-columns: repeat(3, 1fr); }
+      .stack-item { padding: 12px 14px; }
+      .stack-section { margin-bottom: 24px; }
+
+      .entregables-section { margin-bottom: 24px; }
+      .entregable-item { padding: 12px 14px; }
+
+      .flow-section { margin-bottom: 24px; }
+      .cuenta-section { margin-bottom: 24px; }
+
+      /* Page break rules */
+      .fase,
+      .stack-section,
+      .entregable-item,
+      .flow-wrap,
+      .cuenta-table tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .section-title {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+
+      .cuenta-section {
+        page-break-before: always;
+        break-before: always;
+      }
+
+      .cuenta-table {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>Roadmap de Implementacion</h1>
+      <p>Agente Conversacional de Instagram con Clasificacion de Leads</p>
+      <p style="margin-top:4px; font-size:13px;">Cliente: Alejandro Calvo &nbsp;|&nbsp; Duracion estimada: 6 semanas</p>
+    </div>
+    <div class="header-right">
+      <div class="logo">Pluxow</div>
+      <div class="logo-tagline">Inteligencia operativa</div>
+    </div>
+  </div>
+
+  <div class="objetivo">
+    <div class="objetivo-label">Objetivo del proyecto</div>
+    <p>Convertir cada mensaje de Instagram en una oportunidad calificada: el agente atiende, responde y clasifica cada contacto automaticamente, para que Alejandro intervenga unicamente cuando el prospecto lo vale.</p>
+  </div>
+
+  <div class="fases">
+    <div class="section-title">Plan de trabajo</div>
+
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-numero">Fase 01</div>
+        <div class="fase-semana">Semana 1</div>
+      </div>
+      <div class="fase-body">
+        <div class="fase-titulo">Fundamentos: acceso a Instagram y analisis de conversaciones</div>
+        <ul class="fase-items">
+          <li>Configuracion de la app en Meta y conexion a la cuenta de Instagram de Alejandro</li>
+          <li>Lectura del historial de conversaciones reales</li>
+          <li>Analisis del corpus: extraccion del tono, estilo y patrones de calificacion de Alejandro</li>
+          <li>Definicion del playbook v1 con las reglas de negocio acordadas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-numero">Fase 02</div>
+        <div class="fase-semana">Semana 2</div>
+      </div>
+      <div class="fase-body">
+        <div class="fase-titulo">Agente conversacional: desarrollo y primera prueba</div>
+        <ul class="fase-items">
+          <li>Construccion del agente con IA conversacional y playbook integrado</li>
+          <li>Modulo de prueba standalone: Alejandro interactua con el agente antes de salir a produccion</li>
+          <li>Primera iteracion de tono y logica de calificacion con feedback del cliente</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-numero">Fase 03</div>
+        <div class="fase-semana">Semanas 3-4</div>
+      </div>
+      <div class="fase-body">
+        <div class="fase-titulo">CRM y tablero de control</div>
+        <ul class="fase-items">
+          <li>Plataforma con lista de leads, estados y conversaciones</li>
+          <li>Integracion del agente al CRM</li>
+          <li>Flujo de notificacion a WhatsApp cuando un lead califica</li>
+          <li>Manejo de fotos: registro en CRM, respuesta de Alejandro via agente</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-numero">Fase 04</div>
+        <div class="fase-semana">Semana 5</div>
+      </div>
+      <div class="fase-body">
+        <div class="fase-titulo">Evaluacion y afinado del agente</div>
+        <ul class="fase-items">
+          <li>Alejandro etiqueta conversaciones reales: lead prioritario / descartar / sin resolver</li>
+          <li>Ejecucion de evaluaciones automaticas para medir calidad de respuesta</li>
+          <li>Ajuste del playbook en base a los resultados</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fase">
+      <div class="fase-header">
+        <div class="fase-numero">Fase 05</div>
+        <div class="fase-semana">Semana 6</div>
+      </div>
+      <div class="fase-body">
+        <div class="fase-titulo">Go-live y acompanamiento</div>
+        <ul class="fase-items">
+          <li>Conexion del agente al Instagram real en produccion</li>
+          <li>Monitoreo de la primera semana operativa</li>
+          <li>Ajustes finos post-lanzamiento</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="stack-section">
+    <div class="section-title">Stack tecnologico</div>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="stack-label">Canal</div>
+        <div class="stack-value">Meta API</div>
+        <div class="stack-sub">Instagram Messaging</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">Agente de IA</div>
+        <div class="stack-value">Claude (Anthropic)</div>
+        <div class="stack-sub">Procesamiento de lenguaje y clasificacion de leads</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">Base de datos</div>
+        <div class="stack-value">Supabase</div>
+        <div class="stack-sub">Almacenamiento de mensajes y leads (PostgreSQL)</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">Backend</div>
+        <div class="stack-value">Cloudflare Workers</div>
+        <div class="stack-sub">Recepcion de mensajes y orquestacion del agente</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">CRM</div>
+        <div class="stack-value">UI Bakery</div>
+        <div class="stack-sub">Tablero de leads, estados y conversaciones</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-label">Notificaciones</div>
+        <div class="stack-value">WhatsApp</div>
+        <div class="stack-sub">Alerta cuando un usuario de Instagram califica como lead</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="entregables-section">
+    <div class="section-title">Entregables incluidos</div>
+    <div class="entregables-grid">
+      <div class="entregable-item">
+        <div class="entregable-num">01</div>
+        <div class="entregable-text">Agente conversacional conectado al Instagram de Alejandro</div>
+      </div>
+      <div class="entregable-item">
+        <div class="entregable-num">02</div>
+        <div class="entregable-text">Motor de clasificacion de leads segun reglas de negocio</div>
+      </div>
+      <div class="entregable-item">
+        <div class="entregable-num">03</div>
+        <div class="entregable-text">Notificacion automatica a WhatsApp con resumen del lead</div>
+      </div>
+      <div class="entregable-item">
+        <div class="entregable-num">04</div>
+        <div class="entregable-text">Tablero de control con historial de conversaciones y exportacion CSV</div>
+      </div>
+      <div class="entregable-item">
+        <div class="entregable-num">05</div>
+        <div class="entregable-text">Documentacion tecnica y funcional completa</div>
+      </div>
+      <div class="entregable-item">
+        <div class="entregable-num">06</div>
+        <div class="entregable-text">Mantenimiento y soporte por 6 meses post-entrega</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-section">
+    <div class="section-title">Como funciona la solucion</div>
+
+    <div class="flow-wrap">
+
+      <!-- Entrada -->
+      <div class="flow-node">
+        <div class="flow-node-label">Usuario de Instagram</div>
+        <div class="flow-node-text">Envia un mensaje desde Instagram</div>
+      </div>
+      <div class="flow-arrow-down"></div>
+
+      <div class="flow-node">
+        <div class="flow-node-label">Recepcion</div>
+        <div class="flow-node-text">Meta API envia el mensaje a la plataforma en tiempo real</div>
+      </div>
+      <div class="flow-arrow-down"></div>
+
+      <div class="flow-node">
+        <div class="flow-node-label">Almacenamiento</div>
+        <div class="flow-node-text">El mensaje se guarda en Supabase con todos sus datos</div>
+      </div>
+      <div class="flow-arrow-down"></div>
+
+      <div class="flow-node dark">
+        <div class="flow-node-label">Agente IA</div>
+        <div class="flow-node-text">Lee el mensaje y aplica las reglas de negocio</div>
+      </div>
+      <div class="flow-arrow-down"></div>
+
+      <!-- Decision 1 -->
+      <div class="flow-node decision">
+        <div class="flow-node-text">¿Tiene toda la info necesaria?</div>
+      </div>
+
+      <!-- Branch -->
+      <div style="display:flex; width:560px; position:relative; height:16px;">
+        <div style="position:absolute; top:0; left:50%; width:280px; height:1.5px; background:#999; transform:translateX(-50%);"></div>
+      </div>
+
+      <div class="flow-branch" style="width:560px; align-items:flex-start;">
+
+        <!-- Rama NO -->
+        <div class="flow-branch-col" style="flex:1; align-items:center;">
+          <div class="flow-arrow-down"></div>
+          <div class="flow-branch-label">No</div>
+          <div class="flow-node" style="width:220px;">
+            <div class="flow-node-label">Sigue conversando</div>
+            <div class="flow-node-text">El agente hace una pregunta para calificar mejor al usuario (zona, metros, servicio)</div>
+          </div>
+          <div class="flow-arrow-down"></div>
+          <div class="flow-node" style="width:220px;">
+            <div class="flow-node-label">Respuesta automatica</div>
+            <div class="flow-node-text">Responde por Instagram y espera el siguiente mensaje</div>
+          </div>
+        </div>
+
+        <!-- Rama SI -->
+        <div class="flow-branch-col" style="flex:1; align-items:center;">
+          <div class="flow-arrow-down"></div>
+          <div class="flow-branch-label">Si</div>
+
+          <!-- Decision 2 -->
+          <div class="flow-node decision" style="width:180px; height:90px;">
+            <div class="flow-node-text">¿Califica por zona y metros?</div>
+          </div>
+          <div class="flow-arrow-down"></div>
+
+          <div class="flow-node lead" style="width:220px;">
+            <div class="flow-node-label">Lead calificado</div>
+            <div class="flow-node-text">El agente pide el WhatsApp y cierra la conversacion automatica</div>
+          </div>
+          <div class="flow-arrow-down"></div>
+
+          <div class="flow-node dark" style="width:220px;">
+            <div class="flow-node-label">Alerta a Alejandro</div>
+            <div class="flow-node-text">Notificacion por WhatsApp con resumen del lead</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Base comun -->
+      <div style="display:flex; width:560px; position:relative; height:16px; margin-top:0;">
+        <div style="position:absolute; top:0; left:50%; width:280px; height:1.5px; background:#999; transform:translateX(-50%);"></div>
+      </div>
+      <div class="flow-arrow-down"></div>
+
+      <div class="flow-node dark" style="width:100%; box-sizing:border-box;">
+        <div class="flow-node-label">CRM — visible para Alejandro en todo momento</div>
+        <div class="flow-node-text">Todos los usuarios de Instagram, su estado, la conversacion completa y los datos del lead si califico</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cuenta-section">
+    <div class="section-title">Cuenta corriente</div>
+    <table class="cuenta-table">
+      <thead>
+        <tr>
+          <th>Cuota</th>
+          <th>Vencimiento</th>
+          <th>Monto</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1 de 6</td>
+          <td>1–8 julio 2026</td>
+          <td>ARS $300.000</td>
+          <td><span class="badge badge-pagado">Pagado</span></td>
+        </tr>
+        <tr>
+          <td>2 de 6</td>
+          <td>1–8 agosto 2026</td>
+          <td>ARS $300.000</td>
+          <td><span class="badge badge-pendiente">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>3 de 6</td>
+          <td>1–8 septiembre 2026</td>
+          <td>ARS $300.000</td>
+          <td><span class="badge badge-pendiente">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>4 de 6</td>
+          <td>1–8 octubre 2026</td>
+          <td>ARS $300.000</td>
+          <td><span class="badge badge-pendiente">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>5 de 6</td>
+          <td>1–8 noviembre 2026</td>
+          <td>ARS $300.000</td>
+          <td><span class="badge badge-pendiente">Pendiente</span></td>
+        </tr>
+        <tr>
+          <td>6 de 6</td>
+          <td>1–8 diciembre 2026</td>
+          <td>ARS $300.000</td>
+          <td><span class="badge badge-pendiente">Pendiente</span></td>
+        </tr>
+        <tr class="total">
+          <td colspan="2">Total</td>
+          <td>ARS $1.800.000</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">pluxow.com &nbsp;|&nbsp; hello@pluxow.com</div>
+    <div class="footer-right">30 de junio de 2026</div>
+  </div>
+
+</body>
+</html>
