@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <script>if (localStorage.getItem('plx_clients_auth') !== '1') location.replace('/clients-998.html');</script>
+  <title>KinesicPro — Estado del Proyecto · Julio 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #F4F0E8;
+      --cream-dark: #E8E3D8;
+      --ink:        #111111;
+      --mid:        #3a3a3a;
+      --soft:       #6b6b6b;
+      --border:     rgba(0,0,0,0.1);
+      --white:      #FFFFFF;
+      --green:      #2d6a4f;
+      --amber:      #92400e;
+      --blue:       #1e3a5f;
+      --grey:       #555555;
+      --indigo:     #4338ca;
+    }
+
+    @page { size: A4; margin: 0; }
+
+    html {
+      background: var(--cream-dark);
+    }
+
+    body {
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      color: var(--ink);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10mm 0;
+      gap: 10mm;
+    }
+
+    @media print {
+      html { background: none; }
+      body { display: block; padding: 0; gap: 0; }
+    }
+
+    .payments-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+    }
+    .payments-table th {
+      font-size: 7pt;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--soft);
+      padding: 2mm 3mm;
+      text-align: left;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .payments-table td {
+      padding: 3mm 3mm;
+      color: var(--mid);
+      font-weight: 300;
+      border-bottom: 1px solid var(--border);
+    }
+    .payments-table td.num { text-align: right; font-weight: 400; }
+    .payments-table tr:last-child td { border-bottom: none; }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 2.5mm 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-label { font-size: 9pt; color: var(--mid); font-weight: 300; }
+    .summary-value { font-size: 10pt; font-weight: 500; color: var(--ink); }
+    .summary-value.highlight {
+      font-family: 'DM Serif Display', serif;
+      font-size: 13pt;
+      color: var(--ink);
+    }
+    .summary-value.paid { color: var(--green); }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      page-break-after: always;
+      padding: 10mm 13mm 9mm;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 4mm;
+      border-bottom: 1.5px solid var(--border);
+      flex-shrink: 0;
+    }
+    .header-logo { font-size: 8pt; color: var(--soft); letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+    .header-title { font-family: 'DM Serif Display', serif; font-size: 22pt; color: var(--ink); line-height: 1; }
+    .header-subtitle { font-size: 8pt; color: var(--soft); font-weight: 300; margin-top: 1.5mm; }
+    .header-date { font-size: 8.5pt; color: var(--soft); font-weight: 300; }
+
+    .label {
+      font-size: 6.5pt;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--soft);
+      margin-bottom: 2mm;
+    }
+
+    .cards-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 3mm; }
+    .cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 3mm; }
+    .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3mm 3.5mm;
+    }
+    .card.done   { border-left: 3px solid #2d6a4f; }
+    .card.active { border-left: 3px solid #b45309; }
+    .card.next   { border-left: 3px solid #1e3a5f; }
+    .card.wait   { border-left: 3px solid #888888; }
+
+    .card-title { font-family: 'DM Serif Display', serif; font-size: 9pt; color: var(--ink); margin-bottom: 1mm; }
+    .card-desc  { font-size: 7.5pt; color: var(--mid); font-weight: 300; line-height: 1.45; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 1mm;
+      font-size: 6.5pt;
+      font-weight: 500;
+      padding: 0.8mm 2mm;
+      border-radius: 20px;
+      margin-top: 2mm;
+    }
+    .badge::before { content:''; width:4px; height:4px; border-radius:50%; background:currentColor; }
+    .badge.done { background:rgba(45,106,79,0.09);   color:var(--green); }
+    .badge.now  { background:rgba(180,83,9,0.09);    color:var(--amber); }
+    .badge.next { background:rgba(30,58,95,0.09);    color:var(--blue);  }
+    .badge.wait { background:rgba(100,100,100,0.09); color:var(--grey);  }
+    .badge.upd  { background:rgba(67,56,202,0.09);  color:var(--indigo);}
+
+    .progress-box { background: var(--cream-dark); border-radius: 8px; padding: 3.5mm 5mm; flex-shrink: 0; }
+    .progress-row { display: flex; align-items: center; gap: 3mm; }
+    .progress-row + .progress-row { margin-top: 2mm; }
+    .progress-label { font-size: 7.5pt; color: var(--mid); width: 32mm; flex-shrink:0; }
+    .progress-bar   { flex:1; height:5px; background:rgba(0,0,0,0.09); border-radius:99px; overflow:hidden; }
+    .progress-fill  { height:100%; border-radius:99px; background:var(--ink); }
+    .progress-pct   { font-size:7.5pt; font-weight:500; width:7mm; text-align:right; flex-shrink:0; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+
+    .pending-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3mm 4.5mm;
+      flex-shrink: 0;
+    }
+    .pending-box ul { list-style:none; display:flex; flex-direction:column; gap:1.5mm; }
+    .pending-box li {
+      display: flex;
+      align-items: flex-start;
+      gap: 2mm;
+      font-size: 7.5pt;
+      color: var(--mid);
+      font-weight: 300;
+      line-height: 1.4;
+    }
+    .dot { width:5px; height:5px; border-radius:50%; background:#b45309; margin-top:1.5mm; flex-shrink:0; }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 3mm;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .footer-brand { font-family:'DM Serif Display',serif; font-size:8.5pt; color:var(--soft); }
+    .footer-note  { font-size:7pt; color:var(--soft); font-weight:300; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div>
+      <div class="header-logo">Pluxow × KinesicPro</div>
+      <div class="header-title">Estado del proyecto</div>
+      <div class="header-subtitle">Resumen ejecutivo — avances, trabajo en curso y próximos pasos</div>
+    </div>
+    <div class="header-date">Julio 2026</div>
+  </header>
+
+  <section>
+    <div class="label">Lo que ya está funcionando</div>
+    <div class="cards-3">
+      <div class="card done">
+        <div class="card-title">Bot de WhatsApp</div>
+        <div class="card-desc">Responde consultas de dirección y horario. Deriva a la administrativa cuando es necesario.</div>
+        <span class="badge done">Activo (número de prueba)</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Panel de mensajes</div>
+        <div class="card-desc">Al abrir una conversación de WhatsApp se despliega automáticamente la ficha completa del paciente al costado: perfil, obra social, historial de turnos y saldo.</div>
+        <span class="badge done">Listo</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Agenda</div>
+        <div class="card-desc">Calendario semanal con eje horario, filtro por profesional y color por kinesiólogo. Click en slot para crear turno, drag para mover o redimensionar.</div>
+        <span class="badge done">Listo</span>
+      </div>
+    </div>
+    <div class="cards-4" style="margin-top:3mm;">
+      <div class="card done">
+        <div class="card-title">Historial clínico y pagos</div>
+        <div class="card-desc">Cuenta corriente por paciente con historial completo. Paquetes de sesiones identificados con badge propio; el saldo no se duplica entre sesiones del mismo paquete.</div>
+        <span class="badge upd">Actualizado</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Estado de turnos</div>
+        <div class="card-desc">Las administrativas pueden marcar el estado de cada turno con un click: confirmado, llegó, en consulta, atendido, no vino o cancelado.</div>
+        <span class="badge done">Listo</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Carga masiva de turnos</div>
+        <div class="card-desc">Carga semanal o mensual de múltiples sesiones. Detecta feriados argentinos y conflictos de horario. Soporte completo para paquetes: precio compartido entre sesiones y opción de pago inicial parcial.</div>
+        <span class="badge upd">Actualizado</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Notificaciones en el celular</div>
+        <div class="card-desc">El equipo recibe una alerta en el celular cuando se crea una tarea nueva o se agrega un comentario, aunque el panel esté cerrado.</div>
+        <span class="badge done">Listo</span>
+      </div>
+    </div>
+    <div class="cards-4" style="margin-top:3mm;">
+      <div class="card done">
+        <div class="card-title">Tareas internas</div>
+        <div class="card-desc">Pendientes del equipo con prioridad, responsable y fecha. Al registrar una devolución, se abre automáticamente una tarea con los datos del paciente y turno.</div>
+        <span class="badge done">Listo</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Tratamientos y paquetes</div>
+        <div class="card-desc">Catálogo agrupado por profesional. Los tratamientos pueden configurarse como paquetes con cantidad de sesiones y precio total. Precios editables en tiempo real.</div>
+        <span class="badge upd">Actualizado</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Pacientes</div>
+        <div class="card-desc">Registro con perfil, obra social, carnet y notas clínicas por sesión. Teléfono vinculado al formato de WhatsApp.</div>
+        <span class="badge done">Listo</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Horarios de profesionales</div>
+        <div class="card-desc">Configuración de días y rangos horarios por licenciado. El bot y el sistema de disponibilidad consultan esta info en tiempo real.</div>
+        <span class="badge done">Listo</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="progress-box">
+    <div class="label" style="margin-bottom:3mm;">Avance general</div>
+    <div class="progress-row">
+      <div class="progress-label">Flujos del bot</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div>
+      <div class="progress-pct">55%</div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label">Panel CRM</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:99%"></div></div>
+      <div class="progress-pct">99%</div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label">Infraestructura</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+      <div class="progress-pct">90%</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <section>
+      <div class="label">En desarrollo ahora</div>
+      <div style="display:flex; flex-direction:column; gap:3mm;">
+        <div class="card active">
+          <div class="card-title">Flujo de turnos por WhatsApp</div>
+          <div class="card-desc">El bot podrá tomar, confirmar y gestionar turnos directamente desde el chat. Ya contamos con los horarios, tipo de agenda y textos de mensaje.</div>
+          <span class="badge now">En desarrollo</span>
+        </div>
+        <div class="card active">
+          <div class="card-title">Cancelación de día</div>
+          <div class="card-desc">Herramienta para cancelar en bloque todos los turnos de un profesional en una fecha, con notificación automática a los pacientes afectados.</div>
+          <span class="badge now">A definir con el cliente</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="label">Próximos pasos</div>
+      <div style="display:flex; flex-direction:column; gap:3mm;">
+        <div class="card next">
+          <div class="card-title">Pagos con Mercado Pago</div>
+          <div class="card-desc">Links de pago para señas y sesiones, con confirmación automática al paciente.</div>
+          <span class="badge next">Próximamente</span>
+        </div>
+        <div class="card next">
+          <div class="card-title">Migración al número real</div>
+          <div class="card-desc">Una vez aprobados los flujos, el bot pasa al número oficial de la clínica.</div>
+          <span class="badge next">Próximamente</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section>
+    <div class="label">Necesitamos de KinesicPro para continuar</div>
+    <div class="pending-box">
+      <ul>
+        <li><span class="dot"></span>Mail de la cuenta de Mercado Pago (para configurar pagos automáticos)</li>
+        <li><span class="dot"></span>Definir cómo se maneja la cancelación de día: ¿se avisa al paciente por WhatsApp? ¿se reprograma o solo se cancela?</li>
+        <li><span class="dot"></span>Horarios y tipo de agenda de Gastón, Natalia y Abigail (necesarios para que el bot pueda ofrecer turnos disponibles con ellos)</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-brand">Pluxow</div>
+    <div class="footer-note">Documento interno · KinesicPro × Pluxow · Julio 2026</div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════ PÁGINA 2 — ESTADO DE CUENTA ═══════════════════════════════ -->
+<div class="page">
+
+  <header class="header">
+    <div>
+      <div class="header-logo">Pluxow × KinesicPro</div>
+      <div class="header-title">Estado de cuenta</div>
+      <div class="header-subtitle">Detalle de pagos realizados y saldo pendiente</div>
+    </div>
+    <div class="header-date">Julio 2026</div>
+  </header>
+
+  <section>
+    <div class="label">Pagos recibidos</div>
+    <div style="background:var(--white); border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+      <table class="payments-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th style="text-align:right;">Cotización BNA</th>
+            <th style="text-align:right;">Monto ARS</th>
+            <th style="text-align:right;">Equivalente USD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>20 de mayo</td>
+            <td class="num">$ 1.420</td>
+            <td class="num">$ 100.000</td>
+            <td class="num">USD 70,00</td>
+          </tr>
+          <tr>
+            <td>8 de junio</td>
+            <td class="num">$ 1.460</td>
+            <td class="num">$ 100.000</td>
+            <td class="num">USD 68,49</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Resumen</div>
+    <div style="background:var(--white); border:1px solid var(--border); border-radius:8px; padding:4mm 5mm;">
+      <div class="summary-row">
+        <span class="summary-label">Total cotizado</span>
+        <span class="summary-value">USD 2.600</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Total abonado</span>
+        <span class="summary-value paid">USD 138,49</span>
+      </div>
+      <div class="summary-row" style="padding-top:3mm; margin-top:1mm;">
+        <span class="summary-label" style="font-weight:500; color:var(--ink);">Saldo pendiente</span>
+        <span class="summary-value highlight">USD 2.461,51</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Fases siguientes — a definir en conjunto</div>
+    <div class="cards-2">
+      <div class="card wait">
+        <div class="card-title">Dashboards y reportes</div>
+        <div class="card-desc">Métricas de ocupación, facturación por profesional y evolución de pacientes. Visibilidad del negocio en tiempo real.</div>
+        <span class="badge wait">Fase 3 — a coordinar</span>
+      </div>
+      <div class="card wait">
+        <div class="card-title">Sitio web</div>
+        <div class="card-desc">Presencia online con información de la clínica, profesionales y servicios. Integración con el sistema de turnos.</div>
+        <span class="badge wait">Fase 4 — a coordinar</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-brand">Pluxow</div>
+    <div class="footer-note">Confidencial · KinesicPro × Pluxow · Julio 2026</div>
+  </footer>
+
+</div>
+</body>
+</html>
