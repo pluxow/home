@@ -771,6 +771,93 @@
     letter-spacing: -0.03em;
   }
 
+  /* ── STAGE: problems — editorial rows (sin cards) ── */
+  .problems-grid { display: none; }
+  .problems-list { border-top: 1px solid var(--border); }
+  .problem-row {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 2.5rem;
+    padding: 2.25rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .problem-row-num {
+    font-family: var(--serif);
+    font-size: 3.25rem;
+    line-height: 1;
+    color: var(--cream-dark);
+    padding-top: 0.05em;
+  }
+  .problem-row h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    margin-top: 0.2rem;
+  }
+  .problem-row p {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+
+  /* ── STAGE: process — vertical stepper con línea conectora ── */
+  .process-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .process-step {
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    gap: 1.75rem;
+    padding: 1.75rem 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    position: relative;
+  }
+  .process-step:first-child { border-top: 1px solid var(--border); }
+  .process-step:last-child { border-bottom: none; }
+  .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 1.3rem;
+    top: calc(1.75rem + 2.75rem);
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .process-step .step-num {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    color: var(--ink);
+    margin-bottom: 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .process-step:last-child .step-num {
+    background: var(--ink);
+    color: var(--cream);
+    border-color: var(--ink);
+  }
+  .process-step .step-content { padding-top: 0.45rem; }
+  .process-step h3 { font-size: 1rem; font-weight: 500; margin-bottom: 0.35rem; }
+  .process-step p { font-size: 0.88rem; color: var(--ink-light); line-height: 1.65; }
+
   /* ── STAGE: services section big number accent ── */
   .services-section { position: relative; overflow: hidden; }
   .services-deco {
@@ -854,21 +941,27 @@
 <section class="section">
   <div class="section-label" data-i18n="problems.label">El problema</div>
   <h2 data-i18n-html="problems.h2">Cuando los procesos no fluyen,<br>tu negocio tampoco.</h2>
-  <div class="problems-grid">
-    <div class="problem-card">
-      <span class="problem-number">01</span>
-      <h3 data-i18n="problems.1.h3">Procesos manuales que escalan mal</h3>
-      <p data-i18n="problems.1.p">A medida que crece el negocio, las tareas manuales crecen con él. El equipo termina ahogado en operaciones en lugar de resultados.</p>
+  <div class="problems-list">
+    <div class="problem-row">
+      <div class="problem-row-num">01</div>
+      <div>
+        <h3 data-i18n="problems.1.h3">Procesos manuales que escalan mal</h3>
+        <p data-i18n="problems.1.p">A medida que crece el negocio, las tareas manuales crecen con él. El equipo termina ahogado en operaciones en lugar de resultados.</p>
+      </div>
     </div>
-    <div class="problem-card">
-      <span class="problem-number">02</span>
-      <h3 data-i18n="problems.2.h3">Información dispersa y sin visibilidad</h3>
-      <p data-i18n="problems.2.p">Los datos están en planillas, emails y sistemas que no hablan entre sí. Tomar decisiones se vuelve lento y riesgoso.</p>
+    <div class="problem-row">
+      <div class="problem-row-num">02</div>
+      <div>
+        <h3 data-i18n="problems.2.h3">Información dispersa y sin visibilidad</h3>
+        <p data-i18n="problems.2.p">Los datos están en planillas, emails y sistemas que no hablan entre sí. Tomar decisiones se vuelve lento y riesgoso.</p>
+      </div>
     </div>
-    <div class="problem-card">
-      <span class="problem-number">03</span>
-      <h3 data-i18n="problems.3.h3">Tecnología disponible que nadie implementa</h3>
-      <p data-i18n="problems.3.p">Herramientas de IA y automatización existen, pero integrarlas requiere tiempo técnico que la mayoría de las empresas no tienen.</p>
+    <div class="problem-row">
+      <div class="problem-row-num">03</div>
+      <div>
+        <h3 data-i18n="problems.3.h3">Tecnología disponible que nadie implementa</h3>
+        <p data-i18n="problems.3.p">Herramientas de IA y automatización existen, pero integrarlas requiere tiempo técnico que la mayoría de las empresas no tienen.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -949,23 +1042,31 @@
   <div class="process-grid">
     <div class="process-step">
       <span class="step-num">01</span>
-      <h3 data-i18n="step.1.h3">Consulta inicial</h3>
-      <p data-i18n="step.1.p">Entendemos tu negocio, tus procesos actuales y dónde está el mayor dolor.</p>
+      <div class="step-content">
+        <h3 data-i18n="step.1.h3">Consulta inicial</h3>
+        <p data-i18n="step.1.p">Entendemos tu negocio, tus procesos actuales y dónde está el mayor dolor.</p>
+      </div>
     </div>
     <div class="process-step">
       <span class="step-num">02</span>
-      <h3 data-i18n="step.2.h3">Diagnóstico</h3>
-      <p data-i18n="step.2.p">Mapeamos oportunidades concretas y te presentamos una propuesta a medida.</p>
+      <div class="step-content">
+        <h3 data-i18n="step.2.h3">Diagnóstico</h3>
+        <p data-i18n="step.2.p">Mapeamos oportunidades concretas y te presentamos una propuesta a medida.</p>
+      </div>
     </div>
     <div class="process-step">
       <span class="step-num">03</span>
-      <h3 data-i18n="step.3.h3">Implementación</h3>
-      <p data-i18n="step.3.p">Construimos y configuramos la solución. Sin bloquear tu operación.</p>
+      <div class="step-content">
+        <h3 data-i18n="step.3.h3">Implementación</h3>
+        <p data-i18n="step.3.p">Construimos y configuramos la solución. Sin bloquear tu operación.</p>
+      </div>
     </div>
     <div class="process-step">
       <span class="step-num">04</span>
-      <h3 data-i18n="step.4.h3">Entrega y soporte</h3>
-      <p data-i18n="step.4.p">Te entregamos una solución robusta y funcional end-to-end, con documentación clara y acompañamiento post-lanzamiento para que tu equipo opere con autonomía.</p>
+      <div class="step-content">
+        <h3 data-i18n="step.4.h3">Entrega y soporte</h3>
+        <p data-i18n="step.4.p">Te entregamos una solución robusta y funcional end-to-end, con documentación clara y acompañamiento post-lanzamiento para que tu equipo opere con autonomía.</p>
+      </div>
     </div>
   </div>
 </section>
