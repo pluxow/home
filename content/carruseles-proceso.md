@@ -40,3 +40,6 @@ También: búsqueda web de tendencias del sector cuando el banco de ideas de new
 
 ## Herramienta
 `admin/carousels.html` — editor standalone (sin backend), mismo sistema de diseño que el resto del sitio de Pluxow. Ver también `PROJECT_SUMMARY.md` para el contexto general del proyecto web.
+
+## Referencias de copywriting
+`copywriting-breakthrough-advertising.md` — marco de persuasión (niveles de consciencia, madurez de mercado, tácticas de escritura) a tener en cuenta en el paso de Diseño, al momento de escribir el guion de cada slide.
