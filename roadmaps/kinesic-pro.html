@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex, nofollow">
   <script>if (localStorage.getItem('plx_clients_auth') !== '1') location.replace('/clients-998.html');</script>
-  <title>KinesicPro — Estado del Proyecto · Julio 2026</title>
+  <title>KinesicPro — Estado del Proyecto · Agosto 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -28,9 +28,7 @@
 
     @page { size: A4; margin: 0; }
 
-    html {
-      background: var(--cream-dark);
-    }
+    html { background: var(--cream-dark); }
 
     body {
       background: transparent;
@@ -51,90 +49,41 @@
       body { display: block; padding: 0; gap: 0; }
     }
 
-    .payments-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 8.5pt;
-    }
+    .payments-table { width: 100%; border-collapse: collapse; font-size: 8.5pt; }
     .payments-table th {
-      font-size: 7pt;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--soft);
-      padding: 2mm 3mm;
-      text-align: left;
-      border-bottom: 1.5px solid var(--border);
+      font-size: 7pt; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--soft); padding: 2mm 3mm; text-align: left; border-bottom: 1.5px solid var(--border);
     }
-    .payments-table td {
-      padding: 3mm 3mm;
-      color: var(--mid);
-      font-weight: 300;
-      border-bottom: 1px solid var(--border);
-    }
+    .payments-table td { padding: 3mm 3mm; color: var(--mid); font-weight: 300; border-bottom: 1px solid var(--border); }
     .payments-table td.num { text-align: right; font-weight: 400; }
     .payments-table tr:last-child td { border-bottom: none; }
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 2.5mm 0;
-      border-bottom: 1px solid var(--border);
-    }
+    .summary-row { display: flex; justify-content: space-between; align-items: baseline; padding: 2.5mm 0; border-bottom: 1px solid var(--border); }
     .summary-row:last-child { border-bottom: none; }
     .summary-label { font-size: 9pt; color: var(--mid); font-weight: 300; }
     .summary-value { font-size: 10pt; font-weight: 500; color: var(--ink); }
-    .summary-value.highlight {
-      font-family: 'DM Serif Display', serif;
-      font-size: 13pt;
-      color: var(--ink);
-    }
+    .summary-value.highlight { font-family: 'DM Serif Display', serif; font-size: 13pt; color: var(--ink); }
     .summary-value.paid { color: var(--green); }
 
     .page {
-      width: 210mm;
-      height: 297mm;
-      page-break-after: always;
-      padding: 10mm 13mm 9mm;
-      background: var(--cream);
-      display: flex;
-      flex-direction: column;
-      gap: 4mm;
+      width: 210mm; height: 297mm; page-break-after: always;
+      padding: 10mm 13mm 9mm; background: var(--cream);
+      display: flex; flex-direction: column; gap: 4mm;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      padding-bottom: 4mm;
-      border-bottom: 1.5px solid var(--border);
-      flex-shrink: 0;
-    }
+    .header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 4mm; border-bottom: 1.5px solid var(--border); flex-shrink: 0; }
     .header-logo { font-size: 8pt; color: var(--soft); letter-spacing: 0.04em; margin-bottom: 1.5mm; }
     .header-title { font-family: 'DM Serif Display', serif; font-size: 22pt; color: var(--ink); line-height: 1; }
     .header-subtitle { font-size: 8pt; color: var(--soft); font-weight: 300; margin-top: 1.5mm; }
     .header-date { font-size: 8.5pt; color: var(--soft); font-weight: 300; }
 
-    .label {
-      font-size: 6.5pt;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--soft);
-      margin-bottom: 2mm;
-    }
+    .label { font-size: 6.5pt; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--soft); margin-bottom: 2mm; }
 
     .cards-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 3mm; }
     .cards-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 3mm; }
     .cards-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
 
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3mm 3.5mm;
-    }
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 3mm 3.5mm; }
     .card.done   { border-left: 3px solid #2d6a4f; }
     .card.active { border-left: 3px solid #b45309; }
     .card.next   { border-left: 3px solid #1e3a5f; }
@@ -143,16 +92,7 @@
     .card-title { font-family: 'DM Serif Display', serif; font-size: 9pt; color: var(--ink); margin-bottom: 1mm; }
     .card-desc  { font-size: 7.5pt; color: var(--mid); font-weight: 300; line-height: 1.45; }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 1mm;
-      font-size: 6.5pt;
-      font-weight: 500;
-      padding: 0.8mm 2mm;
-      border-radius: 20px;
-      margin-top: 2mm;
-    }
+    .badge { display: inline-flex; align-items: center; gap: 1mm; font-size: 6.5pt; font-weight: 500; padding: 0.8mm 2mm; border-radius: 20px; margin-top: 2mm; }
     .badge::before { content:''; width:4px; height:4px; border-radius:50%; background:currentColor; }
     .badge.done { background:rgba(45,106,79,0.09);   color:var(--green); }
     .badge.now  { background:rgba(180,83,9,0.09);    color:var(--amber); }
@@ -170,34 +110,12 @@
 
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
 
-    .pending-box {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3mm 4.5mm;
-      flex-shrink: 0;
-    }
+    .pending-box { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 3mm 4.5mm; flex-shrink: 0; }
     .pending-box ul { list-style:none; display:flex; flex-direction:column; gap:1.5mm; }
-    .pending-box li {
-      display: flex;
-      align-items: flex-start;
-      gap: 2mm;
-      font-size: 7.5pt;
-      color: var(--mid);
-      font-weight: 300;
-      line-height: 1.4;
-    }
+    .pending-box li { display: flex; align-items: flex-start; gap: 2mm; font-size: 7.5pt; color: var(--mid); font-weight: 300; line-height: 1.4; }
     .dot { width:5px; height:5px; border-radius:50%; background:#b45309; margin-top:1.5mm; flex-shrink:0; }
 
-    .footer {
-      margin-top: auto;
-      padding-top: 3mm;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
+    .footer { margin-top: auto; padding-top: 3mm; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .footer-brand { font-family:'DM Serif Display',serif; font-size:8.5pt; color:var(--soft); }
     .footer-note  { font-size:7pt; color:var(--soft); font-weight:300; }
   </style>
@@ -211,7 +129,7 @@
       <div class="header-title">Estado del proyecto</div>
       <div class="header-subtitle">Resumen ejecutivo — avances, trabajo en curso y próximos pasos</div>
     </div>
-    <div class="header-date">Julio 2026</div>
+    <div class="header-date">Agosto 2026</div>
   </header>
 
   <section>
@@ -224,57 +142,57 @@
       </div>
       <div class="card done">
         <div class="card-title">Panel de mensajes</div>
-        <div class="card-desc">Al abrir una conversación de WhatsApp se despliega automáticamente la ficha completa del paciente al costado: perfil, obra social, historial de turnos y saldo.</div>
+        <div class="card-desc">Al abrir una conversación de WhatsApp se despliega la ficha completa del paciente: perfil, obra social, historial de turnos, saldo y próximos turnos.</div>
         <span class="badge done">Listo</span>
       </div>
       <div class="card done">
         <div class="card-title">Agenda</div>
-        <div class="card-desc">Calendario semanal con eje horario, filtro por profesional y color por kinesiólogo. Click en slot para crear turno, drag para mover o redimensionar.</div>
+        <div class="card-desc">Calendario semanal con eje horario, filtro por profesional y franja lateral de color por kinesiólogo. Click en slot para crear turno.</div>
         <span class="badge done">Listo</span>
       </div>
     </div>
     <div class="cards-4" style="margin-top:3mm;">
       <div class="card done">
         <div class="card-title">Historial clínico y pagos</div>
-        <div class="card-desc">Cuenta corriente por paciente con historial completo. Paquetes de sesiones identificados con badge propio; el saldo no se duplica entre sesiones del mismo paquete.</div>
+        <div class="card-desc">Cuenta corriente por paciente. Paquetes colapsables con saldo propio. Pago por sesión individual: precio en efectivo o transferencia, registrable de forma independiente.</div>
         <span class="badge upd">Actualizado</span>
-      </div>
-      <div class="card done">
-        <div class="card-title">Estado de turnos</div>
-        <div class="card-desc">Las administrativas pueden marcar el estado de cada turno con un click: confirmado, llegó, en consulta, atendido, no vino o cancelado.</div>
-        <span class="badge done">Listo</span>
       </div>
       <div class="card done">
         <div class="card-title">Carga masiva de turnos</div>
-        <div class="card-desc">Carga semanal o mensual de múltiples sesiones. Detecta feriados argentinos y conflictos de horario. Soporte completo para paquetes: precio compartido entre sesiones y opción de pago inicial parcial.</div>
-        <span class="badge upd">Actualizado</span>
-      </div>
-      <div class="card done">
-        <div class="card-title">Notificaciones en el celular</div>
-        <div class="card-desc">El equipo recibe una alerta en el celular cuando se crea una tarea nueva o se agrega un comentario, aunque el panel esté cerrado.</div>
+        <div class="card-desc">Carga semanal o mensual de múltiples sesiones. Detecta feriados y conflictos de horario. Soporte completo para paquetes con precio compartido y pago inicial parcial.</div>
         <span class="badge done">Listo</span>
       </div>
-    </div>
-    <div class="cards-4" style="margin-top:3mm;">
       <div class="card done">
         <div class="card-title">Tareas internas</div>
-        <div class="card-desc">Pendientes del equipo con prioridad, responsable y fecha. Al registrar una devolución, se abre automáticamente una tarea con los datos del paciente y turno.</div>
+        <div class="card-desc">Pendientes del equipo con prioridad, responsable y fecha. Comentarios con notificación automática al celular del responsable.</div>
         <span class="badge done">Listo</span>
       </div>
       <div class="card done">
         <div class="card-title">Tratamientos y paquetes</div>
-        <div class="card-desc">Catálogo agrupado por profesional. Los tratamientos pueden configurarse como paquetes con cantidad de sesiones y precio total. Precios editables en tiempo real.</div>
+        <div class="card-desc">Catálogo agrupado por profesional. Precios en efectivo y transferencia editables en tiempo real por tratamiento.</div>
+        <span class="badge upd">Actualizado</span>
+      </div>
+    </div>
+    <div class="cards-4" style="margin-top:3mm;">
+      <div class="card done">
+        <div class="card-title">Pacientes</div>
+        <div class="card-desc">Registro con perfil, obra social, notas clínicas por sesión y teléfono con selector de prefijo internacional. Próximos turnos con botón de copia para WhatsApp.</div>
         <span class="badge upd">Actualizado</span>
       </div>
       <div class="card done">
-        <div class="card-title">Pacientes</div>
-        <div class="card-desc">Registro con perfil, obra social, carnet y notas clínicas por sesión. Teléfono vinculado al formato de WhatsApp.</div>
-        <span class="badge done">Listo</span>
+        <div class="card-title">Horarios de profesionales</div>
+        <div class="card-desc">Configuración de días y rangos horarios. Posibilidad de pausar, reactivar o eliminar un profesional. Los activos aparecen siempre primero en la lista.</div>
+        <span class="badge upd">Actualizado</span>
       </div>
       <div class="card done">
-        <div class="card-title">Horarios de profesionales</div>
-        <div class="card-desc">Configuración de días y rangos horarios por licenciado. El bot y el sistema de disponibilidad consultan esta info en tiempo real.</div>
-        <span class="badge done">Listo</span>
+        <div class="card-title">Inicio de sesión con Google</div>
+        <div class="card-desc">El equipo accede al panel con su cuenta de Google. Solo los emails autorizados por Pluxow pueden ingresar. No requiere contraseña.</div>
+        <span class="badge upd">Nuevo</span>
+      </div>
+      <div class="card done">
+        <div class="card-title">Guía de uso integrada</div>
+        <div class="card-desc">Manual de usuario embebido en el panel, accesible desde el botón "?" en la barra lateral. Cubre todas las secciones del CRM con instrucciones paso a paso.</div>
+        <span class="badge upd">Nuevo</span>
       </div>
     </div>
   </section>
@@ -288,13 +206,13 @@
     </div>
     <div class="progress-row">
       <div class="progress-label">Panel CRM</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:99%"></div></div>
-      <div class="progress-pct">99%</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="progress-pct">100%</div>
     </div>
     <div class="progress-row">
       <div class="progress-label">Infraestructura</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
-      <div class="progress-pct">90%</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:95%"></div></div>
+      <div class="progress-pct">95%</div>
     </div>
   </div>
 
@@ -344,7 +262,7 @@
 
   <footer class="footer">
     <div class="footer-brand">Pluxow</div>
-    <div class="footer-note">Documento interno · KinesicPro × Pluxow · Julio 2026</div>
+    <div class="footer-note">Documento interno · KinesicPro × Pluxow · Agosto 2026</div>
   </footer>
 
 </div>
@@ -358,11 +276,11 @@
       <div class="header-title">Estado de cuenta</div>
       <div class="header-subtitle">Detalle de pagos realizados y saldo pendiente</div>
     </div>
-    <div class="header-date">Julio 2026</div>
+    <div class="header-date">Agosto 2026</div>
   </header>
 
   <section>
-    <div class="label">Pagos recibidos</div>
+    <div class="label">Pagos recibidos — Fase 1</div>
     <div style="background:var(--white); border:1px solid var(--border); border-radius:8px; overflow:hidden;">
       <table class="payments-table">
         <thead>
@@ -392,6 +310,12 @@
             <td class="num">$ 100.000</td>
             <td class="num">USD 66,23</td>
           </tr>
+          <tr>
+            <td>6 de agosto</td>
+            <td class="num">$ 1.520</td>
+            <td class="num">$ 100.000</td>
+            <td class="num">USD 65,79</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -405,12 +329,12 @@
         <span class="summary-value">USD 2.600</span>
       </div>
       <div class="summary-row">
-        <span class="summary-label">Total abonado</span>
-        <span class="summary-value paid">USD 204,72</span>
+        <span class="summary-label">Total abonado (Fase 1 completa)</span>
+        <span class="summary-value paid">USD 270,51</span>
       </div>
       <div class="summary-row" style="padding-top:3mm; margin-top:1mm;">
-        <span class="summary-label" style="font-weight:500; color:var(--ink);">Saldo pendiente</span>
-        <span class="summary-value highlight">USD 2.395,28</span>
+        <span class="summary-label" style="font-weight:500; color:var(--ink);">Saldo pendiente (Fases 2+)</span>
+        <span class="summary-value highlight">USD 2.329,49</span>
       </div>
     </div>
   </section>
@@ -433,7 +357,7 @@
 
   <footer class="footer">
     <div class="footer-brand">Pluxow</div>
-    <div class="footer-note">Confidencial · KinesicPro × Pluxow · Julio 2026</div>
+    <div class="footer-note">Confidencial · KinesicPro × Pluxow · Agosto 2026</div>
   </footer>
 
 </div>
