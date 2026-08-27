@@ -9,6 +9,7 @@ Este repo es el sitio web y material de marca de Pluxow. Antes de trabajar acá,
 - `arquitectura-whatsapp-clientes.md` — cómo dar de alta WhatsApp Business API para un cliente nuevo: número y WABA propios por cliente, modelo de facturación (Tech Provider), coexistence vs. número dedicado, deadlines de Meta a vigilar.
 - `content/carruseles-proceso.md` — proceso end-to-end para armar carruseles de Instagram/LinkedIn (pilares, research, diseño, publicación).
 - `content/copywriting-breakthrough-advertising.md` — marco de persuasión (niveles de consciencia, madurez de mercado, 7 tácticas) a aplicar al escribir el guion de un carrusel.
+- `fuentes-novedades.md` — lista de remitentes de mail a chequear cuando Lea pregunta "qué novedades hay" (WhatsApp, Supabase, Vercel, n8n, Google Cloud, Cloudflare, fuentes de contenido) y cómo clasificarlas.
 
 ## Convención
 
