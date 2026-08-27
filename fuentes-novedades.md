@@ -22,7 +22,7 @@ Clasificar cada novedad relevante en uno de estos baldes:
 | `hello@info.n8n.io` | Anuncios de versión y producto de n8n | Clientes + Negocio |
 | `CloudPlatform-noreply@google.com` | Avisos de deprecación/producto de Google Cloud (cuenta personal de Lea) | Negocio — confirmar con Lea antes de asumir impacto en un cliente |
 | `noreply-cloudshell@google.com` | Avisos de inactividad de Cloud Shell (limpieza de directorio home) | Negocio, baja prioridad |
-| `em@em1.cloudflare.com` | Newsletter de producto/marketing de Cloudflare (Workers AI, AI Gateway, eventos) | Negocio |
+| `em@em1.cloudflare.com` | Newsletter de producto/marketing de Cloudflare (Workers AI, AI Gateway, eventos). Se usa en infra del cliente **Ideas Verdes / Alejandro Calvo** | Clientes + Negocio |
 | `coach@francosarli.com` | Newsletter de copywriting/marketing de Franco Sarli | Contenido |
 | `hola@alaimolabs.com` | Newsletter sobre IA aplicada a producto | Contenido |
 
