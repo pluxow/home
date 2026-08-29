@@ -48,14 +48,22 @@ Después de esa fecha, la mayoría de las integraciones se auto-actualizan solas
 
 ## Direct Send — alternativa a las plantillas para mensajes de utilidad
 
-Lanzado en agosto 2026. Permite enviar mensajes de **utilidad y autenticación** con texto libre/dinámico ("fully hydrated"), directo por el endpoint `/messages` de Cloud API, **sin crear ni esperar aprobación de plantilla**.
+**En beta** (agosto 2026, sujeto a aceptar los términos de la beta — puede cambiar). Permite enviar mensajes de **utilidad y autenticación** sin pre-crear ni gestionar plantillas a mano: Meta las genera automáticamente detrás de escena.
 
-Resuelve justo la limitación de hoy: las plantillas de utilidad (ej. recordatorio de estado de un lead) tienen formato fijo — texto y variables pre-aprobadas por Meta, cualquier cambio de redacción exige volver a mandar la plantilla a revisión. Con Direct Send se manda el texto final ya armado, sin ese paso.
+Resuelve la limitación de hoy: las plantillas de utilidad (ej. recordatorio de estado de un lead) tienen texto y variables fijas, pre-aprobadas por Meta — cualquier cambio de redacción exige volver a mandar la plantilla a revisión. Con Direct Send se manda el texto final directo y Meta se encarga del resto.
 
-- **Cómo habilitarlo**: si la integración es directa con la WhatsApp Business Platform (no a través de un BSP intermediario), se puede empezar directo revisando la [documentación oficial](https://developers.facebook.com/documentation/business-messaging/whatsapp/direct-send/) (nota: ese dominio está bloqueado para fetch automático, hay que abrirlo manualmente en el navegador). Si se trabaja a través de un partner/BSP, hay que pedirle a ese partner que lo habilite.
-- **Ojo con el contenido**: sigue teniendo que ser genuinamente contenido de **utilidad** (transaccional, sobre algo ya acordado con el usuario) — Meta no pre-aprueba el texto, pero si se detecta que se manda contenido de marketing disfrazado de utilidad de forma persistente, **se pierde el acceso a Direct Send**.
-- **Beneficio extra de costo**: al no haber plantilla, no hay riesgo de que Meta "recategorice" el mensaje a una categoría más cara (ej. de utilidad a marketing) — el costo queda más predecible.
-- Sigue siendo beta/rollout gradual — confirmar elegibilidad de la WABA antes de asumir que está disponible.
+**Cómo funciona técnicamente** (según la documentación oficial de Meta):
+
+- Se usa el mismo endpoint `/<WHATSAPP_BUSINESS_PHONE_NUMBER_ID>/messages` de siempre, mandando el mensaje como texto libre (`"type": "text"`) y agregando un campo `"category": "utility"` (o `authentication`) — no se referencia ningún nombre de plantilla.
+- Meta intenta matchear el texto contra plantillas ya generadas automáticamente:
+  - Si matchea una existente → se manda con esa plantilla.
+  - Si no matchea ninguna → se manda igual usando una plantilla "de fallback" que Meta agrega automáticamente al onboardear la WABA a Direct Send (así el mensaje siempre sale), y en paralelo Meta crea una plantilla nueva a partir de ese texto (con PII redactada y el idioma auto-detectado) para que los próximos mensajes similares matcheen ahí.
+- Si importa poder atribuir mensajes a una plantilla específica (para reporting/tracking), se puede pasar un nombre de plantilla en el request y Direct Send crea la plantilla con ese nombre exacto — ver "Business-named templates" en la doc oficial.
+
+- **Cómo habilitarlo**: hay que onboardear la WABA a Direct Send primero (ver "Get started with Direct Send — onboarding prerequisites" en la doc oficial). Si la integración es directa con la WhatsApp Business Platform se hace desde ahí; si se trabaja a través de un BSP, hay que pedirle a ese partner que lo habilite.
+- **Ojo con el contenido**: sigue teniendo que ser genuinamente contenido de **utilidad** (transaccional, sobre algo ya acordado con el usuario). Si se detecta contenido de marketing disfrazado de utilidad de forma persistente, se pierde el acceso.
+- **Beneficio extra de costo**: al no depender de una plantilla fija, hay menos riesgo de que Meta "recategorice" el mensaje a una categoría más cara — el costo queda más predecible.
+- Revisar también "Supported features and limits" y "Supported message types" de la doc oficial antes de integrarlo — formatos e idiomas soportados pueden tener restricciones propias de la beta.
 
 ## Checklist: dar de alta un cliente nuevo de WhatsApp
 
@@ -74,5 +82,5 @@ Resuelve justo la limitación de hoy: las plantillas de utilidad (ej. recordator
 - [What is WhatsApp Business App Coexistence? — YCloud](https://www.ycloud.com/blog/whatsapp-business-app-coexistence-meta-update)
 - Mail original de Meta: "We are updating our business terms of service, effective September 23, 2026" (6 ago 2026, `no-reply@messaging.metamail.com`)
 - Mail original de Meta: "What's new in WhatsApp for Business — August 2026" (27 ago 2026, `no-reply@messaging.metamail.com`) — deadline de coexistence en Embedded Signup v4 y anuncio de Direct Send
-- [Direct Send messages — Meta for Developers](https://developers.facebook.com/documentation/business-messaging/whatsapp/direct-send) (bloqueado para fetch automático, abrir manual)
+- [Direct Send messages — Meta for Developers](https://developers.facebook.com/documentation/business-messaging/whatsapp/direct-send) (contenido pegado por Lea directamente, ese dominio está bloqueado para fetch automático)
 - [Direct Send API — video oficial de Meta](https://developers.meta.com/resources/videos/whatsapp-direct-send-api/)
