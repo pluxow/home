@@ -25,6 +25,7 @@ Clasificar cada novedad relevante en uno de estos baldes:
 | `em@em1.cloudflare.com` | Newsletter de producto/marketing de Cloudflare (Workers AI, AI Gateway, eventos). Se usa en infra del cliente **Ideas Verdes / Alejandro Calvo** | Clientes + Negocio |
 | `coach@francosarli.com` | Newsletter de copywriting/marketing de Franco Sarli | Contenido |
 | `hola@alaimolabs.com` | Newsletter sobre IA aplicada a producto | Contenido |
+| `no-reply@mixpanel.com` (y `mixpanel-product@`, `content@mixpanel.com`) | Newsletter de producto de Mixpanel (analytics) — Lea tiene cuenta creada, evaluando si usarlo para medir tráfico en apps de clientes | Negocio |
 
 ## Notas
 
