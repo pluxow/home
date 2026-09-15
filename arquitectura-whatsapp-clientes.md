@@ -46,6 +46,18 @@ Ventaja: si el cliente deja de trabajar con Pluxow, se lleva su número, histori
 
 Después de esa fecha, la mayoría de las integraciones se auto-actualizan solas a v4 sin problema. **Pero si se usa el feature type `coex` (coexistence) hay que migrar manualmente antes del 15 de octubre** — si no, se auto-actualiza igual pero coexistence deja de funcionar y cae al flujo estándar de Embedded Signup. Esto afecta directo al cliente del chatbot con coexistence: no alcanza con "no tocar nada", hay que migrar ese feature específico a mano.
 
+## Precios de mensajes desde el 1° de octubre de 2026
+
+Confirmado por Meta el 1° de septiembre de 2026 (rate card ya publicado). Hay 3 categorías de mensaje sin plantilla que no hay que confundir:
+
+| | ¿Plantilla? | ¿Quién lo genera? | Categoría / cobro |
+|---|---|---|---|
+| **Mensaje de servicio** | No — texto libre | Un humano, o un bot/IA de terceros (ej. un chatbot armado con n8n) | Service — **1.000 gratis por mes por número, recién el 1.001 se cobra** (no acumula entre meses) |
+| **Meta Business Agent** | No — texto libre | La IA propia de Meta (producto separado) | Se cobra por token, $2 USD/millón (~4-5¢/mensaje), desde el 1° de agosto 2026 — **sin free tier** |
+| **Plantilla (utility/marketing/auth)** | Sí (o vía Direct Send, que la genera automática) | — | Se puede mandar en cualquier momento, no solo dentro de la ventana de 24hs — precio por categoría y mercado, **sin relación con el free tier de servicio** |
+
+Para Pluxow: los chatbots armados con n8n caen en "mensaje de servicio" (no Meta Business Agent), así que sus respuestas de texto libre dentro de las 24hs sí entran en el free tier de 1.000/mes. Los recordatorios de estado de leads vía plantilla de utilidad o Direct Send **no** cuentan ahí — son otra categoría, cobrada desde el mensaje 1.
+
 ## Direct Send — alternativa a las plantillas para mensajes de utilidad
 
 **En beta** (agosto 2026, sujeto a aceptar los términos de la beta — puede cambiar). Permite enviar mensajes de **utilidad y autenticación** sin pre-crear ni gestionar plantillas a mano: Meta las genera automáticamente detrás de escena.
@@ -84,3 +96,4 @@ Resuelve la limitación de hoy: las plantillas de utilidad (ej. recordatorio de 
 - Mail original de Meta: "What's new in WhatsApp for Business — August 2026" (27 ago 2026, `no-reply@messaging.metamail.com`) — deadline de coexistence en Embedded Signup v4 y anuncio de Direct Send
 - [Direct Send messages — Meta for Developers](https://developers.facebook.com/documentation/business-messaging/whatsapp/direct-send) (contenido pegado por Lea directamente, ese dominio está bloqueado para fetch automático)
 - [Direct Send API — video oficial de Meta](https://developers.meta.com/resources/videos/whatsapp-direct-send-api/)
+- Mail original de Meta: "Pricing and billing updates – Updated rates for Oct. 1 '26 and updates for Meta Business Agent" (1 sept 2026, `no-reply@messaging.metamail.com`) — free tier de 1.000 mensajes de servicio/mes y rate card confirmado
