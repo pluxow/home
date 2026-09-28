@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluxow — Editor de Carruseles</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #F4F0E8;
+    --cream-dark: #E8E3D8;
+    --ink: #111111;
+    --ink-mid: #3a3a3a;
+    --ink-light: #6b6b6b;
+    --border: rgba(0,0,0,0.12);
+    --white: #ffffff;
+    --green: #2a5c3f;
+    --sans: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+  }
+  body { font-family: var(--sans); background: var(--cream-dark); color: var(--ink); font-size: 15px; line-height: 1.5; padding-bottom: 4rem; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--cream); border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+  }
+  .topbar-brand { font-family: var(--serif); font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+  .topbar-brand img { height: 28px; width: auto; border-radius: 6px; }
+  .topbar-brand span { color: var(--ink-light); font-weight: 400; font-size: 0.85rem; }
+  .topbar-controls { display: flex; align-items: center; gap: 0.75rem; margin-left: auto; flex-wrap: wrap; }
+  select, .btn {
+    font-family: var(--sans); font-size: 0.85rem; color: var(--ink);
+    background: var(--white); border: 1px solid var(--border); border-radius: 100px;
+    padding: 0.55rem 1rem; cursor: pointer; transition: opacity 0.2s, background 0.2s;
+  }
+  .btn-primary { background: var(--ink); color: var(--cream); border-color: var(--ink); font-weight: 500; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-ghost:hover { background: var(--cream-dark); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .slide-count { font-size: 0.8rem; color: var(--ink-light); white-space: nowrap; }
+  .hint { padding: 0.75rem 1.5rem; font-size: 0.82rem; color: var(--ink-light); max-width: 640px; }
+
+  /* ── SLIDES LIST ── */
+  .slides { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 1.5rem; }
+  .slide-card { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .slide-toolbar { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; justify-content: center; }
+  .slide-toolbar select { padding: 0.4rem 0.75rem; font-size: 0.78rem; }
+  .icon-btn {
+    background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+    width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 0.9rem; color: var(--ink-mid);
+  }
+  .icon-btn:hover:not(:disabled) { background: var(--cream-dark); color: var(--ink); }
+  .icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* ── SLIDE (360x450 = export 1080x1350 @ scale 3) ── */
+  .slide {
+    width: 360px; height: 450px; position: relative; overflow: hidden;
+    border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 28px; background: var(--cream);
+  }
+  .slide[contenteditable]:focus, .slide [contenteditable]:focus { outline: 1px dashed var(--ink-light); outline-offset: 2px; }
+  .slide-badge {
+    position: absolute; top: 16px; right: 16px; font-size: 0.6rem; letter-spacing: 0.05em;
+    color: var(--ink-light); font-family: var(--sans);
+  }
+  .slide--cta .slide-badge { color: var(--cream-dark); }
+  .slide-brand {
+    display: flex; align-items: center; gap: 6px; font-family: var(--serif); font-size: 0.7rem; color: var(--ink-light);
+  }
+  .slide-brand img { height: 16px; width: auto; border-radius: 3px; }
+  .slide--cta .slide-brand { color: var(--cream-dark); }
+
+  .tag-pill {
+    align-self: flex-start; font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--green); color: var(--cream); border-radius: 100px; padding: 5px 12px; font-weight: 500;
+  }
+  .slide-kicker { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px; }
+  .slide-headline { font-family: var(--serif); font-size: 1.7rem; line-height: 1.18; color: var(--ink); margin-top: 10px; }
+  .slide--cover .slide-headline { font-size: 1.95rem; }
+  .slide-body { font-family: var(--sans); font-size: 0.92rem; line-height: 1.5; color: var(--ink-mid); margin-top: 10px; }
+  .slide-sub { font-size: 0.78rem; color: var(--ink-light); margin-top: auto; }
+
+  .slide--content { background: var(--cream); }
+  .slide--cta { background: var(--ink); }
+  .slide--cta .slide-headline { color: var(--cream); }
+  .slide--cta .slide-body { color: var(--cream-dark); }
+  .slide--cta .slide-kicker { color: var(--cream-dark); }
+
+  .add-slide-row { display: flex; justify-content: center; padding: 0.5rem 0 2rem; }
+
+  #export-overlay {
+    position: fixed; inset: 0; background: rgba(17,17,17,0.85); color: var(--cream);
+    display: none; align-items: center; justify-content: center; flex-direction: column; gap: 0.75rem;
+    font-family: var(--sans); font-size: 0.95rem; z-index: 50;
+  }
+  #export-overlay.active { display: flex; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="../image copy.png" alt="Pluxow">
+    Pluxow <span>Editor de Carruseles</span>
+  </div>
+  <div class="topbar-controls">
+    <select id="pillar-select">
+      <option value="procesos-rotos">Procesos rotos → arreglados</option>
+      <option value="ia-simple">IA explicada simple</option>
+      <option value="mitos">Mitos y errores comunes</option>
+      <option value="detras-de-escena">Detrás de escena / autoridad</option>
+      <option value="tips">Tips accionables</option>
+    </select>
+    <span class="slide-count" id="slide-count">6 slides</span>
+    <button class="btn btn-ghost" id="add-slide-top">+ Slide</button>
+    <button class="btn btn-primary" id="export-btn">Exportar .zip</button>
+  </div>
+</div>
+
+<p class="hint">Editá el texto directo sobre cada slide (título, texto, tags). Elegí el layout de cada slide con el selector de arriba (portada / contenido / cierre) y reordená con las flechas. Entre 3 y 10 slides por carrusel.</p>
+
+<div class="slides" id="slides"></div>
+
+<div class="add-slide-row">
+  <button class="btn btn-ghost" id="add-slide-bottom">+ Agregar slide</button>
+</div>
+
+<div id="export-overlay"><div id="export-status">Exportando…</div></div>
+
+<script src="vendor/html2canvas.min.js"></script>
+<script src="vendor/jszip.min.js"></script>
+<script>
+const MIN_SLIDES = 3;
+const MAX_SLIDES = 10;
+const slidesEl = document.getElementById('slides');
+
+const LAYOUTS = {
+  cover: {
+    label: 'Portada',
+    className: 'slide--cover',
+    html: `
+      <div class="tag-pill" contenteditable="true">PILAR</div>
+      <div class="slide-headline" contenteditable="true">Así perdías horas por semana sin darte cuenta</div>
+      <div class="slide-sub" contenteditable="true">Deslizá →</div>
+    `
+  },
+  content: {
+    label: 'Contenido',
+    className: 'slide--content',
+    html: `
+      <div class="slide-kicker" contenteditable="true">EL PROBLEMA</div>
+      <div class="slide-headline" contenteditable="true">Título del punto</div>
+      <div class="slide-body" contenteditable="true">Desarrollá acá la idea de este slide: un problema, un dato o un paso concreto.</div>
+      <div class="slide-sub"></div>
+    `
+  },
+  cta: {
+    label: 'Cierre / CTA',
+    className: 'slide--cta',
+    html: `
+      <div class="slide-kicker" contenteditable="true">¿TE PASA ESTO?</div>
+      <div class="slide-headline" contenteditable="true">Escribinos y te mostramos cómo automatizarlo</div>
+      <div class="slide-body" contenteditable="true">pluxow.com · @pluxow</div>
+      <div class="slide-sub"></div>
+    `
+  }
+};
+
+function buildSlideInner(type) {
+  const layout = LAYOUTS[type];
+  return `
+    <div class="slide ${layout.className}" data-type="${type}">
+      <span class="slide-badge"></span>
+      ${layout.html}
+      <div class="slide-brand"><img src="../image copy.png" alt="">Pluxow</div>
+    </div>
+  `;
+}
+
+function addSlide(type, afterCard) {
+  if (slidesEl.children.length >= MAX_SLIDES) return;
+  const card = document.createElement('div');
+  card.className = 'slide-card';
+  card.innerHTML = `
+    <div class="slide-toolbar">
+      <select class="layout-select">
+        <option value="cover">Portada</option>
+        <option value="content">Contenido</option>
+        <option value="cta">Cierre / CTA</option>
+      </select>
+      <button class="icon-btn" data-action="up" title="Mover arriba">↑</button>
+      <button class="icon-btn" data-action="down" title="Mover abajo">↓</button>
+      <button class="icon-btn" data-action="duplicate" title="Duplicar">⧉</button>
+      <button class="icon-btn" data-action="delete" title="Eliminar">✕</button>
+    </div>
+    ${buildSlideInner(type)}
+  `;
+  card.querySelector('.layout-select').value = type;
+  if (afterCard && afterCard.nextSibling) {
+    slidesEl.insertBefore(card, afterCard.nextSibling);
+  } else if (afterCard) {
+    slidesEl.appendChild(card);
+  } else {
+    slidesEl.appendChild(card);
+  }
+  refresh();
+}
+
+function refresh() {
+  const cards = [...slidesEl.children];
+  cards.forEach((card, i) => {
+    const badge = card.querySelector('.slide-badge');
+    badge.textContent = `${i + 1}/${cards.length}`;
+    card.querySelector('[data-action="up"]').disabled = i === 0;
+    card.querySelector('[data-action="down"]').disabled = i === cards.length - 1;
+    card.querySelector('[data-action="delete"]').disabled = cards.length <= MIN_SLIDES;
+  });
+  document.getElementById('slide-count').textContent = `${cards.length} slides`;
+  document.getElementById('add-slide-top').disabled = cards.length >= MAX_SLIDES;
+  document.getElementById('add-slide-bottom').disabled = cards.length >= MAX_SLIDES;
+}
+
+slidesEl.addEventListener('click', (e) => {
+  const btn = e.target.closest('.icon-btn');
+  if (!btn) return;
+  const card = btn.closest('.slide-card');
+  const action = btn.dataset.action;
+  if (action === 'up' && card.previousElementSibling) {
+    slidesEl.insertBefore(card, card.previousElementSibling);
+  } else if (action === 'down' && card.nextElementSibling) {
+    slidesEl.insertBefore(card.nextElementSibling, card);
+  } else if (action === 'delete') {
+    if (slidesEl.children.length > MIN_SLIDES) card.remove();
+  } else if (action === 'duplicate') {
+    if (slidesEl.children.length >= MAX_SLIDES) return;
+    const clone = card.cloneNode(true);
+    card.after(clone);
+  }
+  refresh();
+});
+
+slidesEl.addEventListener('change', (e) => {
+  if (!e.target.classList.contains('layout-select')) return;
+  const card = e.target.closest('.slide-card');
+  const type = e.target.value;
+  const old = card.querySelector('.slide');
+  old.outerHTML = buildSlideInner(type).trim();
+  refresh();
+});
+
+document.getElementById('add-slide-top').addEventListener('click', () => addSlide('content', null));
+document.getElementById('add-slide-bottom').addEventListener('click', () => addSlide('content', slidesEl.lastElementChild));
+
+async function exportZip() {
+  const cards = [...slidesEl.children];
+  if (document.activeElement) document.activeElement.blur();
+  await document.fonts.ready;
+
+  const overlay = document.getElementById('export-overlay');
+  const status = document.getElementById('export-status');
+  overlay.classList.add('active');
+
+  const zip = new JSZip();
+  for (let i = 0; i < cards.length; i++) {
+    status.textContent = `Exportando slide ${i + 1}/${cards.length}…`;
+    const slideEl = cards[i].querySelector('.slide');
+    const bg = getComputedStyle(slideEl).backgroundColor;
+    const canvas = await html2canvas(slideEl, { scale: 3, backgroundColor: bg, useCORS: true });
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.92));
+    zip.file(`slide-${String(i + 1).padStart(2, '0')}.jpg`, blob);
+  }
+
+  status.textContent = 'Generando .zip…';
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const pillar = document.getElementById('pillar-select').value;
+  const date = new Date().toISOString().slice(0, 10);
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = `pluxow-carrusel-${pillar}-${date}.zip`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  overlay.classList.remove('active');
+}
+
+document.getElementById('export-btn').addEventListener('click', () => {
+  exportZip().catch(err => {
+    console.error(err);
+    document.getElementById('export-overlay').classList.remove('active');
+    alert('Hubo un error exportando. Revisá la consola.');
+  });
+});
+
+['cover', 'content', 'content', 'content', 'content', 'cta'].forEach(type => addSlide(type, slidesEl.lastElementChild));
+</script>
+</body>
+</html>
