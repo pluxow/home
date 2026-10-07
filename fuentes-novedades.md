@@ -28,6 +28,7 @@ Clasificar cada novedad relevante en uno de estos baldes:
 | `no-reply@mixpanel.com` (y `mixpanel-product@`, `content@mixpanel.com`) | Newsletter de producto de Mixpanel (analytics) — Lea tiene cuenta creada, evaluando si usarlo para medir tráfico en apps de clientes | Negocio |
 | `firebase-noreply@google.com` | Avisos de facturación/plan de proyectos Firebase (ej. cambio de plan, alertas de actividad) — asociado al proyecto personal **Legado** de Lea (ID de GCP: `family-fotos-491610`, nombre del producto: Legado) | Negocio, no es de un cliente de Pluxow |
 | `team@m.ngrok.com` | Newsletter de producto de ngrok (tunneling + ngrok.ai, su AI Gateway) | Negocio |
+| `sc-noreply@google.com` | Google Search Console — problemas de indexación, tráfico de búsqueda. Cubre varios sitios de Lea: `legadofamiliar.com.ar` (dominio de Legado), `family-fotos-491610.web.app`, y otros personales/antiguos (`epm-marketing.com`, `travel-diary`) | Negocio, no es de un cliente de Pluxow — revisar alertas de indexación, suelen ser accionables |
 
 ## Notas
 
